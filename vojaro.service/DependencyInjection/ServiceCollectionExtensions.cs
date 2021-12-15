@@ -7,6 +7,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddAppServices(this IServiceCollection services)
         {
             services.AddScoped<IWeatherForecastService, WeatherForecastService>();
+            services.AddScoped<IUniversidadesService, UniversidadesService>();
 
             return services;
         }

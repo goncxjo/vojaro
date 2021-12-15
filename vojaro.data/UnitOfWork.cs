@@ -4,6 +4,7 @@
     {
         private readonly VojaroDbContext context;
         private IWeatherForecastRepository weatherForecastRepository;
+        private IUniversidadesRepository universidadesRepository;
 
         public UnitOfWork(VojaroDbContext context)
         {
@@ -11,6 +12,7 @@
         }
 
         public IWeatherForecastRepository WeatherForecastRepository => weatherForecastRepository ??= new WeatherForecastRepository(context);
+        public IUniversidadesRepository UniversidadesRepository => universidadesRepository ??= new UniversidadesRepository(context);
 
         public void Commit()
         {

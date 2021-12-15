@@ -26,12 +26,12 @@ namespace vojaro.api.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(PagedData<WeatherForecastListModel>), 200)]
-        public ActionResult<PagedData<WeatherForecastListModel>> GetPaged([FromQuery] WeatherForecastParameters agendaParameters)
+        public ActionResult<PagedData<WeatherForecastListModel>> GetPaged([FromQuery] WeatherForecastParameters weatherForecastParameters)
         {
-            var filter = this.Mapper.Map<WeatherForecastFilters>(agendaParameters);
-            var sort = this.Mapper.Map<PageSort[]>(agendaParameters);
+            var filter = this.Mapper.Map<WeatherForecastFilters>(weatherForecastParameters);
+            var sort = this.Mapper.Map<PageSort[]>(weatherForecastParameters);
 
-            var data = this.service.GetPaged(agendaParameters.PageNumber, agendaParameters.PageSize, sort, filter);
+            var data = this.service.GetPaged(weatherForecastParameters.PageNumber, weatherForecastParameters.PageSize, sort, filter);
             var vm = this.Mapper.Map<PagedData<WeatherForecastListModel>>(data);
             return Ok(vm);
         }
