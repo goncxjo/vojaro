@@ -1,0 +1,16 @@
+<app-navbar></app-navbar>
+
+<div class="container mb-3">
+
+  <nav aria-label="breadcrumb">
+    <breadcrumb #parent>
+      <app-page-title [breadcrumb]="parent" [title]="title"></app-page-title>
+    </breadcrumb>
+  </nav>
+
+  <router-outlet></router-outlet>
+</div>
+
+<app-footer></app-footer>
+
+<ng-http-loader spinner="sk-double-bounce" backgroundColor="red"></ng-http-loader>

@@ -1,0 +1,54 @@
+<div class="row mb-2">
+  <div class="col-lg-12">
+    <app-universidades-filter (filterChanged)="filterChanged($event)"></app-universidades-filter>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header bg-primary text-light">
+    Detalle
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="alert alert-warning" role="alert" *ngIf="noData">
+          No existen registros
+        </div>
+        <div class="table-responsive" *ngIf="!noData">
+          <table datatable [dtOptions]="dtOptions" class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Acciones</th>
+                <th scope="col">#</th>
+                <th scope="col">Siglas</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Fecha ingreso sis.</th>
+                <th scope="col">Fecha última mod.</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of page.data">
+                <td class="btn-group-sm">
+                  <button class="btn btn-link" ngbTooltip="Ver" [routerLink]="['.', item.id]">
+                    <i class="fas fa-eye text-info"></i>
+                  </button>
+                  <button class="btn btn-link" ngbTooltip="Editar" [routerLink]="['.', item.id, 'edit']">
+                    <i class="fas fa-pen text-success"></i>
+                  </button>
+                  <!-- <button class="btn btn-link" ngbTooltip="Eliminar" (click)="remove(item)" disabled>
+                <i class="fas fa-trash text-danger"></i>
+              </button> -->
+                </td>
+                <td>{{item.id}}</td>
+                <td>{{item.siglas}}</td>
+                <td>{{item.nombre}}</td>
+                <td>{{item.fechaIns | date: 'dd/MM/yyyy'}}</td>
+                <td>{{item.fechaMod | date: 'dd/MM/yyyy'}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>

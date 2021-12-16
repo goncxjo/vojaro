@@ -1,0 +1,14 @@
+<ol class="breadcrumb mt-4">
+<li class="breadcrumb-item">
+    <a [routerLink]="['home']">
+    <i class="fas fa-home"></i>
+    </a>
+</li>
+<!-- <li *ngIf="!title" class="breadcrumb-item active" aria-current="page">Home</li> -->
+<ng-template ngFor let-route [ngForOf]="breadcrumb?.breadcrumbs">
+    <li *ngIf="!route.terminal" class="breadcrumb-item">
+    <a href="" [routerLink]="[route.url]">{{ route.displayName }}</a>
+    </li>
+    <li *ngIf="route.terminal" class="breadcrumb-item active" aria-current="page">{{ route.displayName }}</li>
+</ng-template>
+</ol>
