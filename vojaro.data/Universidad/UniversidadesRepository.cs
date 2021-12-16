@@ -14,30 +14,20 @@ namespace vojaro.data
         {
         }
 
-        protected override DbSet<Universidad> DbSet => null;
+        protected override DbSet<Universidad> DbSet => Context.Universidades;
 
 		protected override IDictionary<string, string> sortPropertyMappings => new Dictionary<string, string>() 
         {
             { "id", "Id" },
             { "siglas", "Siglas" },
             { "nombre", "Nombre" },
-            { "fechaIns", "fechaIns" },
-            { "fechaMod", "fechaMod" },
+            { "fechaCreacion ", "FechaCreacion " },
+            { "fechaUltimaModificacion", "FechaUltimaModificacion" },
         };
-
-        private static readonly string[] Siglas = new[] { "UNDAV", "UNAJ", "UNQ", "UBA", "UTN", "UNLZ", "UNLa" };
-        private static readonly string[] Nombres = new[] { "Universidad Nacional de Avellaneda", "Universidad Nacional Arturo Jauretche", "Universidad Nacional de Quilmes", "Universidad Nacional de Buenos Aires", "Universidad Tecnológica Nacional", "Universidad Nacional de Lomas de Zamora", "Universidad Nacional de Lanús" };
 
         public override IQueryable<Universidad> GetAll()
         {
-            return Enumerable.Range(1, 7).Select(index => new Universidad
-            {
-                Id = index,
-                Siglas = Siglas[index - 1],
-                Nombre = Nombres[index - 1],
-                FechaIns = DateTime.Now,
-            })
-            .AsQueryable();
+            return DbSet;
         }
 
         public override IQueryable<Universidad> FilterQuery(IQueryable<Universidad> query, UniversidadFilters filter)

@@ -17,8 +17,8 @@ namespace vojaro.data
 			string connectionString = configuration.GetConnectionString("DefaultConnection");
 
 			var optionsBuilder = new DbContextOptionsBuilder<VojaroDbContext>()
-				//.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
-			;
+                .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
+            ;
 
 			return new VojaroDbContext(optionsBuilder.Options);
 		}

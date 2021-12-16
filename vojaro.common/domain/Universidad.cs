@@ -6,7 +6,7 @@ namespace vojaro.domain
     {
         public string Siglas { get; set; }
         public string Nombre { get; set; }
-        public DateTime FechaIns { get; set; }
-        public Nullable<DateTime> FechaMod { get; set; }
+        public DateTime FechaCreacion { get; set; }
+        public DateTime? FechaUltimaModificacion { get; set; }
     }
 }
