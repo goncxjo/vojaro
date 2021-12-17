@@ -17,7 +17,7 @@ export class UniversidadesListComponent implements OnInit, AfterViewInit {
   page: PagedData<any> = this.ngDtHelper.getDefaultPagedData();
   sort: PageSort[] = [];
   filters: UniversidadFilters = {
-    nombre: null
+    parteNombreSiglas: null
   };
   
   dtOptions: DataTables.Settings = {};
@@ -53,8 +53,8 @@ export class UniversidadesListComponent implements OnInit, AfterViewInit {
         { data: 'id' },
         { data: 'siglas' },
         { data: 'nombre' },
-        { data: 'fechaLectura' },
-        { data: 'fechaFactura' },
+        { data: 'fechaCreacion' },
+        { data: 'fechaUltimaModificacion' },
       ]
     };
   }

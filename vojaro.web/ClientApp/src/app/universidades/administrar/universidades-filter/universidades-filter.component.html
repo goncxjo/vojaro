@@ -3,8 +3,8 @@
   <div class="card-body">
     <form [formGroup]="filterForm" class="row g-3">
       <div class="col-md-6">
-        <label for="nombre" class="form-label">Nombre</label>
-        <input type="text" class="form-control" formControlName="nombre">
+        <label for="parteNombreSiglas" class="form-label">Nombre/Siglas</label>
+        <input type="text" class="form-control" formControlName="parteNombreSiglas">
       </div>
     </form>
   </div>
@@ -14,7 +14,7 @@
   <button type="button" class="btn btn-primary" (click)="onSubmit()">
     <i class="fas fa-search"></i> Buscar
   </button>
-  <button type="button" class="btn btn-primary" [routerLink]="['.', 'create']">
+  <button type="button" class="btn btn-primary" [routerLink]="['.', 'crear']">
     <i class="fas fa-plus"></i> Crear Universidad
   </button>
 </div>

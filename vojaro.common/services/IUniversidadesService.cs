@@ -1,4 +1,5 @@
-﻿using vojaro.domain;
+﻿using System.Security.Claims;
+using vojaro.domain;
 using vojaro.filters;
 
 namespace vojaro.services
@@ -7,5 +8,7 @@ namespace vojaro.services
     {
         PagedData<Universidad> GetPaged(int pageNumber, int pageSize, PageSort[] sort, UniversidadFilters filter);
         Universidad GetById(long id);
-    }
+		Universidad Create(Universidad model, ClaimsPrincipal claimsPrincipal);
+		Universidad Update(Universidad model, ClaimsPrincipal claimsPrincipal);
+	}
 }

@@ -9,5 +9,6 @@ namespace vojaro.data
         PagedData<Universidad> GetPaged(int pageNumber, int pageSize, PageSort[] sort, UniversidadFilters filter);
         IQueryable<Universidad> Find(UniversidadFilters filters);
         Universidad GetById(long id);
-    }
+		Universidad Add(Universidad entity);
+	}
 }

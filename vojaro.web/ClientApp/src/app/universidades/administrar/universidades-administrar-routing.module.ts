@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UniversidadesEditComponent } from './universidades-edit/universidades-edit.component';
+import { CreateResolver } from './create.resolver';
 import { GetByIdResolver } from './get-by-id.resolver';
+import { UniversidadesEditComponent } from './universidades-edit/universidades-edit.component';
 import { UniversidadesListComponent } from './universidades-list/universidades-list.component';
 
 const routes: Routes = [
@@ -14,14 +15,14 @@ const routes: Routes = [
     }
   },
   {
-    path: 'create',
+    path: 'crear',
     component: UniversidadesEditComponent,
     data: {
       title: 'Crear agenda',
       breadcrumb: 'Crear',
     },
     resolve: {
-      //  entity: CreateResolver
+       entity: CreateResolver
     }
   },
   {
@@ -37,7 +38,7 @@ const routes: Routes = [
     }
   },
   {
-    path: ':id/edit',
+    path: ':id/editar',
     component: UniversidadesEditComponent,
     data: {
       title: 'Editar agenda',
@@ -56,7 +57,7 @@ const routes: Routes = [
   )],
   exports: [RouterModule],
   providers: [
-  //  CreateResolver,
+   CreateResolver,
    GetByIdResolver,
   ]
 })

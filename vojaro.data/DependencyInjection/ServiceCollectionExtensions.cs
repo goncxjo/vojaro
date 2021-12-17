@@ -1,4 +1,4 @@
-﻿
+﻿using Microsoft.EntityFrameworkCore;
 using vojaro.data;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -8,7 +8,7 @@ namespace Microsoft.Extensions.DependencyInjection
 		public static IServiceCollection AddAppUnitOfWork(this IServiceCollection services, string connectionString)
 		{
 			services.AddDbContext<VojaroDbContext>(
-				//x => x.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
+				x => x.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
 			);
 			services.AddScoped<IUnitOfWork, UnitOfWork>();
 			return services;
