@@ -44,8 +44,11 @@ namespace vojaro.data
                 }
                 if (!String.IsNullOrEmpty(filter.ParteNombreSiglas))
                 {
-                    StringComparison comp = StringComparison.OrdinalIgnoreCase;
-                    query = query.Where(x => x.Nombre.Contains(filter.Nombre, comp) || x.Siglas.Contains(filter.Nombre, comp));
+                    var pattern = String.Format("%{0}%", filter.ParteNombreSiglas.ToLower());
+                    query = query.Where(x => 
+                        EF.Functions.Like(x.Nombre, pattern) ||
+                        EF.Functions.Like(x.Siglas, pattern)
+                    );
                 }
             }
 
