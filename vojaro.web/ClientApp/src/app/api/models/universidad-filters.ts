@@ -1,4 +1,4 @@
 export interface UniversidadFilters {
-  nombre: string | null;
+  parteNombreSiglas: string | null;
 }
   

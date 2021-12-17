@@ -47,13 +47,13 @@ export class UniversidadesFilterComponent implements OnInit {
 
   private buildForm(): FormGroup {
     return this.formBuilder.group({
-      nombre: [''],
+      parteNombreSiglas: [''],
     });
   }
 
   private resetModel() {
     const model: UniversidadFilters = {
-      nombre: null
+      parteNombreSiglas: null
     };
     this.filterForm.setValue(model);
   }

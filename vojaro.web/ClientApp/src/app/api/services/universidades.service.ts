@@ -1,7 +1,6 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { serialize } from 'object-to-formdata';
+import { Observable, of } from 'rxjs';
 import { Universidad, UniversidadFilters, PagedData, PageInfo } from '../models';
 import { buildQueryParams } from '.';
 import { PageSort } from '../models/page-sort';
@@ -40,13 +39,19 @@ export class UniversidadesService {
     return this.httpClient.get<Universidad>(url);
   }
 
+  new(): Observable<Universidad> {
+    return of({
+      id: 0,
+      siglas: '',
+      nombre: '',
+    });
+  }
+  
   save(entity: Universidad): Observable<Universidad> {
-    const formData = serialize(entity);
-
     if (entity.id) {
-        return this.httpClient.put<Universidad>(this.baseRoute, formData);
+        return this.httpClient.put<Universidad>(this.baseRoute, entity);
     } else {
-        return this.httpClient.post<Universidad>(this.baseRoute, formData);
+        return this.httpClient.post<Universidad>(this.baseRoute, entity);
     }
   }
 }

@@ -34,7 +34,15 @@ namespace vojaro.data
         {
             if (filter != null)
             {
-                if (filter.Nombre != null)
+                if (!String.IsNullOrEmpty(filter.Siglas))
+                {
+                    query = query.Where(x => x.Siglas.ToLower() == filter.Siglas.ToLower());
+                }
+                if (!String.IsNullOrEmpty(filter.Nombre))
+                {
+                    query = query.Where(x => x.Nombre.ToLower() == filter.Nombre.ToLower());
+                }
+                if (!String.IsNullOrEmpty(filter.ParteNombreSiglas))
                 {
                     StringComparison comp = StringComparison.OrdinalIgnoreCase;
                     query = query.Where(x => x.Nombre.Contains(filter.Nombre, comp) || x.Siglas.Contains(filter.Nombre, comp));

@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using vojaro.api.Models.WeatherForescast;
 using vojaro.filters;
 using vojaro.domain;
 using vojaro.parameters;
 using vojaro.services;
 using vojaro.api.Models;
+using vojaro.api.Models.Universidad;
 
 namespace vojaro.api.Controllers
 {
@@ -47,6 +46,24 @@ namespace vojaro.api.Controllers
             }
             return NotFound();
         }
+
+		[HttpPost]
+		[ProducesResponseType(typeof(UniversidadModel), 200)]
+		public ActionResult<Universidad> Create([FromBody] CreateUniversidadModel model)
+		{
+			var entity = this.Mapper.Map<Universidad>(model);
+			var result = this.service.Create(entity, this.GetCurrentUser());
+			return Created(entity.Id, this.Mapper.Map<UniversidadModel>(result));
+		}
+
+		[HttpPut]
+		[ProducesResponseType(typeof(UniversidadModel), 200)]
+		public ActionResult<Universidad> Update([FromBody] CreateUniversidadModel model)
+		{
+			var entity = this.Mapper.Map<Universidad>(model);
+			var result = this.service.Update(entity, this.GetCurrentUser());
+			return Created(entity.Id, this.Mapper.Map<UniversidadModel>(result));
+		}
 
     }
 }

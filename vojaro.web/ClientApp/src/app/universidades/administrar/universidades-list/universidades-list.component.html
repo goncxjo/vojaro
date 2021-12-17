@@ -32,12 +32,12 @@
                   <button class="btn btn-link" ngbTooltip="Ver" [routerLink]="['.', item.id]">
                     <i class="fas fa-eye text-info"></i>
                   </button>
-                  <button class="btn btn-link" ngbTooltip="Editar" [routerLink]="['.', item.id, 'edit']">
+                  <button class="btn btn-link" ngbTooltip="Editar" [routerLink]="['.', item.id, 'editar']">
                     <i class="fas fa-pen text-success"></i>
                   </button>
-                  <!-- <button class="btn btn-link" ngbTooltip="Eliminar" (click)="remove(item)" disabled>
+                  <button class="btn btn-link" ngbTooltip="Eliminar" disabled>
                 <i class="fas fa-trash text-danger"></i>
-              </button> -->
+              </button>
                 </td>
                 <td>{{item.id}}</td>
                 <td>{{item.siglas}}</td>

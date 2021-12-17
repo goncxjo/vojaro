@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace vojaro.api.Models.WeatherForescast
+namespace vojaro.api.Models.Universidad
 {
     public class UniversidadListModel
     {
