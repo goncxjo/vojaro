@@ -43,7 +43,7 @@ export class AppComponent {
 
   private setTitle(cfg: any) {
     this.title = cfg.showPageTitle ? cfg.title : '';
-    this.titleService.setTitle('Temt2t3' + (cfg.title ? ' - ' + cfg.title : ''));
+    this.titleService.setTitle('Vojaro' + (cfg.title ? ' - ' + cfg.title : ''));
   }
 
   private navigateToStoredEndpoint() {
