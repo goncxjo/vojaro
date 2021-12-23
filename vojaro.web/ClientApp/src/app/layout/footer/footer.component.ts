@@ -23,7 +23,7 @@ export class FooterComponent implements OnInit {
   }
 
   getFooterText() {
-    return `VOJARO | ${this.actualYear} - VERSION: ${this.appVersion} - AMBIENTE: ${this.environmentName}`
+    return `AÑO ${this.actualYear} - VERSION: ${this.appVersion} - AMBIENTE: ${this.environmentName}`
   }
 
 }

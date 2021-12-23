@@ -1,6 +1,6 @@
 <div class="card">
   <div class="card-header bg-primary text-light">
-    Información general
+    Información general de la universidad
   </div>
   <div class="card-body">
     <form [formGroup]="form" class="row g-3">
@@ -20,21 +20,24 @@
       </div>
 
     </form>
-
-    <div class="btn-group-form left mt-4" *ngIf="!readonly">
-      <button type="button" class="btn btn-success" (click)="onSubmit()">
-        <i class="fas fa-save"></i> Guardar
-      </button>
-      <button type="button" class="btn btn-danger" (click)="goBack()">
-        <i class="fas fa-times"></i> Cancelar
-      </button>
-    </div>
-
-    <div class="btn-group-form left mt-4" *ngIf="readonly">
-      <button type="button" class="btn btn-primary" (click)="goBack()">
-        <i class="fas fa-arrow-left"></i> Volver
-      </button>
-    </div>
-
   </div>
+</div>
+
+<div class="mt-2">
+  <app-sedes-universitarias></app-sedes-universitarias>
+</div>
+
+<div class="btn-group-form left mt-4" *ngIf="!readonly">
+  <button type="button" class="btn btn-success" (click)="onSubmit()">
+    <i class="fas fa-save"></i> Guardar
+  </button>
+  <button type="button" class="btn btn-danger" (click)="goBack()">
+    <i class="fas fa-times"></i> Cancelar
+  </button>
+</div>
+
+<div class="btn-group-form left mt-4" *ngIf="readonly">
+  <button type="button" class="btn btn-primary" (click)="goBack()">
+    <i class="fas fa-arrow-left"></i> Volver
+  </button>
 </div>
