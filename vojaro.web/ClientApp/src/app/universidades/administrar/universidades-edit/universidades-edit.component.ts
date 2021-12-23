@@ -1,10 +1,12 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NgbNavChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Universidad, UniversidadesService } from 'src/app/api';
 import { NotificationService } from 'src/app/shared';
+import { DepartamentosUniversidadesComponent } from '../../departamentos/departamentos.component';
+import { SedesUniversidadesComponent } from '../../sedes/sedes.component';
 
 @Component({
   selector: 'app-universidades-edit',
@@ -12,6 +14,11 @@ import { NotificationService } from 'src/app/shared';
   styleUrls: ['./universidades-edit.component.scss']
 })
 export class UniversidadesEditComponent implements OnInit {
+  @ViewChild('sedes')
+  sedesComponent!: SedesUniversidadesComponent;
+  @ViewChild('departamentos')
+  departamentosComponent!: DepartamentosUniversidadesComponent;
+
   readonly!: boolean;
   form = this.buildForm();
 
@@ -49,7 +56,7 @@ export class UniversidadesEditComponent implements OnInit {
 
     this.service.save(entity)
       .subscribe(() => {
-        this.notificationService.showSuccess('Agenda guardada correctamente');
+        this.notificationService.showSuccess('Universidad guardada correctamente');
         this.goBack();
       });
   }
@@ -67,6 +74,8 @@ export class UniversidadesEditComponent implements OnInit {
       id: [{ value: '', disabled: true}],
       siglas: [''],
       nombre: [''],
+      sedes: [''],
+      departamentos: ['']
     });
   }
 

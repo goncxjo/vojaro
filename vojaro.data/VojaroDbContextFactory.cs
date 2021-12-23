@@ -18,7 +18,9 @@ namespace vojaro.data
 
 			var optionsBuilder = new DbContextOptionsBuilder<VojaroDbContext>()
                 .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString), options =>
-					options.EnableStringComparisonTranslations()
+					options
+						.EnableStringComparisonTranslations()
+						.EnableRetryOnFailure()
 				);
 
 			return new VojaroDbContext(optionsBuilder.Options);
