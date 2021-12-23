@@ -1,0 +1,13 @@
+table.dataTable {
+  .card div .row & {
+    padding: 0;
+  }
+  & td {
+    white-space: nowrap;
+
+    &.dataTables_empty {
+      display: none;
+    }
+  }
+
+}

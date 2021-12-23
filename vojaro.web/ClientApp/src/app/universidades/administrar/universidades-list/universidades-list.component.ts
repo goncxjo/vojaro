@@ -2,6 +2,7 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { UniversidadFilters, UniversidadesService, PageSort, PagedData, PageInfo } from 'src/app/api';
 import { AngularDatatablesHelper, NotificationService } from 'src/app/shared';
+import { UniversidadesFilterComponent } from '../universidades-filter/universidades-filter.component';
 
 
 @Component({
@@ -12,13 +13,13 @@ import { AngularDatatablesHelper, NotificationService } from 'src/app/shared';
 export class UniversidadesListComponent implements OnInit, AfterViewInit {
   @ViewChild(DataTableDirective)
   dtElement!: DataTableDirective;
+  @ViewChild('universidadesFilter')
+  entityFilters!: UniversidadesFilterComponent;
 
   pageInfo: PageInfo = this.ngDtHelper.getDefaultParams().pageInfo;
   page: PagedData<any> = this.ngDtHelper.getDefaultPagedData();
   sort: PageSort[] = [];
-  filters: UniversidadFilters = {
-    parteNombreSiglas: null
-  };
+  filters = new UniversidadFilters();
   
   dtOptions: DataTables.Settings = {};
 
@@ -58,20 +59,25 @@ export class UniversidadesListComponent implements OnInit, AfterViewInit {
       ]
     };
   }
-
+  
   ngAfterViewInit(): void {    
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => dtInstance.draw());
-  }
-
-  filterChanged(newFilters: UniversidadFilters) {
-    this.filters = newFilters;
     this.search();
   }
 
   private search() {
-    this.service.getPaged(this.pageInfo, this.filters, this.sort).subscribe((response: any) => {      
-      this.page = response;  
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      if(dtInstance) {
+        dtInstance.ajax.reload();
+      }
     });
   }
 
+  applyFilters() {
+    this.filters = this.entityFilters.formValue;
+    this.search();
+  }
+
+  remove() {
+    console.log('pendiente accion eliminar')
+  }
 }

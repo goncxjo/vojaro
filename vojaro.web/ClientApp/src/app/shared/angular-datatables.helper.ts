@@ -22,7 +22,7 @@ export class AngularDatatablesHelper {
     pageLength: 10,
     order: [],
     language: datatableSpanish,
-    dom: "<'row mb-2't><'row align-items-center'<'col text-align-left'li><'col'p>>",
+    dom: "<'row mb-2't><'row align-items-center mb-3'<'col text-align-left'li><'col'p>>",
     deferRender: true,
     deferLoading: 0,
   };

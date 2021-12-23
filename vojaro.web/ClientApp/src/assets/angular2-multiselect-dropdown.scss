@@ -1,0 +1,29 @@
+ul.lazyContainer {
+  white-space: nowrap;
+}
+
+.selected-list {
+
+  & .c-btn.disabled {
+    background: $input-disabled-bg;
+    
+    & .c-list .c-token {
+      opacity: $btn-disabled-opacity;
+    } 
+  }
+    
+  .single-selection & {
+    .c-list .c-token {
+      background: none;
+      
+      & .c-label {
+        color: #000;
+      }
+      
+      & .item-label {
+        display: inline;
+      }
+    }
+  }
+}
+  

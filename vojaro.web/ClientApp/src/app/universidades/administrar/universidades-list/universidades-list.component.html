@@ -1,6 +1,16 @@
 <div class="row mb-2">
   <div class="col-lg-12">
-    <app-universidades-filter (filterChanged)="filterChanged($event)"></app-universidades-filter>
+    <app-universidades-filter #universidadesFilter></app-universidades-filter>
+  </div>
+  <div class="col-lg-12">
+    <div class="btn-group-form mt-2">
+      <button type="button" class="btn btn-primary" (click)="applyFilters()">
+        <i class="fas fa-search"></i> Buscar
+      </button>
+      <button type="button" class="btn btn-primary" [routerLink]="['.', 'crear']">
+        <i class="fas fa-plus"></i> Crear
+      </button>
+    </div>
   </div>
 </div>
 
@@ -14,11 +24,11 @@
         <div class="alert alert-warning" role="alert" *ngIf="noData">
           No existen registros
         </div>
-        <div class="table-responsive" *ngIf="!noData">
+        <div class="card table-responsive" *ngIf="!noData">
           <table datatable [dtOptions]="dtOptions" class="table table-striped">
             <thead>
               <tr>
-                <th scope="col">Acciones</th>
+                <th scope="col"> </th>
                 <th scope="col">#</th>
                 <th scope="col">Siglas</th>
                 <th scope="col">Nombre</th>
@@ -27,17 +37,19 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let item of page.data">
-                <td class="btn-group-sm">
-                  <button class="btn btn-link" ngbTooltip="Ver" [routerLink]="['.', item.id]">
-                    <i class="fas fa-eye text-info"></i>
-                  </button>
-                  <button class="btn btn-link" ngbTooltip="Editar" [routerLink]="['.', item.id, 'editar']">
-                    <i class="fas fa-pen text-success"></i>
-                  </button>
-                  <button class="btn btn-link" ngbTooltip="Eliminar" disabled>
-                <i class="fas fa-trash text-danger"></i>
-              </button>
+              <tr *ngFor="let item of page.data" class="align-middle">
+                <td class="overflow-hidden">
+                  <div ngbDropdown container="body">
+                    <button class="btn btn-entity-actions" ngbDropdownToggle>
+                      <i class="fas fa-ellipsis-h"></i>
+                    </button>
+                    <div ngbDropdownMenu>
+                      <button ngbDropdownItem [routerLink]="['.', item.id]">Ver</button>
+                      <button ngbDropdownItem [routerLink]="['.', item.id, 'editar']">Editar</button>
+                      <div class="dropdown-divider"></div>
+                      <button ngbDropdownItem (click)="remove()">Delete</button>
+                    </div>
+                  </div>
                 </td>
                 <td>{{item.id}}</td>
                 <td>{{item.siglas}}</td>

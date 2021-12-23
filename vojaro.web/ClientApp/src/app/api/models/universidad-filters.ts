@@ -1,4 +1,4 @@
-export interface UniversidadFilters {
-  parteNombreSiglas: string | null;
+export class UniversidadFilters {
+  parteNombreSiglas: string | null = null;
 }
   

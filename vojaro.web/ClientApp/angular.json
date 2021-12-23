@@ -37,9 +37,12 @@
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.js",
+              "node_modules/popper.js/dist/umd/popper.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
               "node_modules/datatables.net/js/jquery.dataTables.js",
               "src/assets/datatables/js/dataTables.bootstrap5.js",
               "node_modules/file-saver/dist/FileSaver.js"
+
             ]
           },
           "configurations": {
