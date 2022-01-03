@@ -54,5 +54,5 @@ namespace vojaro.data
 
             return query;
         }
-    }
+	}
 }

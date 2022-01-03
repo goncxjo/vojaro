@@ -9,35 +9,35 @@ using vojaro.filters;
 
 namespace vojaro.services
 {
-    public class UniversidadesService : IUniversidadesService
+    public class SedesService : ISedesService
     {
         private readonly IUnitOfWork unitOfWork;
-        private IUniversidadesRepository GetRepository() => this.unitOfWork.UniversidadesRepository;
+        private ISedesRepository GetRepository() => this.unitOfWork.SedesRepository;
 
-        public UniversidadesService(IUnitOfWork unitOfWork)
+        public SedesService(IUnitOfWork unitOfWork)
         {
             this.unitOfWork = unitOfWork;
         }
 
-        public PagedData<Universidad> GetPaged(int pageNumber, int pageSize, PageSort[] sort, UniversidadFilters filter)
+        public PagedData<Sede> GetPaged(int pageNumber, int pageSize, PageSort[] sort, UniversidadFilters filter)
         {
             return this.GetRepository().GetPaged(pageNumber, pageSize, sort, filter);
         }
 
-        public Universidad GetById(long id)
+        public Sede GetById(long id)
         {
             return this.GetRepository().GetById(id);
         }
 
-        public Universidad Create(Universidad model, ClaimsPrincipal claimsPrincipal)
+        public Sede Create(Sede model, ClaimsPrincipal claimsPrincipal)
         {
 			// string userId = user.GetUserId();
 
 			var filters = new UniversidadFilters
 			{
 				// UserId = userId,
-				Siglas = model.Siglas,
 				Nombre = model.Nombre,
+                Id = model.UniversidadId
 			};
 
 			if (this.GetRepository().Find(filters).Any())
@@ -54,15 +54,15 @@ namespace vojaro.services
             return result;
         }
 
-        public Universidad Update(Universidad model, ClaimsPrincipal claimsPrincipal)
+        public Sede Update(Sede model, ClaimsPrincipal claimsPrincipal)
         {
 			// string userId = user.GetUserId();
 
             var dbEntity = GetRepository().GetById(model.Id);
 
-            dbEntity.Siglas = model.Siglas;
             dbEntity.Nombre = model.Nombre;
             dbEntity.FechaUltimaModificacion = DateTime.Now;
+            dbEntity.UniversidadId = model.UniversidadId;
             // dbEntity.UserIdUltimaModificacion = userId;
 
 

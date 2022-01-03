@@ -4,7 +4,7 @@ using vojaro.domain;
 
 namespace vojaro.data.Config
 {
-    public class UniversidadConfiguration : IEntityTypeConfiguration<Universidad>
+    public class SedeConfiguration : IEntityTypeConfiguration<Universidad>
     {
         public void Configure(EntityTypeBuilder<Universidad> entity)
         {
@@ -13,16 +13,6 @@ namespace vojaro.data.Config
             entity.Property(e => e.Siglas).HasColumnType("nvarchar(10)").IsRequired();
             entity.Property(e => e.Nombre).IsRequired();
             entity.Property(e => e.FechaCreacion).IsRequired();
-
-            entity.HasMany<Sede>(e => e.Sedes)
-            .WithOne(e => e.Universidad)
-            .HasForeignKey(e => e.UniversidadId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-            entity.HasMany<Departamento>(e => e.Departamentos)
-            .WithOne(e => e.Universidad)
-            .HasForeignKey(e => e.UniversidadId)
-            .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

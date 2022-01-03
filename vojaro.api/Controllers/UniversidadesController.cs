@@ -7,6 +7,8 @@ using vojaro.parameters;
 using vojaro.services;
 using vojaro.api.Models;
 using vojaro.api.Models.Universidad;
+using vojaro.api.Models.Departamento;
+using vojaro.api.Models.Sede;
 
 namespace vojaro.api.Controllers
 {
@@ -16,6 +18,8 @@ namespace vojaro.api.Controllers
     public class UniversidadesController : ApiController
     {
         private readonly IUniversidadesService service;
+        private readonly ISedesService sedesService;
+        private readonly IDepartamentosService departamentosService;
 
         public UniversidadesController(ILogger<UniversidadesController> logger, IMapper mapper, IUniversidadesService service)
             : base(logger, mapper)
@@ -65,5 +69,28 @@ namespace vojaro.api.Controllers
 			return Created(entity.Id, this.Mapper.Map<UniversidadModel>(result));
 		}
 
+        [HttpGet("departamentos")]
+        [ProducesResponseType(typeof(PagedData<DepartamentoListModel>), 200)]
+        public ActionResult<PagedData<DepartamentoListModel>> GetPagedDepartamentos([FromQuery] UniversidadParameters universidadParameters)
+        {
+            var filter = this.Mapper.Map<UniversidadFilters>(universidadParameters);
+            var sort = this.Mapper.Map<PageSort[]>(universidadParameters);
+
+            var data = this.departamentosService.GetPaged(universidadParameters.PageNumber, universidadParameters.PageSize, sort, filter);
+            var vm = this.Mapper.Map<PagedData<DepartamentoListModel>>(data);
+            return Ok(vm);
+        }
+
+        [HttpGet("sedes")]
+        [ProducesResponseType(typeof(PagedData<SedeListModel>), 200)]
+        public ActionResult<PagedData<SedeListModel>> GetPagedSedes([FromQuery] UniversidadParameters universidadParameters)
+        {
+            var filter = this.Mapper.Map<UniversidadFilters>(universidadParameters);
+            var sort = this.Mapper.Map<PageSort[]>(universidadParameters);
+
+            var data = this.sedesService.GetPaged(universidadParameters.PageNumber, universidadParameters.PageSize, sort, filter);
+            var vm = this.Mapper.Map<PagedData<SedeListModel>>(data);
+            return Ok(vm);
+        }
     }
 }

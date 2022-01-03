@@ -12,12 +12,16 @@ namespace vojaro.data
         }
 
         public DbSet<Universidad> Universidades { get; set; }
+        public DbSet<Departamento> Departamentos { get; set; }
+        public DbSet<Sede> Sedes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new UniversidadConfiguration());
+            modelBuilder.ApplyConfiguration(new DepartamentoConfiguration());
+            modelBuilder.ApplyConfiguration(new SedeConfiguration());
         }
     }
 }

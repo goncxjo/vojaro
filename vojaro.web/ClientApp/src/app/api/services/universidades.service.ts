@@ -6,6 +6,7 @@ import { buildQueryParams } from '.';
 import { PageSort } from '../models/page-sort';
 import { FileSaverService } from 'ngx-filesaver';
 import * as _ from 'lodash';
+import { Departamento } from '../models/departamento';
 
 @Injectable({
   providedIn: 'root'
@@ -53,5 +54,18 @@ export class UniversidadesService {
     } else {
         return this.httpClient.post<Universidad>(this.baseRoute, entity);
     }
+  }
+
+  getPagedDepartamentos(pageInfo: PageInfo, filters: UniversidadFilters, columnSort: PageSort[]): Observable<PagedData<Departamento>> {
+    const url = `${this.baseRoute}`;
+    const sort = JSON.stringify(columnSort);
+    
+    const query = {
+      ...pageInfo,
+      sort,
+      ...filters,
+    };
+    
+    return this.httpClient.get<PagedData<Departamento>>(url, { params: buildQueryParams(query) });
   }
 }
