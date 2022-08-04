@@ -4,15 +4,17 @@ using vojaro.domain;
 
 namespace vojaro.data.Config
 {
-    public class SedeConfiguration : IEntityTypeConfiguration<Universidad>
+    public class SedeConfiguration : IEntityTypeConfiguration<Sede>
     {
-        public void Configure(EntityTypeBuilder<Universidad> entity)
+        public void Configure(EntityTypeBuilder<Sede> entity)
         {
-            entity.ToTable("universidades");
+            entity.ToTable("sedes");
             entity.HasKey(e => e.Id);
-            entity.Property(e => e.Siglas).HasColumnType("nvarchar(10)").IsRequired();
             entity.Property(e => e.Nombre).IsRequired();
             entity.Property(e => e.FechaCreacion).IsRequired();
+            entity.Property(e => e.FechaUltimaModificacion);
+            entity.Property(e => e.UsuarioUltimaModificacion);
+
         }
     }
 }

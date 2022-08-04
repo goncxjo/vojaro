@@ -21,6 +21,7 @@ namespace vojaro.data
 					options
 						.EnableStringComparisonTranslations()
 						.EnableRetryOnFailure()
+						.MigrationsAssembly("vojaro.api")
 				);
 
 			return new VojaroDbContext(optionsBuilder.Options);

@@ -12,6 +12,8 @@ namespace vojaro.data.Config
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Nombre).IsRequired();
             entity.Property(e => e.FechaCreacion).IsRequired();
+            entity.Property(e => e.FechaUltimaModificacion);
+            entity.Property(e => e.UsuarioUltimaModificacion);
         }
     }
 }
