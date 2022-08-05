@@ -7,6 +7,7 @@ import { PageSort } from '../models/page-sort';
 import { FileSaverService } from 'ngx-filesaver';
 import * as _ from 'lodash';
 import { Departamento } from '../models/departamento';
+import { Sede } from '../models/sede';
 
 @Injectable({
   providedIn: 'root'
@@ -57,7 +58,7 @@ export class UniversidadesService {
   }
 
   getPagedDepartamentos(pageInfo: PageInfo, filters: UniversidadFilters, columnSort: PageSort[]): Observable<PagedData<Departamento>> {
-    const url = `${this.baseRoute}`;
+    const url = `${this.baseRoute}/departamentos`;
     const sort = JSON.stringify(columnSort);
     
     const query = {
@@ -67,5 +68,18 @@ export class UniversidadesService {
     };
     
     return this.httpClient.get<PagedData<Departamento>>(url, { params: buildQueryParams(query) });
+  }
+
+  getPagedSedes(pageInfo: PageInfo, filters: UniversidadFilters, columnSort: PageSort[]): Observable<PagedData<Sede>> {
+    const url = `${this.baseRoute}/sedes`;
+    const sort = JSON.stringify(columnSort);
+    
+    const query = {
+      ...pageInfo,
+      sort,
+      ...filters,
+    };
+    
+    return this.httpClient.get<PagedData<Sede>>(url, { params: buildQueryParams(query) });
   }
 }

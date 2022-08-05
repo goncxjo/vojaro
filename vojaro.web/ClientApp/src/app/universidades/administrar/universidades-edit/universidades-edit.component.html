@@ -24,11 +24,11 @@
 </div>
 
 <div class="mt-2">
-  <app-sedes-universidades #sedes></app-sedes-universidades>
+  <app-sedes-universidades #sedes [universidadId]="this.form.value['id']"></app-sedes-universidades>
 </div>
 
 <div class="mt-2">
-  <app-departamentos-universidades #departamentos></app-departamentos-universidades>
+  <app-departamentos-universidades #departamentos [universidadId]="this.form.value['id']"></app-departamentos-universidades>
 </div>
 
 <div class="btn-group-form left mt-4" *ngIf="!readonly">

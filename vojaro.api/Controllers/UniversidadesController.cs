@@ -21,10 +21,12 @@ namespace vojaro.api.Controllers
         private readonly ISedesService sedesService;
         private readonly IDepartamentosService departamentosService;
 
-        public UniversidadesController(ILogger<UniversidadesController> logger, IMapper mapper, IUniversidadesService service)
+        public UniversidadesController(ILogger<UniversidadesController> logger, IMapper mapper, IUniversidadesService service, ISedesService sedesService, IDepartamentosService departamentosService)
             : base(logger, mapper)
         {
             this.service = service;
+            this.sedesService = sedesService;
+            this.departamentosService = departamentosService;
         }
 
         [HttpGet]

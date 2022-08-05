@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
-import { PagedData, PageInfo, PageSort, UniversidadesService } from 'src/app/api';
+import { PagedData, PageInfo, PageSort, UniversidadesService, UniversidadFilters } from 'src/app/api';
 import { AngularDatatablesHelper, NotificationService } from 'src/app/shared';
 
 @Component({
@@ -12,6 +12,9 @@ export class DepartamentosUniversidadesComponent implements OnInit {
   @ViewChild(DataTableDirective)
   dtElement!: DataTableDirective;
   
+  @Input() universidadId!: number;
+  filters: UniversidadFilters = new UniversidadFilters();
+
   pageInfo: PageInfo = this.ngDtHelper.getDefaultParams().pageInfo;
   page: PagedData<any> = this.ngDtHelper.getDefaultPagedData();
   sort: PageSort[] = [];
@@ -61,6 +64,7 @@ export class DepartamentosUniversidadesComponent implements OnInit {
   private search() {
     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
       if(dtInstance) {
+        this.filters.id = this.universidadId;
         dtInstance.ajax.reload();
       }
     });
