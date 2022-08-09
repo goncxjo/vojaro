@@ -86,17 +86,19 @@ export class DepartamentosUniversidadesComponent implements OnInit {
     console.log('pendiente accion eliminar')
   }
 
-  openEdit() {
+  openEdit(id: number = 0) {
     const modalInstance = this.modalService.open(
       DepartamentosUniversidadesEditComponent,
       { size: 'xl', ariaLabelledBy: 'app-departamentos-modal' }
     );
     (<DepartamentosUniversidadesEditComponent>modalInstance.componentInstance).readonly = this.readonly;
+    (<DepartamentosUniversidadesEditComponent>modalInstance.componentInstance).departamentoId = id;
     (<DepartamentosUniversidadesEditComponent>modalInstance.componentInstance).universidadId = this.universidadId;
 
     modalInstance.result.then(
       (result) => {
         this.search();
+      }, (reason) => {
       }
     );
   }

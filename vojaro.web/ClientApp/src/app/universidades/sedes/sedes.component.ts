@@ -1,7 +1,10 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DataTableDirective } from 'angular-datatables';
 import { PagedData, PageInfo, PageSort, UniversidadesService, UniversidadFilters } from 'src/app/api';
+import { Sede } from 'src/app/api/models/sede';
 import { AngularDatatablesHelper, NotificationService } from 'src/app/shared';
+import { SedesUniversidadesEditComponent } from './edit/sedes-edit.component';
 
 @Component({
   selector: 'app-sedes-universidades',
@@ -11,9 +14,12 @@ import { AngularDatatablesHelper, NotificationService } from 'src/app/shared';
 export class SedesUniversidadesComponent implements OnInit {
   @ViewChild(DataTableDirective)
   dtElement!: DataTableDirective;
-
+  
   @Input() universidadId!: number;
+  @Input() readonly!: boolean;
+
   filters: UniversidadFilters = new UniversidadFilters();
+  entity!: Sede;
 
   pageInfo: PageInfo = this.ngDtHelper.getDefaultParams().pageInfo;
   page: PagedData<any> = this.ngDtHelper.getDefaultPagedData();
@@ -32,6 +38,7 @@ export class SedesUniversidadesComponent implements OnInit {
     private service: UniversidadesService,
     private notificationService: NotificationService,
     private ngDtHelper: AngularDatatablesHelper,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit(): void {
@@ -77,5 +84,22 @@ export class SedesUniversidadesComponent implements OnInit {
 
   remove() {
     console.log('pendiente accion eliminar')
+  }
+
+  openEdit(id: number = 0) {
+    const modalInstance = this.modalService.open(
+      SedesUniversidadesEditComponent,
+      { size: 'xl', ariaLabelledBy: 'app-sedes-modal' }
+    );
+    (<SedesUniversidadesEditComponent>modalInstance.componentInstance).readonly = this.readonly;
+    (<SedesUniversidadesEditComponent>modalInstance.componentInstance).sedeId = id;
+    (<SedesUniversidadesEditComponent>modalInstance.componentInstance).universidadId = this.universidadId;
+
+    modalInstance.result.then(
+      (result) => {
+        this.search();
+      }, (reason) => {
+      }
+    );
   }
 }

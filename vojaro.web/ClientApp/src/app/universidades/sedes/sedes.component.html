@@ -5,7 +5,7 @@
 	<div class="card-body">
 		<div class="row">
 			<div class="btn-group-form my-2">
-				<button [routerLink]="['.', 'create']" type="button" class="btn btn-primary">
+				<button type="button" class="btn btn-primary" (click)="openEdit()" *ngIf="!readonly">
 				  <i class="fas fa-plus"></i> Agregar
 				</button>
 			  </div>
@@ -34,8 +34,8 @@
 											<i class="fas fa-ellipsis-h"></i>
 										</button>
 										<div ngbDropdownMenu>
-											<button ngbDropdownItem
-												[routerLink]="['.', item.id, 'editar']">Editar</button>
+											<button ngbDropdownItem (click)="openEdit(item.id)">Ver</button>
+											<button ngbDropdownItem (click)="openEdit(item.id)">Editar</button>
 											<div class="dropdown-divider"></div>
 											<button ngbDropdownItem (click)="remove()">Delete</button>
 										</div>

@@ -1,5 +1,7 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using vojaro.api.Models.Departamento;
+using vojaro.api.Models.Sede;
 using vojaro.api.Models.Universidad;
 using vojaro.domain;
 using vojaro.filters;
@@ -13,6 +15,7 @@ namespace vojaro.api.Config.AutoMapper
         {
             MapUniversidades();
             MapDepartamentos();
+            MapSedes();
         }
 
 		private void MapUniversidades()
@@ -32,6 +35,14 @@ namespace vojaro.api.Config.AutoMapper
             this.CreateMap<Departamento, DepartamentoModel>();
 
             this.CreateMap<CreateDepartamentoModel, Departamento>();
+		}
+        
+		private void MapSedes()
+		{
+            this.CreateMap<Sede, SedeListModel>();
+            this.CreateMap<Sede, SedeModel>();
+
+            this.CreateMap<CreateSedeModel, Sede>();
 		}
 	}
 }

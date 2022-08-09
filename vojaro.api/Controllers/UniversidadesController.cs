@@ -124,5 +124,36 @@ namespace vojaro.api.Controllers
             var vm = this.Mapper.Map<PagedData<SedeListModel>>(data);
             return Ok(vm);
         }
+
+
+        [HttpGet("sedes/{id}")]
+        [ProducesResponseType(typeof(SedeModel), 200)]
+        public ActionResult<SedeModel> GetSedeById(long id)
+        {
+            var entity = this.sedesService.GetById(id);
+            if (entity != null)
+            {
+                return Ok(this.Mapper.Map<SedeModel>(entity));
+            }
+            return NotFound();
+        }
+
+        [HttpPost("sedes")]
+		[ProducesResponseType(typeof(SedeModel), 200)]
+		public ActionResult<Departamento> CreateSede([FromBody] CreateSedeModel model)
+		{
+			var entity = this.Mapper.Map<Sede>(model);
+			var result = this.sedesService.Create(entity, this.GetCurrentUser());
+			return Created(entity.Id, this.Mapper.Map<SedeModel>(result));
+		}
+
+		[HttpPut("sedes")]
+		[ProducesResponseType(typeof(SedeModel), 200)]
+		public ActionResult<Sede> UpdateSede([FromBody] CreateSedeModel model)
+		{
+			var entity = this.Mapper.Map<Sede>(model);
+			var result = this.sedesService.Update(entity, this.GetCurrentUser());
+			return Created(entity.Id, this.Mapper.Map<SedeModel>(result));
+		}
     }
 }

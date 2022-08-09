@@ -43,7 +43,7 @@ namespace vojaro.services
 
 			if (this.GetRepository().Find(filters).Any())
 			{
-				throw new ValidationException("Ya existe una universidad con ese nombre y/o siglas");
+				throw new ValidationException("Ya existe un departamento con ese nombre");
 			}
 
             model.FechaCreacion = DateTime.Now;

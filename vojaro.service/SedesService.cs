@@ -36,13 +36,14 @@ namespace vojaro.services
 			var filters = new UniversidadFilters
 			{
 				// UserId = userId,
+                SedeId = model.Id,
 				Nombre = model.Nombre,
                 Id = model.UniversidadId
 			};
 
 			if (this.GetRepository().Find(filters).Any())
 			{
-				throw new ValidationException("Ya existe una universidad con ese nombre y/o siglas");
+				throw new ValidationException("Ya existe una sede con ese nombre");
 			}
 
             model.FechaCreacion = DateTime.Now;

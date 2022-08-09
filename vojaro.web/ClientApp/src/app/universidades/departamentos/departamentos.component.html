@@ -34,8 +34,8 @@
 											<i class="fas fa-ellipsis-h"></i>
 										</button>
 										<div ngbDropdownMenu>
-											<button ngbDropdownItem
-												[routerLink]="['.', item.id, 'editar']">Editar</button>
+											<button ngbDropdownItem (click)="openEdit(item.id)">Ver</button>
+											<button ngbDropdownItem (click)="openEdit(item.id)">Editar</button>
 											<div class="dropdown-divider"></div>
 											<button ngbDropdownItem (click)="remove()">Delete</button>
 										</div>

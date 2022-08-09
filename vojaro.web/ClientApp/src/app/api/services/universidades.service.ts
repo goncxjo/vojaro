@@ -105,4 +105,27 @@ export class UniversidadesService {
     
     return this.httpClient.get<PagedData<Sede>>(url, { params: buildQueryParams(query) });
   }
+
+  getSedeById(id: string): Observable<Sede> {
+    const url = `${this.baseRoute}/sedes/${id}`;
+    return this.httpClient.get<Sede>(url);
+  }
+  
+  saveSede(entity: Sede): Observable<Sede> {
+    const url = `${this.baseRoute}/sedes`;
+    if (entity.id) {
+        return this.httpClient.put<Sede>(url, entity);
+    } else {
+        return this.httpClient.post<Sede>(url, entity);
+    }
+  }
+
+  newSede(id: number): Observable<Sede> {
+    return of({
+      id: 0,
+      nombre: '',
+      universidadId: id
+    });
+  }
+
 }

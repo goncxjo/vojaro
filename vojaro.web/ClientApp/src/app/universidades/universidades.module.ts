@@ -5,6 +5,7 @@ import { SharedModule } from '../shared/shared.module';
 import { SedesUniversidadesComponent } from './sedes/sedes.component';
 import { DepartamentosUniversidadesComponent } from './departamentos/departamentos.component';
 import { DepartamentosUniversidadesEditComponent } from './departamentos/edit/departamentos-edit.component';
+import { SedesUniversidadesEditComponent } from './sedes/edit/sedes-edit.component';
 
 
 const PRIVATE_COMPONENTS: any = [
@@ -14,6 +15,7 @@ const PUBLIC_COMPONENTS: any = [
   SedesUniversidadesComponent,
   DepartamentosUniversidadesComponent,
   DepartamentosUniversidadesEditComponent,
+  SedesUniversidadesEditComponent
 ];
 
 @NgModule({
