@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using vojaro.api.Models.Departamento;
 using vojaro.api.Models.Universidad;
 using vojaro.domain;
 using vojaro.filters;
@@ -6,10 +7,16 @@ using vojaro.parameters;
 
 namespace vojaro.api.Config.AutoMapper
 {
-    public class UniversidadModelProfile : Profile
+	public class UniversidadModelProfile : Profile
     {
         public UniversidadModelProfile()
         {
+            MapUniversidades();
+            MapDepartamentos();
+        }
+
+		private void MapUniversidades()
+		{
             this.CreateMap<Universidad, UniversidadListModel>();
             this.CreateMap<Universidad, UniversidadModel>();
 
@@ -17,6 +24,14 @@ namespace vojaro.api.Config.AutoMapper
 
             this.CreateMap<UniversidadParameters, UniversidadFilters>()
                 .ForMember(dest => dest.ParteNombreSiglas, opt => opt.MapFrom(src => src.ParteNombreSiglas));
-        }
-    }
+		}
+        
+		private void MapDepartamentos()
+		{
+            this.CreateMap<Departamento, DepartamentoListModel>();
+            this.CreateMap<Departamento, DepartamentoModel>();
+
+            this.CreateMap<CreateDepartamentoModel, Departamento>();
+		}
+	}
 }

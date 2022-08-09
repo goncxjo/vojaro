@@ -28,6 +28,7 @@ export class UniversidadesFilterComponent implements OnInit {
 
   private buildForm(): FormGroup {
     return this.formBuilder.group({
+      id: [''],
       parteNombreSiglas: [''],
     });
   }

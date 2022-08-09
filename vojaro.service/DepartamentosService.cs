@@ -36,6 +36,7 @@ namespace vojaro.services
 			var filters = new UniversidadFilters
 			{
 				// UserId = userId,
+                DepartamentoId = model.Id,
 				Nombre = model.Nombre,
                 Id = model.UniversidadId
 			};

@@ -18,7 +18,7 @@ const routes: Routes = [
     path: 'crear',
     component: UniversidadesEditComponent,
     data: {
-      title: 'Crear agenda',
+      title: 'Crear universidad',
       breadcrumb: 'Crear',
     },
     resolve: {
@@ -29,7 +29,7 @@ const routes: Routes = [
     path: ':id',
     component: UniversidadesEditComponent,
     data: {
-      title: 'Ver agenda',
+      title: 'Ver universidad',
       breadcrumb: 'Ver',
       readonly: true,
     },
@@ -41,7 +41,7 @@ const routes: Routes = [
     path: ':id/editar',
     component: UniversidadesEditComponent,
     data: {
-      title: 'Editar agenda',
+      title: 'Editar universidad',
       breadcrumb: 'Editar',
       readonly: false,
     },

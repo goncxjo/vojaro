@@ -24,7 +24,7 @@
         <div class="alert alert-warning" role="alert" *ngIf="noData">
           No existen registros
         </div>
-        <div class="card table-responsive" *ngIf="!noData">
+        <div class="card table-responsive" [hidden]="noData">
           <table datatable [dtOptions]="dtOptions" class="table table-striped">
             <thead>
               <tr>

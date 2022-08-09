@@ -7,5 +7,7 @@
         public string Siglas { get; set; }
         public string Nombre { get; set; }
         public string ParteNombreSiglas { get; set; }
+        public long? DepartamentoId { get; set; }
+        public long? SedeId { get; set; }
     }
 }

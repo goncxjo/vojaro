@@ -83,6 +83,36 @@ namespace vojaro.api.Controllers
             return Ok(vm);
         }
 
+        [HttpGet("departamentos/{id}")]
+        [ProducesResponseType(typeof(DepartamentoModel), 200)]
+        public ActionResult<DepartamentoModel> GetDepartamentoById(long id)
+        {
+            var entity = this.departamentosService.GetById(id);
+            if (entity != null)
+            {
+                return Ok(this.Mapper.Map<DepartamentoModel>(entity));
+            }
+            return NotFound();
+        }
+
+        [HttpPost("departamentos")]
+		[ProducesResponseType(typeof(DepartamentoModel), 200)]
+		public ActionResult<Departamento> CreateDepartamento([FromBody] CreateDepartamentoModel model)
+		{
+			var entity = this.Mapper.Map<Departamento>(model);
+			var result = this.departamentosService.Create(entity, this.GetCurrentUser());
+			return Created(entity.Id, this.Mapper.Map<DepartamentoModel>(result));
+		}
+
+		[HttpPut("departamentos")]
+		[ProducesResponseType(typeof(DepartamentoModel), 200)]
+		public ActionResult<Departamento> UpdateDepartamento([FromBody] CreateDepartamentoModel model)
+		{
+			var entity = this.Mapper.Map<Departamento>(model);
+			var result = this.departamentosService.Update(entity, this.GetCurrentUser());
+			return Created(entity.Id, this.Mapper.Map<DepartamentoModel>(result));
+		}
+
         [HttpGet("sedes")]
         [ProducesResponseType(typeof(PagedData<SedeListModel>), 200)]
         public ActionResult<PagedData<SedeListModel>> GetPagedSedes([FromQuery] UniversidadParameters universidadParameters)

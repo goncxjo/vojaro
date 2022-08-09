@@ -33,6 +33,10 @@ namespace vojaro.data
         {
             if (filter != null)
             {
+                if (filter.DepartamentoId != null)
+                {
+                    query = query.Where(x => x.Id == filter.DepartamentoId);
+                }
                 if (filter.Id != null)
                 {
                     query = query.Where(x => x.UniversidadId == filter.Id);

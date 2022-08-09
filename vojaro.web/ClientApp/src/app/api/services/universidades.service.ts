@@ -70,6 +70,29 @@ export class UniversidadesService {
     return this.httpClient.get<PagedData<Departamento>>(url, { params: buildQueryParams(query) });
   }
 
+  
+  getDepartamentoById(id: string): Observable<Departamento> {
+    const url = `${this.baseRoute}/departamentos/${id}`;
+    return this.httpClient.get<Departamento>(url);
+  }
+  
+  saveDepartamento(entity: Departamento): Observable<Departamento> {
+    const url = `${this.baseRoute}/departamentos`;
+    if (entity.id) {
+        return this.httpClient.put<Departamento>(url, entity);
+    } else {
+        return this.httpClient.post<Departamento>(url, entity);
+    }
+  }
+
+  newDepartamento(id: number): Observable<Departamento> {
+    return of({
+      id: 0,
+      nombre: '',
+      universidadId: id
+    });
+  }
+
   getPagedSedes(pageInfo: PageInfo, filters: UniversidadFilters, columnSort: PageSort[]): Observable<PagedData<Sede>> {
     const url = `${this.baseRoute}/sedes`;
     const sort = JSON.stringify(columnSort);

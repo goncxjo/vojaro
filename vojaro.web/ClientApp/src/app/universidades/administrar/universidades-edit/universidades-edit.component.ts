@@ -21,6 +21,7 @@ export class UniversidadesEditComponent implements OnInit {
 
   readonly!: boolean;
   form = this.buildForm();
+  entity!: Universidad;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -32,11 +33,11 @@ export class UniversidadesEditComponent implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.data.subscribe(data => {
-      let entity: Universidad = data['entity'];
-
+      this.entity = data['entity'];
       this.readonly = data['readonly'];
-      const isCreate = !entity.id;
-      this.form.patchValue(entity);
+
+      const isCreate = !this.entity.id;
+      this.form.patchValue(this.entity);
 
       if (this.readonly) {
         this.form.disable();
