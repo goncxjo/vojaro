@@ -35,7 +35,7 @@ export class DepartamentosUniversidadesEditComponent implements OnInit, OnDestro
         this.form.patchValue(this.entity);
       });
     } else {
-      this.subs = this.service.getDepartamentoById(this.departamentoId.toString() || '').subscribe(data => {
+      this.subs = this.service.getDepartamentoById(this.departamentoId.toString()).subscribe(data => {
         this.entity = data;
         this.form.patchValue(this.entity);
       });
