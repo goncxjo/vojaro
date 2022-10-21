@@ -16,6 +16,7 @@ app-root {
   min-height: 100vh;
 }
 
+$font-size-root: 11px;
 
 @import "~bootswatch/dist/united/variables";
 @import "~bootstrap/scss/bootstrap";
@@ -59,11 +60,16 @@ app-root {
 }
 
 button.btn-home {
-  height: 200px;
-  width: 200px;
+  @extend .justify-content-evenly;
+  @extend .align-items-center;
+  @extend .mx-auto;
 
-  & span i {
-    margin-bottom: 10px;
+  height: 125px;
+  width: 200px;
+  text-align: left;
+
+  #btn-text {
+    font-size: $h5-font-size;
   }
 }
 

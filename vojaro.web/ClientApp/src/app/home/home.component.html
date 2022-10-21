@@ -1,6 +1,6 @@
 <div class="home-button-group d-flex flex-wrap justify-content-center">
   <div class="p-2" *ngFor="let module of MODULES">
-    <button type="button" class="btn btn-primary btn-lg btn-block btn-home m-auto" [routerLink]="['/', module.route]" [disabled]="module.disabled">
+    <button type="button" class="d-flex btn btn-primary btn-home" [routerLink]="['/', module.route]" [disabled]="module.disabled">
       <span><i class="{{module.icon}}"></i></span>
       <p id="btn-text" class="p-0 m-0" [innerHTML]="module.name"></p>
     </button>
