@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Universidad, UniversidadesService } from '../../api';
+import { Universidad, UniversidadesService } from 'src/app/api';
 
 @Injectable()
-export class CreateResolver implements Resolve<Observable<Universidad>> {
+export class GetByIdResolver implements Resolve<Observable<Universidad>> {
     constructor(
         private service: UniversidadesService,
     ) { }
 
     resolve(route: ActivatedRouteSnapshot) {
-        return this.service.new();
+        return this.service.getById(route.paramMap.get('id') || '');
     }
 }

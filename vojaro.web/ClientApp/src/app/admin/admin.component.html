@@ -1,0 +1,24 @@
+<div class="home-button-group d-flex flex-wrap justify-content-center">
+	<div class="p-2">
+	  <button
+		type="button"
+		class="d-flex btn btn-secondary btn-home"
+		[routerLink]="['/home']"
+	  >
+		<span><i class="fa fa-arrow-circle-left fa-4x"></i></span>
+		<p class="p-0 m-0">Volver</p>
+	  </button>
+	</div>
+	<div class="p-2" *ngFor="let module of getModules()">
+	  <button
+		type="button"
+		class="d-flex btn btn-primary btn-home"
+		[routerLink]="['/admin', module.route]"
+		[disabled]="module.disabled"
+	  >
+		<span><i class="{{ module.icon }}"></i></span>
+		<p id="btn-text" class="p-0 m-0" [innerHTML]="module.name"></p>
+	  </button>
+	</div>
+  </div>
+  

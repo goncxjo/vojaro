@@ -8,9 +8,8 @@ import { Component, OnInit } from '@angular/core';
 export class HomeComponent implements OnInit {
 
   MODULES = [
-    { route: "universidades", name: "Universidades", icon: "fa fa-file-alt fa-4x", disabled: false },
-    { route: "carreras", name: "Carreras", icon: "fa fa-graduation-cap fa-4x", disabled: false },
-    { route: "admin", name: "Administración", icon: "fa fa-cog fa-4x", disabled: true },
+    { route: "Planificar", name: "plan", icon: "fa fa-project-diagram fa-4x", disabled: true },
+    { route: "admin", name: "Administración", icon: "fa fa-cog fa-4x", disabled: false },
     { route: "security", name: "Seguridad", icon: "fa fa-user-shield fa-4x", disabled: true  },
   ]
 
@@ -20,3 +19,4 @@ export class HomeComponent implements OnInit {
   }
 
 }
+

@@ -5,14 +5,9 @@ import { HomeComponent } from './home/home.component';
 const routes: Routes = [
   { path: 'home', component: HomeComponent, data: { breadcrumb: 'Home'} },
   {
-    path: 'universidades',
-    data: { breadcrumb: 'Universidades' },
-    loadChildren: () => import('./universidades/universidades.module').then(m => m.UniversidadesModule),
-  },
-  {
-    path: 'carreras',
-    data: { breadcrumb: 'Carreras' },
-    loadChildren: () => import('./carreras/carreras.module').then(m => m.CarrerasModule),
+    path: 'admin',
+    data: { breadcrumb: 'Administración' },
+    loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule),
   },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
 ];
