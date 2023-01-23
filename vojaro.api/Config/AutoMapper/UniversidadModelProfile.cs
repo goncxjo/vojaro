@@ -20,6 +20,7 @@ namespace vojaro.api.Config.AutoMapper
 
 		private void MapUniversidades()
 		{
+            this.CreateMap<Universidad, UniversidadMiniListModel>();
             this.CreateMap<Universidad, UniversidadListModel>();
             this.CreateMap<Universidad, UniversidadModel>();
 
@@ -31,6 +32,7 @@ namespace vojaro.api.Config.AutoMapper
         
 		private void MapDepartamentos()
 		{
+            this.CreateMap<Departamento, DepartamentoMiniListModel>();
             this.CreateMap<Departamento, DepartamentoListModel>();
             this.CreateMap<Departamento, DepartamentoModel>();
 

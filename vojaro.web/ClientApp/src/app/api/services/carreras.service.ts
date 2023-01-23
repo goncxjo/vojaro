@@ -44,8 +44,7 @@ export class CarrerasService {
       id: 0,
       nombre: '',
       universidad: null,
-      duracion: 0,
-      nivel: 0,
+      departamento: null,
     });
   }
   

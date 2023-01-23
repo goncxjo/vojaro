@@ -6,6 +6,7 @@
         IUniversidadesRepository UniversidadesRepository { get; }
         IDepartamentosRepository DepartamentosRepository { get; }
         ISedesRepository SedesRepository { get; }
+        ICarrerasRepository CarrerasRepository { get; }
 
         void Commit();
     }

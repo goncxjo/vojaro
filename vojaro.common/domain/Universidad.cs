@@ -9,5 +9,6 @@ namespace vojaro.domain
 
         public virtual ICollection<Sede> Sedes { get; set; }
         public virtual ICollection<Departamento> Departamentos { get; set; }
+        public virtual ICollection<Carrera> Carreras { get; set; }        
     }
 }

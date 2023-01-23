@@ -47,7 +47,7 @@
                       <button ngbDropdownItem [routerLink]="['.', item.id]">Ver</button>
                       <button ngbDropdownItem [routerLink]="['.', item.id, 'editar']">Editar</button>
                       <div class="dropdown-divider"></div>
-                      <button ngbDropdownItem (click)="remove()">Delete</button>
+                      <button ngbDropdownItem (click)="remove()" disabled>Eliminar</button>
                     </div>
                   </div>
                 </td>

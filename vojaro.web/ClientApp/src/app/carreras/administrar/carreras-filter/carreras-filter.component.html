@@ -1,1 +1,20 @@
-<p>carreras-filter works!</p>
+<div class="card">
+	<div class="card-header bg-primary text-light">Buscar</div>
+	<div class="card-body">
+	  <form [formGroup]="filterForm" class="row g-3">
+		<div class="col-md-3">
+		  <label for="nombre" class="form-label">Nombre</label>
+		  <input type="text" class="form-control" formControlName="nombre">
+		</div>
+		<div class="col-md-3">
+		  <label for="universidad" class="form-label">Universidad</label>
+		  <input type="text" class="form-control" formControlName="universidad">
+		</div>
+		<div class="col-md-3">
+		  <label for="departamento" class="form-label">Departamento</label>
+		  <input type="text" class="form-control" formControlName="departamento">
+		</div>
+	  </form>
+	</div>
+  </div>
+  

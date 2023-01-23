@@ -36,7 +36,7 @@ export class UniversidadesEditComponent implements OnInit {
       this.entity = data['entity'];
       this.readonly = data['readonly'];
 
-      const isCreate = !this.entity.id;
+      const isCreate = !this.entity?.id;
       this.form.patchValue(this.entity);
 
       if (this.readonly) {

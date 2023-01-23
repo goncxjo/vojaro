@@ -14,6 +14,7 @@ namespace vojaro.data
         public DbSet<Universidad> Universidades { get; set; }
         public DbSet<Departamento> Departamentos { get; set; }
         public DbSet<Sede> Sedes { get; set; }
+        public DbSet<Carrera> Carreras { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -22,6 +23,7 @@ namespace vojaro.data
             modelBuilder.ApplyConfiguration(new UniversidadConfiguration());
             modelBuilder.ApplyConfiguration(new DepartamentoConfiguration());
             modelBuilder.ApplyConfiguration(new SedeConfiguration());
+            modelBuilder.ApplyConfiguration(new CarreraConfiguration());
         }
     }
 }

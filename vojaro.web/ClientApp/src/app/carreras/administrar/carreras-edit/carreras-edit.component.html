@@ -1,1 +1,46 @@
-<p>carreras-edit works!</p>
+<div class="card">
+	<div class="card-header bg-primary text-light">
+	  Información general de la carrera
+	</div>
+	<div class="card-body">
+	  <form [formGroup]="form" class="row g-3">
+  
+		<div class="col-md-3">
+		  <label for="id" class="form-label">Id</label>
+		  <input type="text" class="form-control" formControlName="id">
+		</div> 
+  
+		<div class="col-md-3">
+		  <label for="nombre" class="form-label">Nombre</label>
+		  <input type="text" class="form-control" formControlName="nombre">
+		</div>
+  
+		<div class="col-md-3">
+		  <label for="universidad" class="form-label">Universidad</label>
+		  <input type="text" class="form-control" formControlName="universidad">
+		</div>
+  
+		<div class="col-md-3">
+		  <label for="departamento" class="form-label">Departamento</label>
+		  <input type="text" class="form-control" formControlName="departamento">
+		</div>
+  
+	  </form>
+	</div>
+  </div>
+
+  <div class="btn-group-form left mt-4" *ngIf="!readonly">
+	<button type="button" class="btn btn-success" (click)="onSubmit()">
+	  <i class="fas fa-save"></i> Guardar
+	</button>
+	<button type="button" class="btn btn-danger" (click)="goBack()">
+	  <i class="fas fa-times"></i> Cancelar
+	</button>
+  </div>
+  
+  <div class="btn-group-form left mt-4" *ngIf="readonly">
+	<button type="button" class="btn btn-primary" (click)="goBack()">
+	  <i class="fas fa-arrow-left"></i> Volver
+	</button>
+  </div>
+  

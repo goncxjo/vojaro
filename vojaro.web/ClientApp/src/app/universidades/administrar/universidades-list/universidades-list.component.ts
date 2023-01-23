@@ -65,11 +65,7 @@ export class UniversidadesListComponent implements OnInit, AfterViewInit {
   }
 
   private search() {
-    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-      if(dtInstance) {
-        dtInstance.ajax.reload();
-      }
-    });
+    this.ngDtHelper.reload(this.dtElement);
   }
 
   applyFilters() {

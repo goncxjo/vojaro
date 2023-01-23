@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace vojaro.domain
 {
 	public class Departamento : Entity
@@ -6,5 +8,6 @@ namespace vojaro.domain
         public long UniversidadId { get; set; }
 
         public virtual Universidad Universidad { get; set; }
+        public virtual ICollection<Carrera> Carreras { get; set; }
     }
 }

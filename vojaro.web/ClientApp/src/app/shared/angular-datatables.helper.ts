@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import * as datatableSpanish from 'src/assets/datatables/es_es.json';
 import { PageSort, PagedData } from '../api';
 import * as _ from 'lodash';
+import { DataTableDirective } from 'angular-datatables';
 
 type ProviderCallback = (pageInfo: any, filters: any, columnSort: any) => Observable<PagedData<any>>;
 
@@ -81,4 +82,9 @@ export class AngularDatatablesHelper {
     });
   }
 
+  reload(dtElement: DataTableDirective) {
+    dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      dtInstance?.ajax.reload();
+    });
+  }
 }
