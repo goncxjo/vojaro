@@ -18,7 +18,7 @@ const routes: Routes = [
     path: 'crear',
     component: CarrerasEditComponent,
     data: {
-      title: 'Crear universidad',
+      title: 'Crear carrera',
       breadcrumb: 'Crear',
     },
     // resolve: {
@@ -29,7 +29,7 @@ const routes: Routes = [
     path: ':id',
     component: CarrerasEditComponent,
     data: {
-      title: 'Ver universidad',
+      title: 'Ver carrera',
       breadcrumb: 'Ver',
       readonly: true,
     },
@@ -41,7 +41,7 @@ const routes: Routes = [
     path: ':id/editar',
     component: CarrerasEditComponent,
     data: {
-      title: 'Editar universidad',
+      title: 'Editar carrera',
       breadcrumb: 'Editar',
       readonly: false,
     },

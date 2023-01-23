@@ -9,6 +9,11 @@ const routes: Routes = [
     data: { breadcrumb: 'Universidades' },
     loadChildren: () => import('./universidades/universidades.module').then(m => m.UniversidadesModule),
   },
+  {
+    path: 'carreras',
+    data: { breadcrumb: 'Carreras' },
+    loadChildren: () => import('./carreras/carreras.module').then(m => m.CarrerasModule),
+  },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
 ];
 
