@@ -14,13 +14,17 @@ import { Sede } from '../models/sede';
 })
 export class UniversidadesService {
   private baseRoute: string;
+  private baseDepartamentoRoute: string;
+  private baseSedeRoute: string;
 
   constructor(
-    private httpClient: HttpClient,
     @Inject('BASE_API_URL') baseUrl: string,
+    private httpClient: HttpClient,
     private fileService: FileSaverService
   ) {
     this.baseRoute = baseUrl + '/universidades';
+    this.baseDepartamentoRoute = this.baseRoute + '/departamentos';
+    this.baseSedeRoute = this.baseRoute + '/sedes';
   }
 
   getPaged(pageInfo: PageInfo, filters: UniversidadFilters, columnSort: PageSort[]): Observable<PagedData<Universidad>> {
@@ -57,8 +61,13 @@ export class UniversidadesService {
     }
   }
 
+  getAllMini(): Observable<Universidad[]> {
+    const url = `${this.baseRoute}/mini-list`;
+    return this.httpClient.get<Universidad[]>(url);
+  }
+
   getPagedDepartamentos(pageInfo: PageInfo, filters: UniversidadFilters, columnSort: PageSort[]): Observable<PagedData<Departamento>> {
-    const url = `${this.baseRoute}/departamentos`;
+    const url = this.baseDepartamentoRoute;
     const sort = JSON.stringify(columnSort);
     
     const query = {
@@ -70,19 +79,23 @@ export class UniversidadesService {
     return this.httpClient.get<PagedData<Departamento>>(url, { params: buildQueryParams(query) });
   }
 
-  
   getDepartamentoById(id: string): Observable<Departamento> {
-    const url = `${this.baseRoute}/departamentos/${id}`;
+    const url = `${this.baseDepartamentoRoute}/${id}`;
     return this.httpClient.get<Departamento>(url);
   }
   
   saveDepartamento(entity: Departamento): Observable<Departamento> {
-    const url = `${this.baseRoute}/departamentos`;
+    const url = this.baseDepartamentoRoute;
     if (entity.id) {
         return this.httpClient.put<Departamento>(url, entity);
     } else {
         return this.httpClient.post<Departamento>(url, entity);
     }
+  }
+
+  getAllMiniDepartamentos(): Observable<Departamento[]> {
+    const url = `${this.baseDepartamentoRoute}/mini-list`;
+    return this.httpClient.get<Departamento[]>(url);
   }
 
   newDepartamento(id: number): Observable<Departamento> {
@@ -94,7 +107,7 @@ export class UniversidadesService {
   }
 
   getPagedSedes(pageInfo: PageInfo, filters: UniversidadFilters, columnSort: PageSort[]): Observable<PagedData<Sede>> {
-    const url = `${this.baseRoute}/sedes`;
+    const url = this.baseSedeRoute;
     const sort = JSON.stringify(columnSort);
     
     const query = {
@@ -107,12 +120,12 @@ export class UniversidadesService {
   }
 
   getSedeById(id: string): Observable<Sede> {
-    const url = `${this.baseRoute}/sedes/${id}`;
+    const url = `${this.baseSedeRoute}/${id}`;
     return this.httpClient.get<Sede>(url);
   }
   
   saveSede(entity: Sede): Observable<Sede> {
-    const url = `${this.baseRoute}/sedes`;
+    const url = this.baseSedeRoute;
     if (entity.id) {
         return this.httpClient.put<Sede>(url, entity);
     } else {
