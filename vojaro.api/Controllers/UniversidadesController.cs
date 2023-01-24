@@ -9,6 +9,7 @@ using vojaro.api.Models;
 using vojaro.api.Models.Universidad;
 using vojaro.api.Models.Departamento;
 using vojaro.api.Models.Sede;
+using System.Collections.Generic;
 
 namespace vojaro.api.Controllers
 {
@@ -71,6 +72,14 @@ namespace vojaro.api.Controllers
 			return Created(entity.Id, this.Mapper.Map<UniversidadModel>(result));
 		}
 
+        [HttpGet("mini-list")]
+        [ProducesResponseType(typeof(IEnumerable<UniversidadMiniListModel>), 200)]
+        public ActionResult<IEnumerable<UniversidadMiniListModel>> GetAllMini()
+        {
+            var data = this.service.GetAll();
+            return Ok(this.Mapper.Map<IEnumerable<UniversidadMiniListModel>>(data));
+        }
+
         [HttpGet("departamentos")]
         [ProducesResponseType(typeof(PagedData<DepartamentoListModel>), 200)]
         public ActionResult<PagedData<DepartamentoListModel>> GetPagedDepartamentos([FromQuery] UniversidadParameters universidadParameters)
@@ -112,6 +121,14 @@ namespace vojaro.api.Controllers
 			var result = this.departamentosService.Update(entity, this.GetCurrentUser());
 			return Created(entity.Id, this.Mapper.Map<DepartamentoModel>(result));
 		}
+
+        [HttpGet("departamentos/mini-list")]
+        [ProducesResponseType(typeof(IEnumerable<DepartamentoMiniListModel>), 200)]
+        public ActionResult<IEnumerable<DepartamentoMiniListModel>> GetAllMiniDepartamentos()
+        {
+            var data = this.departamentosService.GetAll();
+            return Ok(this.Mapper.Map<IEnumerable<DepartamentoMiniListModel>>(data));
+        }
 
         [HttpGet("sedes")]
         [ProducesResponseType(typeof(PagedData<SedeListModel>), 200)]

@@ -22,7 +22,7 @@ namespace vojaro.data.Config
 
             entity.HasOne(e => e.Departamento)
             .WithMany(e => e.Carreras)
-            .HasForeignKey(e => e.DepartamentosId)
+            .HasForeignKey(e => e.DepartamentoId)
             .OnDelete(DeleteBehavior.Cascade);
         }
     }
