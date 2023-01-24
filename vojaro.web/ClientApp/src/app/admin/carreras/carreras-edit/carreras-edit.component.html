@@ -17,12 +17,12 @@
   
 		<div class="col-md-3">
 		  <label for="universidad" class="form-label">Universidad</label>
-		  <input type="text" class="form-control" formControlName="universidad">
+		  <app-universidad-select [mostrarOpcionTodos]="false" formControlName="universidad"></app-universidad-select>
 		</div>
   
 		<div class="col-md-3">
 		  <label for="departamento" class="form-label">Departamento</label>
-		  <input type="text" class="form-control" formControlName="departamento">
+		  <app-departamento-select [mostrarOpcionTodos]="false" formControlName="departamento"></app-departamento-select>
 		</div>
   
 	  </form>

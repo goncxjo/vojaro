@@ -13,6 +13,8 @@ import { DepartamentosUniversidadesComponent } from './universidades/departament
 import { DepartamentosUniversidadesEditComponent } from './universidades/departamentos/edit/departamentos-edit.component';
 import { SedesUniversidadesEditComponent } from './universidades/sedes/edit/sedes-edit.component';
 import { AdminComponent } from './admin.component';
+import { UniversidadSelectComponent } from './universidades/universidad-select/universidad-select.component';
+import { DepartamentoSelectComponent } from './universidades/departamentos/departamento-select/departamento-select.component';
 
 
 const PRIVATE_COMPONENTS: any = [
@@ -38,6 +40,8 @@ const PUBLIC_COMPONENTS: any = [
     ...PRIVATE_COMPONENTS,
     ...PUBLIC_COMPONENTS,
     AdminComponent,
+    UniversidadSelectComponent,
+    DepartamentoSelectComponent,
   ],
   imports: [
     CommonModule,

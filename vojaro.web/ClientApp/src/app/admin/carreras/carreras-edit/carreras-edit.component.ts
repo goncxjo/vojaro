@@ -47,6 +47,8 @@ export class CarrerasEditComponent implements OnInit {
     }
 
     const entity: Carrera = this.form.getRawValue();
+    entity.universidadId = entity.universidad?.id;
+    entity.departamentoId = entity.departamento?.id;
 
     this.service.save(entity)
       .subscribe(() => {
