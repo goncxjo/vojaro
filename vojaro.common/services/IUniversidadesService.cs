@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Collections.Generic;
+using System.Security.Claims;
 using vojaro.domain;
 using vojaro.filters;
 
@@ -10,5 +11,6 @@ namespace vojaro.services
         Universidad GetById(long id);
 		Universidad Create(Universidad model, ClaimsPrincipal claimsPrincipal);
 		Universidad Update(Universidad model, ClaimsPrincipal claimsPrincipal);
+		IEnumerable<Universidad> GetAll();
 	}
 }

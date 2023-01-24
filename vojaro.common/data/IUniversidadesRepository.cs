@@ -10,5 +10,6 @@ namespace vojaro.data
         IQueryable<Universidad> Find(UniversidadFilters filters);
         Universidad GetById(long id);
 		Universidad Add(Universidad entity);
+        IQueryable<Universidad> GetAll();
 	}
 }

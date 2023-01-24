@@ -70,5 +70,10 @@ namespace vojaro.services
 
             return dbEntity;
         }
+
+        public IEnumerable<Universidad> GetAll()
+        {
+            return this.GetRepository().GetAll().ToList();
+        }
 	}
 }

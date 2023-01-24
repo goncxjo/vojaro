@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿using System.Collections.Generic;
+using System.Security.Claims;
 using vojaro.domain;
 using vojaro.filters;
 
@@ -10,5 +11,6 @@ namespace vojaro.services
         Departamento GetById(long id);
 		Departamento Create(Departamento model, ClaimsPrincipal claimsPrincipal);
 		Departamento Update(Departamento model, ClaimsPrincipal claimsPrincipal);
+		IEnumerable<Departamento> GetAll();
 	}
 }

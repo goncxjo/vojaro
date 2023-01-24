@@ -10,5 +10,6 @@ namespace vojaro.data
         IQueryable<Departamento> Find(UniversidadFilters filters);
         Departamento GetById(long id);
 		Departamento Add(Departamento entity);
+		IQueryable<Departamento> GetAll();
 	}
 }

@@ -26,7 +26,10 @@ namespace vojaro.data
 
         public override IQueryable<Carrera> GetAll()
         {
-            return DbSet;
+            return DbSet
+                .Include(x => x.Universidad)
+                .Include(x => x.Departamento)
+            ;
         }
 
         public override IQueryable<Carrera> FilterQuery(IQueryable<Carrera> query, CarreraFilters filter)

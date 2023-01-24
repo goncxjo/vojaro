@@ -71,5 +71,10 @@ namespace vojaro.services
 
             return dbEntity;
         }
+
+        public IEnumerable<Departamento> GetAll()
+        {
+            return this.GetRepository().GetAll().ToList();
+        }
 	}
 }
