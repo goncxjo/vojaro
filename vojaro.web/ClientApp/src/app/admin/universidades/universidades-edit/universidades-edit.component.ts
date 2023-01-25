@@ -5,8 +5,8 @@ import { ActivatedRoute } from '@angular/router';
 import { NgbNavChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Universidad, UniversidadesService } from 'src/app/api';
 import { NotificationService } from 'src/app/shared';
-import { DepartamentosUniversidadesComponent } from '../../departamentos/departamentos.component';
-import { SedesUniversidadesComponent } from '../../sedes/sedes.component';
+import { DepartamentosUniversidadesComponent } from '../departamentos/departamentos.component';
+import { SedesUniversidadesComponent } from '../sedes/sedes.component';
 
 @Component({
   selector: 'app-universidades-edit',
