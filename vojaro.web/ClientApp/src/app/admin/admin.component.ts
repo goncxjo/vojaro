@@ -21,6 +21,12 @@ export class AdminComponent implements OnInit {
       icon: 'fa fa-graduation-cap fa-4x',
       disabled: false,
     },
+    {
+      route: 'asignaturas',
+      name: 'Asignaturas',
+      icon: 'fa fa-book fa-4x',
+      disabled: false,
+    },
   ];
 
   constructor() { }
