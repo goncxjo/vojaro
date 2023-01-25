@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, DoCheck, forwardRef, Injector, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, DoCheck, EventEmitter, forwardRef, Injector, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NgControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Universidad, UniversidadesService } from 'src/app/api';
@@ -20,6 +20,7 @@ export class UniversidadSelectComponent implements OnInit, ControlValueAccessor,
   control!: NgControl;
   isDisabled!: boolean;
   @Input() mostrarOpcionTodos: boolean = true;
+  @Output() universidad = new EventEmitter<Universidad>();
 
   data$: Observable<Universidad[]> = this.service.getAllMini();
 
@@ -76,6 +77,7 @@ export class UniversidadSelectComponent implements OnInit, ControlValueAccessor,
   notifyValueChange() {
     if (this.onChange) {
       this.onChange(this.value);
+      this.universidad.emit(this.value);
     }
 
     if (this.onTouch) {

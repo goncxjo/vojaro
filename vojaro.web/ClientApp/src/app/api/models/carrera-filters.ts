@@ -7,8 +7,5 @@ export class CarreraFilters {
   
   universidad: Universidad | null = null;
   departamento: Departamento | null = null;
-  
-  universidadId: string | null = null;
-  departamentoId: string | null = null;
 }
   

@@ -93,9 +93,11 @@ export class UniversidadesService {
     }
   }
 
-  getAllMiniDepartamentos(): Observable<Departamento[]> {
+  getAllMiniDepartamentos(universidadId: number | null): Observable<Departamento[]> {
     const url = `${this.baseDepartamentoRoute}/mini-list`;
-    return this.httpClient.get<Departamento[]>(url);
+    const query = { universidadId };
+        
+    return this.httpClient.get<Departamento[]>(url, { params: buildQueryParams(query) });
   }
 
   newDepartamento(id: number): Observable<Departamento> {

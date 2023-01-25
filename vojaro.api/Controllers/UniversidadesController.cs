@@ -124,9 +124,10 @@ namespace vojaro.api.Controllers
 
         [HttpGet("departamentos/mini-list")]
         [ProducesResponseType(typeof(IEnumerable<DepartamentoMiniListModel>), 200)]
-        public ActionResult<IEnumerable<DepartamentoMiniListModel>> GetAllMiniDepartamentos()
+        public ActionResult<IEnumerable<DepartamentoMiniListModel>> GetAllMiniDepartamentos([FromQuery] UniversidadParameters universidadParameters)
         {
-            var data = this.departamentosService.GetAll();
+            var filter = this.Mapper.Map<UniversidadFilters>(universidadParameters);
+            var data = this.departamentosService.Find(filter);
             return Ok(this.Mapper.Map<IEnumerable<DepartamentoMiniListModel>>(data));
         }
 

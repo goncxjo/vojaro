@@ -12,7 +12,9 @@ export function buildQueryParams(query: any) {
             } else if (query[key] instanceof Date) {
                 params = params.append(key.toString(), query[key].toISOString());
             } else if (query[key].id) {
-                params = params.append(key.toString(), query[key].id);
+                let _key = key.toString();
+                _key = !_key.includes("Id") ? `${_key}Id` : _key;
+                params = params.append(_key, query[key].id);
             } else {
                 params = params.append(key.toString(), query[key]);
             }

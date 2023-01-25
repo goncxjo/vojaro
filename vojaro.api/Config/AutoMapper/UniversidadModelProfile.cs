@@ -27,7 +27,8 @@ namespace vojaro.api.Config.AutoMapper
             this.CreateMap<CreateUniversidadModel, Universidad>();
 
             this.CreateMap<UniversidadParameters, UniversidadFilters>()
-                .ForMember(dest => dest.ParteNombreSiglas, opt => opt.MapFrom(src => src.ParteNombreSiglas));
+                .ForMember(dest => dest.ParteNombreSiglas, opt => opt.MapFrom(src => src.ParteNombreSiglas))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id ?? src.UniversidadId));
 		}
         
 		private void MapDepartamentos()

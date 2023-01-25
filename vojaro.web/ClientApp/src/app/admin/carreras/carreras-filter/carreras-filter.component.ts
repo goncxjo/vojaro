@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { CarreraFilters } from 'src/app/api';
+import { CarreraFilters, Universidad } from 'src/app/api';
 
 @Component({
   selector: 'app-carreras-filter',
@@ -9,6 +9,7 @@ import { CarreraFilters } from 'src/app/api';
 })
 export class CarrerasFilterComponent implements OnInit {
   filterForm = this.buildForm();
+  universidad!: Universidad;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -38,5 +39,9 @@ export class CarrerasFilterComponent implements OnInit {
   private resetModel() {
     const model = new CarreraFilters();
     this.filterForm.setValue(model);
+  }
+
+  onUniversidadChange(universidad: Universidad) {
+    this.universidad = universidad;
   }
 }

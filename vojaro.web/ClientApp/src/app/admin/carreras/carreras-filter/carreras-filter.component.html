@@ -8,11 +8,18 @@
 		</div>
 		<div class="col-md-3">
 		  <label for="universidad" class="form-label">Universidad</label>
-		  <app-universidad-select formControlName="universidad" ngDefaultControl></app-universidad-select>
+		  <app-universidad-select
+		  	formControlName="universidad"
+			ngDefaultControl
+			(universidad)="onUniversidadChange($event)"
+		  ></app-universidad-select>
 		</div>
 		<div class="col-md-3">
 		  <label for="departamento" class="form-label">Departamento</label>
-		  <app-departamento-select formControlName="departamento" ngDefaultControl></app-departamento-select>
+		  <app-departamento-select
+		  	formControlName="departamento"
+		  	ngDefaultControl [universidad]="universidad"
+		  ></app-departamento-select>
 		</div>
 	  </form>
 	</div>

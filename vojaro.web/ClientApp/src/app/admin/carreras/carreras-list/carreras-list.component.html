@@ -31,6 +31,8 @@
 				  <th scope="col"> </th>
 				  <th scope="col">#</th>
 				  <th scope="col">Nombre</th>
+				  <th scope="col">Universidad</th>
+				  <th scope="col">Departamento</th>
 				  <th scope="col">Fecha ingreso sis.</th>
 				  <th scope="col">Fecha última mod.</th>
 				</tr>
@@ -52,6 +54,8 @@
 				  </td>
 				  <td>{{item.id}}</td>
 				  <td>{{item.nombre}}</td>
+				  <td>{{item.universidad?.siglas}} - {{item.universidad?.nombre}}</td>
+				  <td>{{item.departamento?.nombre}}</td>
 				  <td>{{item.fechaCreacion | date: 'dd/MM/yyyy'}}</td>
 				  <td>{{item.fechaUltimaModificacion | date: 'dd/MM/yyyy'}}</td>
 				</tr>

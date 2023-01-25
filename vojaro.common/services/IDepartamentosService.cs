@@ -11,6 +11,6 @@ namespace vojaro.services
         Departamento GetById(long id);
 		Departamento Create(Departamento model, ClaimsPrincipal claimsPrincipal);
 		Departamento Update(Departamento model, ClaimsPrincipal claimsPrincipal);
-		IEnumerable<Departamento> GetAll();
+		IEnumerable<Departamento> Find(UniversidadFilters filters);
 	}
 }

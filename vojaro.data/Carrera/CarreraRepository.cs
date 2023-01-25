@@ -20,6 +20,8 @@ namespace vojaro.data
         {
             { "id", "Id" },
             { "nombre", "Nombre" },
+            { "universidad", "Universidad.Siglas" },
+            { "departamento", "Departamento.Nombre" },
             { "fechaCreacion ", "FechaCreacion " },
             { "fechaUltimaModificacion", "FechaUltimaModificacion" },
         };
@@ -39,6 +41,14 @@ namespace vojaro.data
                 if (!String.IsNullOrEmpty(filter.Nombre))
                 {
                     query = query.Where(x => x.Nombre.ToLower() == filter.Nombre.ToLower());
+                }
+                if (filter.UniversidadId != null)
+                {
+                    query = query.Where(x => x.UniversidadId == filter.UniversidadId);
+                }
+                if (filter.DepartamentoId != null)
+                {
+                    query = query.Where(x => x.DepartamentoId == filter.DepartamentoId);
                 }
             }
 

@@ -52,6 +52,8 @@ export class CarrerasListComponent implements OnInit, AfterViewInit {
         { data: 'acciones', orderable: false },
         { data: 'id' },
         { data: 'nombre' },
+        { data: 'universidad' },
+        { data: 'departamento' },
         { data: 'fechaCreacion' },
         { data: 'fechaUltimaModificacion' },
       ]

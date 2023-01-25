@@ -1,7 +1,7 @@
-import { AfterViewInit, Component, DoCheck, forwardRef, Injector, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, DoCheck, forwardRef, Injector, Input, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NgControl, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { Departamento, UniversidadesService } from 'src/app/api';
+import { Observable, take } from 'rxjs';
+import { Departamento, Universidad, UniversidadesService } from 'src/app/api';
 
 @Component({
   selector: 'app-departamento-select',
@@ -20,8 +20,9 @@ export class DepartamentoSelectComponent implements OnInit, ControlValueAccessor
   control!: NgControl;
   isDisabled!: boolean;
   @Input() mostrarOpcionTodos: boolean = true;
+  @Input() universidad!: Universidad;
 
-  data$: Observable<Departamento[]> = this.service.getAllMiniDepartamentos();
+  data$: Departamento[] = []; 
 
   @ViewChild('input', { static: false, read: NgControl }) input: any;
 
@@ -67,6 +68,7 @@ export class DepartamentoSelectComponent implements OnInit, ControlValueAccessor
 
   ngOnInit(): void {
     this.control = this.injector.get(NgControl);
+    this.refreshData(false);
   }
 
   onModelChange(_event: any) {
@@ -86,5 +88,35 @@ export class DepartamentoSelectComponent implements OnInit, ControlValueAccessor
   compareSelectedValue(item: Departamento, value: Departamento) {
     return (!item || !value) ? false : item.id === value.id
   }
-}
 
+  ngOnChanges(changes: SimpleChanges) {
+    for (const propName in changes) {
+      if(propName != 'mostrarOpcionTodos') {
+        const changedProp = changes[propName];
+        if (changedProp.isFirstChange()) {
+          this.refreshData(false);
+        } else {
+          const from = JSON.stringify(changedProp.previousValue);
+          const to = JSON.stringify(changedProp.currentValue);
+          if(to != from) this.refreshData(true);
+        }
+      }
+    }
+  }
+
+  private refreshData(refreshValue: boolean) {
+    let universidadId = this.universidad && this.universidad["id"] ? this.universidad["id"] : null;
+    if(universidadId) {
+      this.service.getAllMiniDepartamentos(universidadId)
+      .pipe(take(1))
+      .subscribe((data: Departamento[]) => {
+        this.data$ = data;
+        if (this.value && refreshValue) {
+          this.value = data[0];
+        }
+      });
+    } else {
+      this.data$ = [];
+    }
+  }
+}

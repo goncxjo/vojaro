@@ -72,9 +72,9 @@ namespace vojaro.services
             return dbEntity;
         }
 
-        public IEnumerable<Departamento> GetAll()
+        public IEnumerable<Departamento> Find(UniversidadFilters filters)
         {
-            return this.GetRepository().GetAll().ToList();
+            return this.GetRepository().Find(filters);
         }
 	}
 }
