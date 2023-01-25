@@ -9,5 +9,8 @@ export * from './departamento';
 export * from './sede';
 // Carrera
 export * from './carrera';
+export * from './carrera-orientacion';
 export * from './carrera-filters';
-
+// Asignatura
+export * from './asignatura';
+export * from './asignatura-filters';

@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Carrera, CarrerasService } from 'src/app/api';
+import { Universidad, UniversidadesService } from 'src/app/api';
 
 @Injectable()
-export class CreateResolver implements Resolve<Observable<Carrera>> {
+export class CreateResolver implements Resolve<Observable<Universidad>> {
     constructor(
-        private service: CarrerasService,
+        private service: UniversidadesService,
     ) { }
 
     resolve(route: ActivatedRouteSnapshot) {
