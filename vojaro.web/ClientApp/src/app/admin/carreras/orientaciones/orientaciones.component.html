@@ -1,0 +1,56 @@
+<div class="card">
+	<div class="card-header bg-primary text-light">
+		Orientaciones de la carrera
+	</div>
+	<div class="card-body">
+		<div class="row">
+			<div class="btn-group-form my-2">
+				<button type="button" class="btn btn-primary" (click)="openEdit()" *ngIf="!readonly">
+				  <i class="fas fa-plus"></i> Agregar
+				</button>
+			  </div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="alert alert-warning" role="alert" *ngIf="noData">
+					No existen registros
+				</div>
+				<div class="card table-responsive" [hidden]="noData">
+					<table datatable [dtOptions]="dtOptions" class="table table-striped">
+						<thead>
+							<tr>
+								<th scope="col"> </th>
+								<th scope="col">#</th>
+								<th scope="col">Nombre</th>
+								<th scope="col">Fecha ingreso sis.</th>
+								<th scope="col">Fecha última mod.</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let item of page.data" class="align-middle">
+								<td class="overflow-hidden">
+									<div ngbDropdown container="body">
+										<button class="btn btn-entity-actions" ngbDropdownToggle>
+											<i class="fas fa-ellipsis-h"></i>
+										</button>
+										<div ngbDropdownMenu>
+											<button ngbDropdownItem (click)="openEdit(item.id)">Ver</button>
+											<button ngbDropdownItem (click)="openEdit(item.id)">Editar</button>
+											<div class="dropdown-divider"></div>
+											<button ngbDropdownItem (click)="remove()">Elminar</button>
+										</div>
+									</div>
+								</td>
+								<td>{{item.id}}</td>
+								<td>{{item.nombre}}</td>
+								<td>{{item.fechaCreacion | date: 'dd/MM/yyyy'}}</td>
+								<td>{{item.fechaUltimaModificacion | date: 'dd/MM/yyyy'}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>

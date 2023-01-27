@@ -1,25 +1,24 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DataTableDirective } from 'angular-datatables';
-import { PagedData, PageInfo, PageSort, UniversidadesService, UniversidadFilters } from 'src/app/api';
-import { Departamento } from 'src/app/api/models/departamento';
+import { CarreraFilters, CarreraOrientacion, CarrerasService, PagedData, PageInfo, PageSort, UniversidadesService, UniversidadFilters } from 'src/app/api';
 import { AngularDatatablesHelper, NotificationService } from 'src/app/shared';
-import { DepartamentosUniversidadesEditComponent } from './edit/departamentos-edit.component';
+import { OrientacionesCarrerasEditComponent } from './orientaciones-edit/orientaciones-edit.component';
 
 @Component({
-  selector: 'app-departamentos-universidades',
-  templateUrl: './departamentos.component.html',
-  styleUrls: ['./departamentos.component.scss']
+  selector: 'app-carreras-orientaciones',
+  templateUrl: './orientaciones.component.html',
+  styleUrls: ['./orientaciones.component.scss']
 })
-export class DepartamentosUniversidadesComponent implements OnInit {
+export class OrientacionesCarrerasComponent implements OnInit {
   @ViewChild(DataTableDirective)
   dtElement!: DataTableDirective;
   
-  @Input() universidadId!: number;
+  @Input() carreraId!: number;
   @Input() readonly!: boolean;
 
-  filters: UniversidadFilters = new UniversidadFilters();
-  entity!: Departamento;
+  filters: CarreraFilters = new CarreraFilters();
+  entity!: CarreraOrientacion;
 
   pageInfo: PageInfo = this.ngDtHelper.getDefaultParams().pageInfo;
   page: PagedData<any> = this.ngDtHelper.getDefaultPagedData();
@@ -35,7 +34,7 @@ export class DepartamentosUniversidadesComponent implements OnInit {
   }
 
   constructor(
-    private service: UniversidadesService,
+    private service: CarrerasService,
     private notificationService: NotificationService,
     private ngDtHelper: AngularDatatablesHelper,
     private modalService: NgbModal
@@ -49,7 +48,7 @@ export class DepartamentosUniversidadesComponent implements OnInit {
       ajax: (params: any, callback: any) => {
         this.ngDtHelper.getData(
           that,
-          this.service.getPagedDepartamentos.bind(this.service),
+          this.service.getPagedOrientaciones.bind(this.service),
           params,
           callback
         );
@@ -69,33 +68,29 @@ export class DepartamentosUniversidadesComponent implements OnInit {
   }
 
   private search() {
-    this.filters.id = this.universidadId;
+    this.filters.id = this.carreraId;
     this.ngDtHelper.reload(this.dtElement);
-  }
-
-  add() {
-    // this.entity = this.entityForm.formValue;
-    this.search();
   }
 
   remove() {
     console.log('pendiente accion eliminar')
   }
 
+  
   openEdit(id: number = 0) {
-    const modalInstance = this.modalService.open(
-      DepartamentosUniversidadesEditComponent,
-      { size: 'xl', ariaLabelledBy: 'app-departamentos-modal' }
-    );
-    (<DepartamentosUniversidadesEditComponent>modalInstance.componentInstance).readonly = this.readonly;
-    (<DepartamentosUniversidadesEditComponent>modalInstance.componentInstance).departamentoId = id;
-    (<DepartamentosUniversidadesEditComponent>modalInstance.componentInstance).universidadId = this.universidadId;
+    const onSuccess = () => {
+      setTimeout(() => this.ngDtHelper.reload(this.dtElement), 0);
+    }
+    
+    const onError = () => { };
+    
+    const modalInstance = this.modalService.open(OrientacionesCarrerasEditComponent, { size: 'xl' });
+    modalInstance.componentInstance.readonly = this.readonly;
+    modalInstance.componentInstance.carreraId = this.carreraId;
+    modalInstance.componentInstance.carreraOrientacionId = id;
 
-    modalInstance.result.then(
-      (result) => {
-        this.search();
-      }, (reason) => {
-      }
-    );
+    modalInstance.result.then(onSuccess, onError);
+
+
   }
 }

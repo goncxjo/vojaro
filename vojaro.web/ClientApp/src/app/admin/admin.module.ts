@@ -18,6 +18,9 @@ import { DepartamentoSelectComponent } from './universidades/departamentos/depar
 import { AsignaturasEditComponent } from './asignaturas/asignaturas-edit/asignaturas-edit.component';
 import { AsignaturasListComponent } from './asignaturas/asignaturas-list/asignaturas-list.component';
 import { AsignaturasFilterComponent } from './asignaturas/asignaturas-filter/asignaturas-filter.component';
+import { CarreraSelectComponent } from './carreras/carrera-select/carrera-select.component';
+import { OrientacionesCarrerasComponent } from './carreras/orientaciones/orientaciones.component';
+import { OrientacionesCarrerasEditComponent } from './carreras/orientaciones/orientaciones-edit/orientaciones-edit.component';
 
 
 const PRIVATE_COMPONENTS: any = [
@@ -25,22 +28,26 @@ const PRIVATE_COMPONENTS: any = [
 
 const PUBLIC_COMPONENTS: any = [
   AdminComponent,
-
+  
   UniversidadesListComponent,
   UniversidadesEditComponent,
   UniversidadesFilterComponent,
   UniversidadSelectComponent,
-
+  
   DepartamentosUniversidadesComponent,
   DepartamentosUniversidadesEditComponent,
   DepartamentoSelectComponent,
-
+  
   SedesUniversidadesComponent,
   SedesUniversidadesEditComponent,
 
   CarrerasListComponent,
   CarrerasEditComponent,
   CarrerasFilterComponent,
+  CarreraSelectComponent,
+
+  OrientacionesCarrerasComponent,
+  OrientacionesCarrerasEditComponent,
 
   AsignaturasEditComponent,
   AsignaturasListComponent,

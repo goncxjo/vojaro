@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using vojaro.data;
 
 namespace vojaro.api.Migrations
 {
     [DbContext(typeof(VojaroDbContext))]
-    partial class VojaroDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230127184701_Add_CarreraOrientacion")]
+    partial class Add_CarreraOrientacion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

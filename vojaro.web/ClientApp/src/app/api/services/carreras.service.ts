@@ -1,7 +1,7 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Carrera, CarreraFilters, PagedData, PageInfo } from '../models';
+import { Carrera, CarreraFilters, CarreraOrientacion, PagedData, PageInfo } from '../models';
 import { buildQueryParams } from '.';
 import { PageSort } from '../models/page-sort';
 import { FileSaverService } from 'ngx-filesaver';
@@ -12,13 +12,15 @@ import * as _ from 'lodash';
 })
 export class CarrerasService {
   private baseRoute: string;
+  private baseCarreraOrientacionRoute: string;
 
   constructor(
-    private httpClient: HttpClient,
     @Inject('BASE_API_URL') baseUrl: string,
+    private httpClient: HttpClient,
     private fileService: FileSaverService
   ) {
     this.baseRoute = baseUrl + '/carreras';
+    this.baseCarreraOrientacionRoute = this.baseRoute + '/orientaciones';
   }
 
   getPaged(pageInfo: PageInfo, filters: CarreraFilters, columnSort: PageSort[]): Observable<PagedData<Carrera>> {
@@ -56,5 +58,49 @@ export class CarrerasService {
     } else {
         return this.httpClient.post<Carrera>(this.baseRoute, entity);
     }
+  }
+
+
+  getPagedOrientaciones(pageInfo: PageInfo, filters: CarreraFilters, columnSort: PageSort[]): Observable<PagedData<CarreraOrientacion>> {
+    const url = this.baseCarreraOrientacionRoute;
+    const sort = JSON.stringify(columnSort);
+    
+    const query = {
+      ...pageInfo,
+      sort,
+      ...filters,
+    };
+    
+    return this.httpClient.get<PagedData<CarreraOrientacion>>(url, { params: buildQueryParams(query) });
+  }
+
+  getOrientacionById(id: string): Observable<CarreraOrientacion> {
+    const url = `${this.baseCarreraOrientacionRoute}/${id}`;
+    return this.httpClient.get<CarreraOrientacion>(url);
+  }
+  
+  saveOrientacion(entity: CarreraOrientacion): Observable<CarreraOrientacion> {
+    const url = this.baseCarreraOrientacionRoute;
+    if (entity.id) {
+        return this.httpClient.put<CarreraOrientacion>(url, entity);
+    } else {
+        return this.httpClient.post<CarreraOrientacion>(url, entity);
+    }
+  }
+
+  getAllMiniOrientaciones(universidadId: number | null): Observable<CarreraOrientacion[]> {
+    const url = `${this.baseCarreraOrientacionRoute}/mini-list`;
+    const query = { universidadId };
+        
+    return this.httpClient.get<CarreraOrientacion[]>(url, { params: buildQueryParams(query) });
+  }
+
+  newOrientacion(id: number): Observable<CarreraOrientacion> {
+    return of({
+      id: 0,
+      nombre: '',
+      carrera: null,
+      carreraId: id
+    });
   }
 }

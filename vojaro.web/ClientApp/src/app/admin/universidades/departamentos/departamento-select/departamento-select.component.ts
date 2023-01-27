@@ -20,7 +20,7 @@ export class DepartamentoSelectComponent implements OnInit, ControlValueAccessor
   control!: NgControl;
   isDisabled!: boolean;
   @Input() mostrarOpcionTodos: boolean = true;
-  @Input() universidad!: Universidad;
+  @Input() universidad!: Universidad | undefined | null;
 
   data$: Departamento[] = []; 
 

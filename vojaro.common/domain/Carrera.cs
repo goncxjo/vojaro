@@ -10,5 +10,7 @@ namespace vojaro.domain
         public virtual long? DepartamentoId { get; set; }
         public virtual Universidad Universidad { get; set; }
         public virtual Departamento Departamento { get; set; }
+        public virtual ICollection<CarreraOrientacion> Orientaciones { get; set; }        
+
     }
 }

@@ -6,5 +6,7 @@
         public string Nombre { get; set; }
         public long? UniversidadId { get; set; }
         public long? DepartamentoId { get; set; }
+        public long? CarreraId { get; set; }
+        public long? CarreraOrientacionId { get; set; }
     }
 }

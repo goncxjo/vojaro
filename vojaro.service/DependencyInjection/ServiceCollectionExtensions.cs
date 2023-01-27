@@ -11,6 +11,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IDepartamentosService, DepartamentosService>();
             services.AddScoped<ISedesService, SedesService>();
             services.AddScoped<ICarrerasService, CarrerasService>();
+            services.AddScoped<ICarreraOrientacionesService, CarreraOrientacionesService>();
 
             return services;
         }

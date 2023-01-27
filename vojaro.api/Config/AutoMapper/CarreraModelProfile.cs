@@ -6,6 +6,7 @@ using vojaro.api.Models.Carrera;
 using vojaro.domain;
 using vojaro.filters;
 using vojaro.parameters;
+using vojaro.api.Models.Carrera.Orientacion;
 
 namespace vojaro.api.Config.AutoMapper
 {
@@ -14,6 +15,7 @@ namespace vojaro.api.Config.AutoMapper
         public CarreraModelProfile()
         {
             MapCarreras();
+            MapOrientaciones();
         }
 
 		private void MapCarreras()
@@ -32,5 +34,16 @@ namespace vojaro.api.Config.AutoMapper
                 .ForMember(dest => dest.UniversidadId, opt => opt.MapFrom(src => src.UniversidadId))
                 .ForMember(dest => dest.DepartamentoId, opt => opt.MapFrom(src => src.DepartamentoId));
 		}
+
+		private void MapOrientaciones()
+		{
+            this.CreateMap<CarreraOrientacion, CarreraOrientacionMiniListModel>();
+            this.CreateMap<CarreraOrientacion, CarreraOrientacionListModel>();
+            this.CreateMap<CarreraOrientacion, CarreraOrientacionModel>();
+
+            this.CreateMap<CreateCarreraOrientacionModel, CarreraOrientacion>();
+		}
+        
+
 	}
 }

@@ -22,12 +22,16 @@
   
 		<div class="col-md-3">
 		  <label for="departamento" class="form-label">Departamento</label>
-		  <app-departamento-select [mostrarOpcionTodos]="false" formControlName="departamento"></app-departamento-select>
+		  <app-departamento-select [universidad]="entity?.universidad" [mostrarOpcionTodos]="false" formControlName="departamento"></app-departamento-select>
 		</div>
   
 	  </form>
 	</div>
   </div>
+
+  <div class="mt-2">
+	<app-carreras-orientaciones #orientaciones [carreraId]="entity.id" [readonly]="readonly"></app-carreras-orientaciones>
+  </div>  
 
   <div class="btn-group-form left mt-4" *ngIf="!readonly">
 	<button type="button" class="btn btn-success" (click)="onSubmit()">
