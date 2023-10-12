@@ -1,7 +1,4 @@
-﻿using System;
-using AutoMapper;
-using vojaro.api.Models.Departamento;
-using vojaro.api.Models.Sede;
+﻿using AutoMapper;
 using vojaro.api.Models.Carrera;
 using vojaro.domain;
 using vojaro.filters;
