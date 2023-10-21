@@ -60,6 +60,12 @@ export class CarrerasService {
     }
   }
 
+  getAllMini(universidadId: number | null): Observable<Carrera[]> {
+    const url = `${this.baseRoute}/mini-list`;
+    const query = { universidadId };
+        
+    return this.httpClient.get<Carrera[]>(url, { params: buildQueryParams(query) });
+  }
 
   getPagedOrientaciones(pageInfo: PageInfo, filters: CarreraFilters, columnSort: PageSort[]): Observable<PagedData<CarreraOrientacion>> {
     const url = this.baseCarreraOrientacionRoute;

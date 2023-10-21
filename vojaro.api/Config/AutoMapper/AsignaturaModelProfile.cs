@@ -17,15 +17,18 @@ namespace vojaro.api.Config.AutoMapper
 		{
             this.CreateMap<Asignatura, AsignaturaListModel>();
             this.CreateMap<Asignatura, AsignaturaModel>()
+                .ForMember(dest => dest.Carrera, opt => opt.MapFrom(src => src.Carrera))
+                .ForMember(dest => dest.Universidad, opt => opt.MapFrom(src => src.Carrera.Universidad))
             ;
 
             this.CreateMap<AsignaturaCreateModel, Asignatura>();
 
-            // this.CreateMap<AsignaturaParameters, AsignaturaFilters>()
-            //     .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-            //     .ForMember(dest => dest.Nombre, opt => opt.MapFrom(src => src.Nombre))
-            //     .ForMember(dest => dest.UniversidadId, opt => opt.MapFrom(src => src.UniversidadId))
-            //     .ForMember(dest => dest.DepartamentoId, opt => opt.MapFrom(src => src.DepartamentoId));
+            this.CreateMap<AsignaturaParameters, AsignaturaFilters>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.Nombre, opt => opt.MapFrom(src => src.Nombre))
+                .ForMember(dest => dest.CarreraId, opt => opt.MapFrom(src => src.CarreraId))
+                .ForMember(dest => dest.UniversidadId, opt => opt.MapFrom(src => src.UniversidadId))
+            ;
 		}
 	}
 }

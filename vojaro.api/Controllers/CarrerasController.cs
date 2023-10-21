@@ -69,6 +69,16 @@ namespace vojaro.api.Controllers
 			return Created(entity.Id, this.Mapper.Map<CarreraModel>(result));
 		}
 
+
+        [HttpGet("mini-list")]
+        [ProducesResponseType(typeof(IEnumerable<CarreraMiniListModel>), 200)]
+        public ActionResult<IEnumerable<CarreraMiniListModel>> GetAllMiniCarreras([FromQuery] CarreraParameters carreraParameters)
+        {
+            var filter = this.Mapper.Map<CarreraFilters>(carreraParameters);
+            var data = this.service.Find(filter);
+            return Ok(this.Mapper.Map<IEnumerable<CarreraMiniListModel>>(data));
+        }
+
         [HttpGet("orientaciones")]
         [ProducesResponseType(typeof(PagedData<CarreraOrientacionListModel>), 200)]
         public ActionResult<PagedData<CarreraOrientacionListModel>> GetPagedCarreraOrientacions([FromQuery] CarreraParameters carreraParameters)

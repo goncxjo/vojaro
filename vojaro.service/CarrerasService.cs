@@ -68,5 +68,10 @@ namespace vojaro.services
 
             return dbEntity;
         }
+
+        public IEnumerable<Carrera> Find(CarreraFilters filters)
+        {
+            return this.GetRepository().Find(filters);
+        }
 	}
 }
