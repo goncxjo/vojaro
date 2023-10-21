@@ -9,10 +9,7 @@ namespace vojaro.data.Config
         public void Configure(EntityTypeBuilder<AsignaturaCorrelativa> entity)
         {
             entity.ToTable("asignaturas_correlativas");
-            entity.HasKey(e => e.Id);
-            entity.Property(e => e.FechaCreacion).IsRequired();
-            entity.Property(e => e.FechaUltimaModificacion);
-            entity.Property(e => e.UsuarioUltimaModificacion);
+            entity.HasNoKey();
         }
     }
 }

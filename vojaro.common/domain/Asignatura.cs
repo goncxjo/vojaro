@@ -13,12 +13,11 @@ namespace vojaro.domain
         public int Creditos { get; set; }
         public bool EsInterdisciplinaria { get; set; }
 
-        public virtual int CarreraId { get; set; }
-        public virtual int? CarreraOrientacionId { get; set; }
+        public virtual long CarreraId { get; set; }
+        public virtual long? CarreraOrientacionId { get; set; }
 
         public virtual Carrera Carrera { get; set; }
         public virtual CarreraOrientacion CarreraOrientacion { get; set; }
-        [NotMapped]
-        public virtual ICollection<AsignaturaCorrelativa> Correlativas { get; set; }
+        public virtual ICollection<Correlativa> Correlativas { get; set; }
     }
 }

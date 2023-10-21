@@ -26,9 +26,11 @@ namespace vojaro.data.Config
             .OnDelete(DeleteBehavior.Cascade);
 
             entity.HasMany(e => e.Correlativas)
-            .WithOne(e => e.Asignatura)
-            .HasForeignKey(e => e.AsignaturaId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .WithMany(e => e.Asignaturas)
+            .UsingEntity<AsignaturaCorrelativa>(
+                l => l.HasOne<Correlativa>().WithMany().HasForeignKey(e => e.CorrelativaId),
+                r => r.HasOne<Asignatura>().WithMany().HasForeignKey(e => e.AsignaturaId)
+            );
         }
     }
 }
