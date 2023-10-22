@@ -18,7 +18,7 @@ export class AsignaturasService {
     @Inject('BASE_API_URL') baseUrl: string,
     private fileService: FileSaverService
   ) {
-    this.baseRoute = baseUrl + '/carreras';
+    this.baseRoute = baseUrl + '/asignaturas';
   }
 
   getPaged(pageInfo: PageInfo, filters: AsignaturaFilters, columnSort: PageSort[]): Observable<PagedData<Asignatura>> {
