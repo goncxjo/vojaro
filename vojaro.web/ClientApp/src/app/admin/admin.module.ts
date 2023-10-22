@@ -21,6 +21,8 @@ import { AsignaturasFilterComponent } from './asignaturas/asignaturas-filter/asi
 import { CarreraSelectComponent } from './carreras/carrera-select/carrera-select.component';
 import { OrientacionesCarrerasComponent } from './carreras/orientaciones/orientaciones.component';
 import { OrientacionesCarrerasEditComponent } from './carreras/orientaciones/orientaciones-edit/orientaciones-edit.component';
+import { CorrelativasListComponent } from './asignaturas/correlativas/list/list.component';
+import { CorrelativasModalComponent } from './asignaturas/correlativas/modal/modal.component';
 
 
 const PRIVATE_COMPONENTS: any = [
@@ -52,6 +54,9 @@ const PUBLIC_COMPONENTS: any = [
   AsignaturasEditComponent,
   AsignaturasListComponent,
   AsignaturasFilterComponent,
+
+  CorrelativasListComponent,
+  CorrelativasModalComponent
 ];
 
 @NgModule({
