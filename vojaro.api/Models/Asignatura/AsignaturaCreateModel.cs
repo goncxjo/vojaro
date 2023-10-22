@@ -13,7 +13,14 @@ namespace vojaro.api.Models.Asignatura
         [Required(ErrorMessage = "El cuatrimestre es requerido")]
         public int Cuatrimestre { get; set; }
 
-        [Required(ErrorMessage = "Los creditos es requerido")]
-        public int Creditos { get; set; }
+        [Required(ErrorMessage = "La carga horaria es requerida")]
+        public int CargaHoraria{ get; set; }
+
+        [Required(ErrorMessage = "La universidad es requerida")]
+        public int UniversidadId { get; set; }
+
+        [Required(ErrorMessage = "La carrera es requerida")]
+        public int CarreraId { get; set; }       
+
     }
 }

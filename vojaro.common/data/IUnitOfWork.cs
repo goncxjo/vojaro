@@ -8,6 +8,7 @@
         ISedesRepository SedesRepository { get; }
         ICarrerasRepository CarrerasRepository { get; }
         ICarreraOrientacionesRepository CarreraOrientacionesRepository { get; }
+        IAsignaturasRepository AsignaturasRepository { get; }
 
         void Commit();
     }

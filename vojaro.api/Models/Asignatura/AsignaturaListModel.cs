@@ -14,7 +14,7 @@ namespace vojaro.api.Models.Asignatura
         public virtual int? CarreraOrientacionId { get; set; }
 
         public virtual UniversidadMiniListModel Universidad { get; set; }
-        public virtual CarreraMiniListModel Carrera { get; set; }
+        public virtual CarreraListModel Carrera { get; set; }
         public virtual CarreraOrientacionMiniListModel CarreraOrientacion { get; set; }
         public virtual ICollection<AsignaturaCorrelativaMiniListModel> Correlativas { get; set; }
 

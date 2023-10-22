@@ -12,6 +12,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<ISedesService, SedesService>();
             services.AddScoped<ICarrerasService, CarrerasService>();
             services.AddScoped<ICarreraOrientacionesService, CarreraOrientacionesService>();
+            services.AddScoped<IAsignaturasService, AsignaturasService>();
 
             return services;
         }

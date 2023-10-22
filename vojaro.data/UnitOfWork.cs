@@ -9,6 +9,7 @@
         private ISedesRepository sedesRepository;
         private ICarrerasRepository carrerasRepository;
         private ICarreraOrientacionesRepository carreraOrientacionesRepository;
+        private IAsignaturasRepository asignaturasRepository;
 
         public UnitOfWork(VojaroDbContext context)
         {
@@ -21,6 +22,7 @@
         public ISedesRepository SedesRepository => sedesRepository ??= new SedesRepository(context);
         public ICarrerasRepository CarrerasRepository => carrerasRepository ??= new CarrerasRepository(context);
         public ICarreraOrientacionesRepository CarreraOrientacionesRepository => carreraOrientacionesRepository ??= new CarreraOrientacionesRepository(context);
+        public IAsignaturasRepository AsignaturasRepository => asignaturasRepository ??= new AsignaturasRepository(context);
 
         public void Commit()
         {
