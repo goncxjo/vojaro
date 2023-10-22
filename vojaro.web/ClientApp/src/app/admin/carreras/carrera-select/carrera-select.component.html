@@ -1,1 +1,5 @@
-<p>carrera-select works!</p>
+<select #input [(ngModel)]="value" class="form-select flex-grow-1" [disabled]="isDisabled"
+    (ngModelChange)="onModelChange($event)" (blur)="onTouch()" [compareWith]="compareSelectedValue">
+    <option *ngIf="mostrarOpcionTodos" [ngValue]=null>Todas</option>
+    <option [ngValue]="item" *ngFor="let item of data$">{{item.nombre}}</option>
+</select>

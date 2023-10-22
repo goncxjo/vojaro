@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NgbNavChangeEvent } from '@ng-bootstrap/ng-bootstrap';
-import { Carrera, CarrerasService } from 'src/app/api';
+import { Carrera, CarrerasService, Universidad } from 'src/app/api';
 import { NotificationService } from 'src/app/shared';
 
 @Component({
@@ -15,6 +15,7 @@ export class CarrerasEditComponent implements OnInit {
   readonly!: boolean;
   form = this.buildForm();
   entity!: Carrera;
+  universidad!: Universidad;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -76,4 +77,9 @@ export class CarrerasEditComponent implements OnInit {
 
   onNavChange(changeEvent: NgbNavChangeEvent) {
   }
+
+  onUniversidadChange(universidad: Universidad) {
+    this.universidad = universidad;
+  }
+
 }

@@ -17,19 +17,19 @@
   
 		<div class="col-md-3">
 		  <label for="universidad" class="form-label">Universidad</label>
-		  <app-universidad-select [mostrarOpcionTodos]="false" formControlName="universidad"></app-universidad-select>
+		  <app-universidad-select [mostrarOpcionTodos]="false" formControlName="universidad" (universidad)="onUniversidadChange($event)"></app-universidad-select>
 		</div>
   
 		<div class="col-md-3">
 		  <label for="departamento" class="form-label">Departamento</label>
-		  <app-departamento-select [universidad]="entity?.universidad" [mostrarOpcionTodos]="false" formControlName="departamento"></app-departamento-select>
+		  <app-departamento-select [universidad]="universidad" [mostrarOpcionTodos]="false" formControlName="departamento"></app-departamento-select>
 		</div>
   
 	  </form>
 	</div>
   </div>
 
-  <div class="mt-2">
+  <div class="mt-2" *ngIf="entity.id">
 	<app-carreras-orientaciones #orientaciones [carreraId]="entity.id" [readonly]="readonly"></app-carreras-orientaciones>
   </div>  
 
