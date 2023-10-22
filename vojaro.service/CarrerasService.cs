@@ -37,6 +37,7 @@ namespace vojaro.services
 			{
 				// UserId = userId,
 				Nombre = model.Nombre,
+                UniversidadId = model.UniversidadId
 			};
 
 			if (this.GetRepository().Find(filters).Any())
@@ -60,6 +61,7 @@ namespace vojaro.services
             var dbEntity = GetRepository().GetById(model.Id);
 
             dbEntity.Nombre = model.Nombre;
+            dbEntity.UniversidadId = model.UniversidadId;
             dbEntity.FechaUltimaModificacion = DateTime.Now;
             // dbEntity.UserIdUltimaModificacion = userId;
 

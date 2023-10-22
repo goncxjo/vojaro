@@ -18,6 +18,7 @@ namespace vojaro.api.Config.AutoMapper
 		private void MapCarreras()
 		{
             this.CreateMap<Carrera, CarreraListModel>();
+            this.CreateMap<Carrera, CarreraMiniListModel>();
             this.CreateMap<Carrera, CarreraModel>()
                 .ForMember(dest => dest.Universidad, opt => opt.MapFrom(src => src.Universidad))
                 .ForMember(dest => dest.Departamento, opt => opt.MapFrom(src => src.Departamento))
