@@ -33,7 +33,11 @@ export class AsignaturasFilterComponent implements OnInit {
       id: [''],
       nombre: [''],
       universidad: [''],
+      departamento: [''],
       carrera: [''],
+      carreraOrientacion: [''],
+      anio: [''],
+      cuatrimestre: [''],
     });
   }
 

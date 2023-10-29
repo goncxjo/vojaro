@@ -13,10 +13,5 @@ export class AsignaturaFilters {
 	departamento: Departamento | null = null;
 	carrera: Carrera | null = null;
 	carreraOrientacion: CarreraOrientacion | null = null;
-	
-	universidadId: string | null = null;
-	departamentoId: string | null = null;
-	carreraId: string | null = null;
-	carreraOrientacionId: string | null = null;
-  }
+}
 	
