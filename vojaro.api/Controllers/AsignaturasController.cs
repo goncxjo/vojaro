@@ -75,16 +75,38 @@ namespace vojaro.api.Controllers
             return Ok(this.Mapper.Map<IEnumerable<AsignaturaMiniListModel>>(data));
         }
 
-        // [HttpGet("correlativas")]
-        // [ProducesResponseType(typeof(PagedData<AsignaturaListModel>), 200)]
-        // public ActionResult<PagedData<AsignaturaListModel>> GetPagedCorrelativas([FromQuery] AsignaturaParameters asignaturaParameters)
-        // {
-        //     var filter = this.Mapper.Map<AsignaturaFilters>(asignaturaParameters);
-        //     var sort = this.Mapper.Map<PageSort[]>(asignaturaParameters);
+        [HttpGet("correlativas/disponibles")]
+        [ProducesResponseType(typeof(PagedData<AsignaturaListModel>), 200)]
+        public ActionResult<PagedData<AsignaturaListModel>> GetPagedCorrelativasDisponibles([FromQuery] AsignaturaParameters asignaturaParameters)
+        {
+            var filter = this.Mapper.Map<AsignaturaFilters>(asignaturaParameters);
+            var sort = this.Mapper.Map<PageSort[]>(asignaturaParameters);
 
-        //     var data = this.service.GetPagedCorrelativas(asignaturaParameters.PageNumber, asignaturaParameters.PageSize, sort, filter);
-        //     var vm = this.Mapper.Map<PagedData<AsignaturaListModel>>(data);
-        //     return Ok(vm);
-        // }
+            filter.TipoFiltro = AsignaturaFilters.TipoFiltroAsignatura.Correlativa;
+
+            var data = this.service.GetPaged(asignaturaParameters.PageNumber, asignaturaParameters.PageSize, sort, filter);
+            var vm = this.Mapper.Map<PagedData<AsignaturaListModel>>(data);
+            return Ok(vm);
+        }
+
+        [HttpGet("{id}/correlativas")]
+        [ProducesResponseType(typeof(IEnumerable<AsignaturaListModel>), 200)]
+        public ActionResult<IEnumerable<AsignaturaListModel>> GetListCorrelativas(long id)
+        {
+            var data = this.service.GetListCorrelativas(id);
+            var vm = this.Mapper.Map<IEnumerable<AsignaturaListModel>>(data);
+            return Ok(vm);
+        }
+
+        [HttpPost("correlativas/actualizar")]
+        [ProducesResponseType(typeof(AsignaturaModel), 200)]
+        public ActionResult<AsignaturaModel> ActualizarCorrelativas([FromBody] AsignaturaAgregarCorrelativasModel model)
+        {
+            var correlativas = this.Mapper.Map<IEnumerable<Correlativa>>(model.Correlativas);
+            
+            var result = this.service.ActualizarCorrelativas(model.Id, correlativas);
+            var vm = this.Mapper.Map<AsignaturaModel>(result);
+            return Ok(vm);
+        }
     }
 }

@@ -12,5 +12,7 @@ namespace vojaro.services
 		Asignatura Create(Asignatura model, ClaimsPrincipal claimsPrincipal);
 		Asignatura Update(Asignatura model, ClaimsPrincipal claimsPrincipal);
         IEnumerable<Asignatura> Find(AsignaturaFilters filters);
-	}
+		IEnumerable<Asignatura> GetListCorrelativas(long id);
+        Asignatura ActualizarCorrelativas(long id, IEnumerable<Correlativa> correlativas);
+    }
 }

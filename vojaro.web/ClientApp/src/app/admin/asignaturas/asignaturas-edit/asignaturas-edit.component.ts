@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbNavChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Asignatura, AsignaturasService, Universidad } from 'src/app/api';
 import { NotificationService } from 'src/app/shared';
@@ -16,6 +16,7 @@ export class AsignaturasEditComponent implements OnInit {
   form = this.buildForm();
   entity!: Asignatura;
   universidad!: Universidad;
+  isCreate: boolean = false;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -23,6 +24,7 @@ export class AsignaturasEditComponent implements OnInit {
     private location: Location,
     private service: AsignaturasService,
     private formBuilder: FormBuilder,
+    public router: Router
   ) { }
 
   ngOnInit() {
@@ -30,7 +32,7 @@ export class AsignaturasEditComponent implements OnInit {
       this.entity = data['entity'];
       this.readonly = data['readonly'];
 
-      const isCreate = !this.entity?.id;
+      this.isCreate = !this.entity?.id;
       this.form.patchValue(this.entity);
 
       if (this.readonly) {
@@ -48,15 +50,17 @@ export class AsignaturasEditComponent implements OnInit {
     }
 
     const entity: Asignatura = this.form.getRawValue();
-    console.log(entity);
     entity.carreraId = entity.carrera?.id || 0;
     entity.universidadId = entity.universidad?.id || 0;
-    console.log(entity);
 
     this.service.save(entity)
-      .subscribe(() => {
+      .subscribe((result) => {
         this.notificationService.showSuccess('Asignatura guardada correctamente');
-        this.goBack();
+        if (this.isCreate) {
+          this.router.navigate([`admin/asignaturas/${result.id}/editar`]);
+        } else {
+          this.goBack();
+        }
       });
   }
 

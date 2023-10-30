@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Newtonsoft.Json;
+using vojaro.api.Models;
 using vojaro.domain;
 using vojaro.parameters;
 
@@ -10,8 +11,10 @@ namespace vojaro.api.Config.Automapper
 		public CommonModelProfile()
 		{
 			this.CreateMap(typeof(PagedData<>), typeof(PagedData<>));
+            this.CreateMap<ItemList, ItemListModel>();
 			this.CreateMap<QueryStringParameters, PageSort[]>()
 				.ConstructUsing(src => ParseJsonSort(src.Sort));
+
 		}
 
 		private PageSort[] ParseJsonSort(string sort)

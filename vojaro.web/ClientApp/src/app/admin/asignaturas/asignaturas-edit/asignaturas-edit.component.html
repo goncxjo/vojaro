@@ -38,10 +38,10 @@
 	  </form>
 	</div>
   </div>
-<!-- 
+
   <div class="mt-2">
-	<app-carreras-orientaciones #orientaciones [carreraId]="entity.id" [readonly]="readonly"></app-carreras-orientaciones>
-  </div>   -->
+	<app-asignaturas-correlativas-list [asignatura]="entity" [readonly]="readonly" *ngIf="!isCreate"></app-asignaturas-correlativas-list>
+  </div>  
 
   <div class="btn-group-form left mt-4" *ngIf="!readonly">
 	<button type="button" class="btn btn-success" (click)="onSubmit()">

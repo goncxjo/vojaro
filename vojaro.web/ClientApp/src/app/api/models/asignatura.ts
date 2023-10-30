@@ -12,7 +12,7 @@ export interface Asignatura {
    creditos: number;
    esInterdisciplinaria: boolean;
 
-   correlativas: Asignatura[] | null;
+   correlativas: any[] | null;
    universidad: Universidad | null;
    carrera: Carrera | null;
    carreraOrientacion: CarreraOrientacion | null;

@@ -29,6 +29,8 @@ namespace vojaro.data
         public override IQueryable<Asignatura> GetAll()
         {
             return DbSet
+                .Include(x => x.AsignaturaCorrelativas)
+                .ThenInclude(x => x.Correlativa)
                 .Include(x => x.Carrera)
                 .ThenInclude(x => x.Universidad)
             ;
@@ -38,17 +40,41 @@ namespace vojaro.data
         {
             if (filter != null)
             {
-                if (!String.IsNullOrEmpty(filter.Nombre))
-                {
-                    query = query.Where(x => x.Nombre.ToLower() == filter.Nombre.ToLower());
+                if (filter.TipoFiltro == AsignaturaFilters.TipoFiltroAsignatura.Asignatura) {
+                    if (filter.Id != null)
+                    {
+                        query = query.Where(x => x.Id == filter.Id);
+                    }
+                    if (!String.IsNullOrEmpty(filter.Nombre))
+                    {
+                        query = query.Where(x => x.Nombre.ToLower() == filter.Nombre.ToLower());
+                    }
+                    if (filter.CarreraId != null)
+                    {
+                        query = query.Where(x => x.CarreraId == filter.CarreraId);
+                    }
+                    if (filter.UniversidadId != null)
+                    {
+                        query = query.Where(x => x.Carrera.UniversidadId == filter.UniversidadId);
+                    }
+                    if (filter.UniversidadId != null)
+                    {
+                        query = query.Where(x => x.Carrera.UniversidadId == filter.UniversidadId);
+                    }
+                    if (filter.Cuatrimestre != null)
+                    {
+                        query = query.Where(x => x.Cuatrimestre == filter.Cuatrimestre);
+                    }
                 }
-                if (filter.CarreraId != null)
-                {
-                    query = query.Where(x => x.CarreraId == filter.CarreraId);
-                }
-                if (filter.UniversidadId != null)
-                {
-                    query = query.Where(x => x.Carrera.UniversidadId == filter.UniversidadId);
+                if (filter.TipoFiltro == AsignaturaFilters.TipoFiltroAsignatura.Correlativa) {
+                    if (filter.Id != null)
+                    {
+                        query = query.Where(x => x.Id != filter.Id);
+                    }
+                    if (filter.Cuatrimestre != null)
+                    {
+                        query = query.Where(x => x.Cuatrimestre <= filter.Cuatrimestre);
+                    }
                 }
             }
 

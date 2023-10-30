@@ -1,1 +1,117 @@
-<p>modal works!</p>
+<div class="card">
+	<div class="card-header modal-header">
+	  Actualizar correlativas - {{ this.entity.nombre }} 
+	  <button type="button" class="btn-close shadow-none" style="text-align: end;" data-bs-dismiss="modal" aria-label="Close" (click)="dismiss('cancel')"></button>
+	</div>
+	<div class="card-body">
+	  <div class="row mb-2">
+		<div class="col">
+			<app-asignaturas-filter #asignaturasFilter></app-asignaturas-filter>
+		</div>
+		<div class="btn-group-form mt-2">
+		  <button type="button" class="btn btn-primary" (click)="applyFilters()">
+			<i class="fas fa-search"></i> Buscar
+		  </button>
+		</div>
+	  </div>
+  
+	  <div class="card">
+		<div class="card-header bg-primary text-light card-collapsable" (click)="isDetalleCollapsed = !isDetalleCollapsed" [attr.aria-expanded]="!isDetalleCollapsed">
+		  Detalle
+		</div>
+		<div #collapse="ngbCollapse" [(ngbCollapse)]="isDetalleCollapsed">
+		  <div class="card-body">
+			<div class="row">
+			  <div class="col">
+				<div class="alert alert-warning" role="alert" *ngIf="noData">
+				  No existen registros
+				</div>
+  
+				<div class="table-responsive" [hidden]="noData">
+				  <table #disponiblesTable datatable [dtOptions]="dtOptions[0]" class="table table-striped">
+					<thead>
+					  <tr>
+						<th scope="col" class="btn-group-sm">
+						  <button class="btn btn-link" ngbTooltip="Agregar asignaturas página actual" (click)="selectAllAsignaturas()">
+							<i class="fas fa-folder-plus text-success fa-lg"></i>
+						  </button>
+						</th>
+						<th scope="col">#</th>
+						<th scope="col">Nombre</th>
+						<th scope="col">Cuatrimestre</th>
+						<th scope="col">Carga horaria</th>
+					  </tr>
+					</thead>
+					<tbody>
+					  <tr *ngFor="let item of page?.data">
+						<td class="btn-group-sm">
+						  <button class="btn btn-link" ngbTooltip="Agregar" (click)="selectAsignatura(item)" [disabled]="item.selected">
+							<i class="fas fa-plus fa-lg" [ngClass]="{ 'text-success': !item.selected, 'text-secondary': item.selected }"></i>
+						  </button>
+						</td>
+						<td>{{item.id}}</td>
+						<td>{{item.nombre}}</td>
+						<td>{{item.cuatrimestre}}</td>
+						<td>{{item.cargaHoraria}}</td>
+					</tr>
+					</tbody>
+				  </table>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  </div>
+  
+	  <div class="card mt-2">
+		<div class="card-header bg-primary text-light card-collapsable" (click)="isSeleccionadosCollapsed = !isSeleccionadosCollapsed" [attr.aria-expanded]="!isSeleccionadosCollapsed">
+		  Correlativas seleccionadas
+		</div>
+		<div #collapse="ngbCollapse" [(ngbCollapse)]="isSeleccionadosCollapsed">
+		  <div class="card-body">
+			<div class="row">
+			  <div class="col">
+				<div class="alert alert-warning" role="alert" *ngIf="noDataSelected">
+				  No se han seleccionados registros
+				</div>
+  
+				<div class="table-responsive" [hidden]="noDataSelected">
+				  <table #seleccionadosTable datatable [dtOptions]="dtOptions[1]" [dtTrigger]="dtTrigger" class="table table-striped">
+					<thead>
+					  <tr>
+						<th scope="col">
+						</th>
+						<th scope="col">#</th>
+						<th scope="col">Nombre</th>
+						<th scope="col">Cuatrimestre</th>
+						<th scope="col">Carga horaria</th>
+					</tr>
+					</thead>
+					<tbody>
+					  <tr *ngFor="let item of this.seleccionados; index as i">
+						<td>
+						</td>
+						<td>{{item.id}}</td>
+						<td>{{item.nombre}}</td>
+						<td>{{item.cuatrimestre}}</td>
+						<td>{{item.cargaHoraria}}</td>
+					</tr>
+					</tbody>
+				  </table>
+				</div>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	  <div class="btn-group-form left mt-3">
+		<button type="button" class="btn btn-success" (click)="onSubmit()">
+		  <i class="fas fa-edit"></i> Actualizar
+		</button>
+		<button type="button" class="btn btn-secondary" (click)="dismiss('cancel')">
+		  <i class="fas fa-times"></i> Cancelar
+		</button>
+	  </div>
+	</div>
+  </div>
+  

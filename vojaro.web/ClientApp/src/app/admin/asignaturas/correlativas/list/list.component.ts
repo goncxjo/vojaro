@@ -1,16 +1,18 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { DataTableDirective } from 'angular-datatables';
-import { AsignaturaFilters, Asignatura, AsignaturasService, PagedData, PageInfo, PageSort } from 'src/app/api';
+import { AsignaturaFilters, Asignatura, AsignaturasService } from 'src/app/api';
 import { AngularDatatablesHelper, NotificationService } from 'src/app/shared';
 import { CorrelativasModalComponent } from '../modal/modal.component';
+import { Subject } from 'rxjs';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-asignaturas-correlativas-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']
 })
-export class CorrelativasListComponent implements OnInit {
+export class CorrelativasListComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(DataTableDirective)
   dtElement!: DataTableDirective;
   
@@ -18,17 +20,14 @@ export class CorrelativasListComponent implements OnInit {
   @Input() readonly!: boolean;
 
   filters: AsignaturaFilters = new AsignaturaFilters();
-  entity!: Asignatura;
+  correlativas: any[] = [];
 
-  pageInfo: PageInfo = this.ngDtHelper.getDefaultParams().pageInfo;
-  page: PagedData<any> = this.ngDtHelper.getDefaultPagedData();
-  sort: PageSort[] = [];
-  
-  dtOptions: DataTables.Settings = {};
+  dtOptions: DataTables.Settings = this.ngDtHelper.optionsServerless;
+  dtTrigger: Subject<any> = new Subject<any>();
 
   get noData() {
-    if (this.page) {
-      return this.page.total === 0;
+    if (this.correlativas) {
+      return this.correlativas.length === 0;
     }
     return true;
   }
@@ -43,33 +42,25 @@ export class CorrelativasListComponent implements OnInit {
   ngOnInit(): void {
     const that = this;
     
-    this.dtOptions = {
-      ...this.ngDtHelper.options,
-      ajax: (params: any, callback: any) => {
-        this.ngDtHelper.getData(
-          that,
-          this.service.getPaged.bind(this.service),
-          params,
-          callback
-        );
-      },
-      columns: [
-        { data: 'acciones', orderable: false },
+    this.dtOptions.columns = [
+        // { data: 'acciones', orderable: false },
         { data: 'id' },
         { data: 'nombre' },
         { data: 'cuatrimestre' },
         { data: 'cargaHoraria' },
-      ]
-    };
+        { data: 'condicionCorrelativa' },
+      ];
   }
   
   ngAfterViewInit(): void {    
-    this.search();
+    setTimeout(() => this.search(), 0);
+    this.dtTrigger.next(null);
   }
 
-  private search() {
-    this.filters.id = this.asignatura.id;
-    this.ngDtHelper.reload(this.dtElement);
+  search() {
+    this.service.getCorrelativas(this.asignatura?.id).subscribe(res => {
+      this.correlativas = res;
+    })
   }
 
   remove() {
@@ -79,18 +70,21 @@ export class CorrelativasListComponent implements OnInit {
   
   openEdit(id: number = 0) {
     const onSuccess = () => {
-      setTimeout(() => this.ngDtHelper.reload(this.dtElement), 0);
+      setTimeout(() => this.search(), 0);
     }
     
     const onError = () => { };
     
     const modalInstance = this.modalService.open(CorrelativasModalComponent, { size: 'xl' });
     modalInstance.componentInstance.readonly = this.readonly;
-    modalInstance.componentInstance.carreraId = this.asignatura.carreraId;
-    modalInstance.componentInstance.asignaturaId = this.asignatura.id;
+    modalInstance.componentInstance.entity = this.asignatura;
+    modalInstance.componentInstance.correlativas = _.clone(this.correlativas);
 
     modalInstance.result.then(onSuccess, onError);
+  }
 
 
+  ngOnDestroy(): void {
+    this.dtTrigger.unsubscribe();
   }
 }

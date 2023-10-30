@@ -1,4 +1,6 @@
+using System;
 using AutoMapper;
+using vojaro.api.Models;
 using vojaro.api.Models.Asignatura;
 using vojaro.domain;
 using vojaro.filters;
@@ -11,9 +13,10 @@ namespace vojaro.api.Config.AutoMapper
         public AsignaturaModelProfile()
         {
             MapAsignaturas();
+            MapCorrelativas();
         }
 
-		private void MapAsignaturas()
+        private void MapAsignaturas()
 		{
             this.CreateMap<Asignatura, AsignaturaListModel>()
                 .ForMember(dest => dest.Universidad, opt => opt.MapFrom(src => src.Carrera.Universidad))
@@ -32,5 +35,20 @@ namespace vojaro.api.Config.AutoMapper
                 .ForMember(dest => dest.UniversidadId, opt => opt.MapFrom(src => src.UniversidadId))
             ;
 		}
+
+        private void MapCorrelativas()
+        {
+            this.CreateMap<CorrelativaModel, Correlativa>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.AsignaturaId, opt => opt.MapFrom(src => src.AsignaturaId))
+                .ForMember(dest => dest.Condicion, opt => opt.MapFrom(src => (AsignaturaCorrelativaCondicion)src.Condicion.Id))
+            ;
+
+            // this.CreateMap<Correlativa, CorrelativaModel>()
+            //     .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+            //     .ForMember(dest => dest.AsignaturaId, opt => opt.MapFrom(src => src.AsignaturaId))
+            //     .ForMember(dest => dest, opt => opt.MapFrom(src => Correlativa.GetCondicionMiniList((long)src.Condicion)))
+            // ;
+        }
 	}
 }

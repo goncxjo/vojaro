@@ -67,4 +67,27 @@ export class AsignaturasService {
         return this.httpClient.post<Asignatura>(this.baseRoute, entity);
     }
   }
+
+  getCorrelativas(id: number): Observable<Asignatura[]> {
+    const url = `${this.baseRoute}/${id}/correlativas`;    
+    return this.httpClient.get<Asignatura[]>(url);
+  }
+
+  getPagedCorrelativasDisponibles(pageInfo: PageInfo, filters: AsignaturaFilters, columnSort: PageSort[]): Observable<PagedData<Asignatura>> {
+    const url = `${this.baseRoute}/correlativas/disponibles`;
+    const sort = JSON.stringify(columnSort);
+    
+    const query = {
+      ...pageInfo,
+      sort,
+      ...filters,
+    };
+    
+    return this.httpClient.get<PagedData<Asignatura>>(url, { params: buildQueryParams(query) });
+  }
+
+  actualizarCorrelativas(id: number, correlativas: any[]): Observable<boolean> {
+    const url = `${this.baseRoute}/correlativas/actualizar`;
+    return this.httpClient.post<boolean>(url, { id, correlativas });
+  }
 }
