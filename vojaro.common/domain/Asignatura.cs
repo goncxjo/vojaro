@@ -12,12 +12,14 @@ namespace vojaro.domain
         public int CargaHoraria { get; set; }
         public int Creditos { get; set; }
         public bool EsInterdisciplinaria { get; set; }
+        [NotMapped]
+        public ItemList CondicionCorrelativa { get; set; }
 
         public virtual long CarreraId { get; set; }
         public virtual long? CarreraOrientacionId { get; set; }
 
         public virtual Carrera Carrera { get; set; }
         public virtual CarreraOrientacion CarreraOrientacion { get; set; }
-        public virtual ICollection<Correlativa> Correlativas { get; set; }
+        public virtual ICollection<AsignaturaCorrelativa> AsignaturaCorrelativas { get; }
     }
 }
