@@ -25,12 +25,9 @@ namespace vojaro.data.Config
             .HasForeignKey(e => e.CarreraOrientacionId)
             .OnDelete(DeleteBehavior.Cascade);
 
-            entity.HasMany(e => e.Correlativas)
-            .WithMany(e => e.Asignaturas)
-            .UsingEntity<AsignaturaCorrelativa>(
-                l => l.HasOne<Correlativa>().WithMany().HasForeignKey(e => e.CorrelativaId),
-                r => r.HasOne<Asignatura>().WithMany().HasForeignKey(e => e.AsignaturaId)
-            );
+            entity.HasMany<AsignaturaCorrelativa>(e => e.AsignaturaCorrelativas)
+            .WithOne(e => e.Asignatura)
+            .HasForeignKey(e => e.AsignaturaId);
         }
     }
 }

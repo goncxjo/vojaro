@@ -9,7 +9,15 @@ namespace vojaro.data.Config
         public void Configure(EntityTypeBuilder<AsignaturaCorrelativa> entity)
         {
             entity.ToTable("asignaturas_correlativas");
-            entity.HasNoKey();
+            entity.HasKey(ac => new { ac.AsignaturaId, ac.CorrelativaId });
+
+            entity.HasOne(ac => ac.Asignatura)
+                .WithMany(s => s.AsignaturaCorrelativas)
+                .HasForeignKey(ac => ac.AsignaturaId);
+
+            entity.HasOne(ac => ac.Correlativa)
+                .WithMany(s => s.AsignaturaCorrelativas)
+                .HasForeignKey(ac => ac.CorrelativaId);
         }
     }
 }
