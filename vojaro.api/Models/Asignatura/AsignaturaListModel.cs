@@ -20,6 +20,7 @@ namespace vojaro.api.Models.Asignatura
 
         public DateTime FechaCreacion { get; set; }
         public DateTime? FechaUltimaModificacion { get; set; }
+        public int CantidadCorrelativas { get; set; }
         public ItemListModel CondicionCorrelativa { get; set; }
 
     }

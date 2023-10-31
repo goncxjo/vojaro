@@ -20,6 +20,11 @@ namespace vojaro.data
         {
             { "id", "Id" },
             { "nombre", "Nombre" },
+            { "codigo", "Codigo" },
+            { "anio", "Anio" },
+            { "cuatrimestre", "Cuatrimestre" },
+            { "cargaHoraria", "CargaHoraria" },
+            { "creditos", "Creditos" },
             { "carrera", "Carrera.Nombre" },
             { "universidad", "Universidad.Siglas" },
             { "fechaCreacion ", "FechaCreacion" },

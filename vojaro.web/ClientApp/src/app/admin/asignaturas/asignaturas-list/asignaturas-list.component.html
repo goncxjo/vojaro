@@ -33,9 +33,10 @@
 				  <th scope="col">Nombre</th>
 				  <th scope="col">Cuatrimestre</th>
 				  <th scope="col">Carga horaria</th>
-				  <th scope="col">Interdisciplinaria</th>
+				  <!-- <th scope="col">Interdisciplinaria</th> -->
 				  <th scope="col">Carrera</th>
 				  <th scope="col">Universidad</th>
+				  <th scope="col">Cantidad correlativas</th>
 				  <th scope="col">Fecha ingreso sis.</th>
 				  <th scope="col">Fecha última mod.</th>
 				</tr>
@@ -59,9 +60,10 @@
 				  <td>{{item.nombre}}</td>
 				  <td>{{item.cuatrimestre}}</td>
 				  <td>{{item.cargaHoraria}}</td>
-				  <td>{{item.esInterdisciplinaria}}</td>
+				  <!-- <td>{{item.esInterdisciplinaria}}</td> -->
 				  <td>{{item.carrera?.nombre}}</td>
 				  <td>{{item.universidad?.siglas}} - {{item.universidad?.nombre}}</td>
+				  <td>{{item.cantidadCorrelativas}}</td>
 				  <td>{{item.fechaCreacion | date: 'dd/MM/yyyy'}}</td>
 				  <td>{{item.fechaUltimaModificacion | date: 'dd/MM/yyyy'}}</td>
 				</tr>

@@ -20,7 +20,9 @@ namespace vojaro.api.Config.AutoMapper
 		{
             this.CreateMap<Asignatura, AsignaturaListModel>()
                 .ForMember(dest => dest.Universidad, opt => opt.MapFrom(src => src.Carrera.Universidad))
+                .ForMember(dest => dest.CantidadCorrelativas, opt => opt.MapFrom(src => src.AsignaturaCorrelativas.Count))
             ;
+            
             this.CreateMap<Asignatura, AsignaturaModel>()
                 .ForMember(dest => dest.Carrera, opt => opt.MapFrom(src => src.Carrera))
                 .ForMember(dest => dest.Universidad, opt => opt.MapFrom(src => src.Carrera.Universidad))

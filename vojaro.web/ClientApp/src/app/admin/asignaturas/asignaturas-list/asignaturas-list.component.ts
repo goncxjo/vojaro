@@ -54,9 +54,10 @@ export class AsignaturasListComponent implements OnInit, AfterViewInit {
         { data: 'nombre' },
         { data: 'cuatrimestre' },
         { data: 'cargaHoraria' },
-        { data: 'esInterdisciplinaria' },
+        // { data: 'esInterdisciplinaria' },
         { data: 'carrera' },
         { data: 'universidad' },
+        { data: 'cantidadCorrelativas' },
         { data: 'fechaCreacion' },
         { data: 'fechaUltimaModificacion' },
       ]
