@@ -14,8 +14,7 @@ import { NotificationService } from 'src/app/shared';
 export class AsignaturasEditComponent implements OnInit {
   readonly!: boolean;
   form = this.buildForm();
-  entity!: Asignatura;
-  universidad!: Universidad;
+  entity: Asignatura = {} as Asignatura;
   isCreate: boolean = false;
 
   constructor(
@@ -50,8 +49,6 @@ export class AsignaturasEditComponent implements OnInit {
     }
 
     const entity: Asignatura = this.form.getRawValue();
-    entity.carreraId = entity.carrera?.id || 0;
-    entity.universidadId = entity.universidad?.id || 0;
 
     this.service.save(entity)
       .subscribe((result) => {
@@ -76,6 +73,7 @@ export class AsignaturasEditComponent implements OnInit {
     return this.formBuilder.group({
       id: [{ value: '', disabled: true}],
       nombre: [''],
+      codigo: [''],
       cuatrimestre: [''],
       cargaHoraria: [''],
       carrera: [''],
@@ -88,6 +86,6 @@ export class AsignaturasEditComponent implements OnInit {
 
 
   onUniversidadChange(universidad: Universidad) {
-    this.universidad = universidad;
+    this.entity.universidad = universidad;
   }
 }

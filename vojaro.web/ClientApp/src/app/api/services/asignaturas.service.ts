@@ -2,7 +2,7 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { Asignatura, AsignaturaFilters, PagedData, PageInfo } from '../models';
-import { buildQueryParams } from '.';
+import { serialize, buildQueryParams, buildFilterParams } from '.';
 import { PageSort } from '../models/page-sort';
 import { FileSaverService } from 'ngx-filesaver';
 import * as _ from 'lodash';
@@ -24,11 +24,12 @@ export class AsignaturasService {
   getPaged(pageInfo: PageInfo, filters: AsignaturaFilters, columnSort: PageSort[]): Observable<PagedData<Asignatura>> {
     const url = `${this.baseRoute}`;
     const sort = JSON.stringify(columnSort);
-    
+    const filter = buildFilterParams(filters);
+
     const query = {
       ...pageInfo,
       sort,
-      ...filters,
+      ...filter,
     };
     
     return this.httpClient.get<PagedData<Asignatura>>(url, { params: buildQueryParams(query) });
@@ -61,10 +62,11 @@ export class AsignaturasService {
   }
   
   save(entity: Asignatura): Observable<Asignatura> {
+    const result = serialize(entity);
     if (entity.id) {
-        return this.httpClient.put<Asignatura>(this.baseRoute, entity);
+        return this.httpClient.put<Asignatura>(this.baseRoute, result);
     } else {
-        return this.httpClient.post<Asignatura>(this.baseRoute, entity);
+        return this.httpClient.post<Asignatura>(this.baseRoute, result);
     }
   }
 
