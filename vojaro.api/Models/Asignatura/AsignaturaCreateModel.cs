@@ -9,6 +9,7 @@ namespace vojaro.api.Models.Asignatura
 
         [Required(ErrorMessage = "El nombre es requerido")]
         public string Nombre { get; set; }
+        public string Codigo { get; set; }
         
         [Required(ErrorMessage = "El cuatrimestre es requerido")]
         public int Cuatrimestre { get; set; }

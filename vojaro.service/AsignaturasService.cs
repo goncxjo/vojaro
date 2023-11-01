@@ -60,6 +60,10 @@ namespace vojaro.services
             var dbEntity = GetRepository().GetById(model.Id);
 
             dbEntity.Nombre = model.Nombre;
+            dbEntity.Codigo = model.Codigo;
+            dbEntity.Anio = model.Anio;
+            dbEntity.Cuatrimestre = model.Cuatrimestre;
+            dbEntity.CargaHoraria = model.CargaHoraria;
             dbEntity.CarreraId = model.CarreraId;
             dbEntity.FechaUltimaModificacion = DateTime.Now;
             // dbEntity.UserIdUltimaModificacion = userId;
