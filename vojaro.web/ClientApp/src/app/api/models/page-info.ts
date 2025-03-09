@@ -1,4 +1,0 @@
-export interface PageInfo {
-    pageNumber: number;
-    pageSize: number;
-}
