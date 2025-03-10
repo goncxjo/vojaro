@@ -1,5 +1,5 @@
 import { FirebaseOptions } from '@angular/fire/app';
-import { environment } from '../environments/environment';
+import { environment } from '../../environments/environment';
 
 export const firebaseConfig: FirebaseOptions = {
     projectId: environment.FIREBASE_PROJECT_ID,
