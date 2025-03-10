@@ -41,6 +41,9 @@ testem.log
 .DS_Store
 Thumbs.db
 
+# vscode
+/.vscode
+
 # Config files
 src/assets/config/*
 /src/environments/environment.ts
