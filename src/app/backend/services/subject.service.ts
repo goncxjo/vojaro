@@ -21,40 +21,31 @@ export class SubjectService {
   }
 
   getAll(filters: SubjectFilters): Observable<SubjectList[]> {
-    const queries: QueryConstraint[] = [
-      where('universityId', '==', filters.universityId),
-      where('careerId', '==', filters.careerId),
-    ]
-
-    const res = collectionData(
-      query(this._collection, ...queries
+    return collectionData(
+      query(this._collection,
+        where('universityId', '==', filters?.universityId || ''),
+        where('careerId', '==', filters?.careerId || ''),
     ), { idField: "id" }) as Observable<SubjectList[]>;
-
-    return res
   }
   
   getById(id: string): Observable<Subject> {
     const docRef = doc(this._firestore, PATH, id);
-    const res = docData(docRef, { idField: "id" }) as Observable<Subject>;
-    return res;
+    return docData(docRef, { idField: "id" }) as Observable<Subject>;
   }
   
   async update(entity: Subject) {
     // entity.user = this.userService.getUserId();
     const docRef = doc(this._firestore, PATH, entity.id);
-    const res = updateDoc(docRef, { ...entity });
-    return res;
+    return updateDoc(docRef, { ...entity });
   }
   
   async create(doc: Subject) {
     // doc.user = this.userService.getUserId();
-    const res = await addDoc(this._collection, doc);
-    return res;
+    return await addDoc(this._collection, doc);
   }
 
   async delete(id: string) {
     const docRef = doc(this._firestore, PATH, id);
-    const res = await deleteDoc(docRef);
-    return res;
+    return await deleteDoc(docRef);
   }
 }

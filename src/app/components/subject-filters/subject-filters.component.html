@@ -1,0 +1,10 @@
+<form [formGroup]="childForm" class="row g-3">
+    <div class="col-12 col-lg-6">
+        <label for="university" class="form-label">Universidad</label>
+        <app-university-select [name]="'universityId'"></app-university-select>
+    </div>
+    <div class="col-12 col-lg-6">
+        <label for="career" class="form-label">Carrera</label>
+        <app-career-select [name]="'careerId'"></app-career-select>
+    </div>
+</form>

@@ -10,16 +10,20 @@ export class NetworkService {
 
   getDataSet(subjects: SubjectList[]) {
     let links: any[] = [];
-    let nodes = subjects.map((s: any) => this.generateNode(s));
+    let nodes = subjects.map((s: any) => this.generateNode(s, subjects));
     subjects.forEach((s: any) => this.feedLinks(links, s, subjects, nodes));
 
     return { nodes, links }
   }
   
-  generateNode(subject: any) {
+  generateNode(subject: any, subjects: any[]) {
+    const subjectsPerQuarter = subjects.filter(x => x.quarter === subject.quarter);
+
     return defineNodeWithDefaults({
       type: 'node',
       id: subject.id,
+      x: subject.quarter * 300,
+      y: subjectsPerQuarter.findIndex(x => x.id === subject.id) + 300,
       label: {
         color: 'black',
         fontSize: '1rem',
