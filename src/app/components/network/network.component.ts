@@ -10,6 +10,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SubjectFiltersModalComponent } from '../subject-filters-modal/subject-filters-modal.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faFilter, faEye, faPlus, faLink, faPen } from '@fortawesome/free-solid-svg-icons';
+import { SubjectEditModalComponent } from '../subject-edit-modal/subject-edit-modal.component';
+import { Item } from '../../backend/models/item.type';
+import type { Selection } from 'd3-selection'
 
 @Component({
   selector: 'app-network',
@@ -24,10 +27,21 @@ export class NetworkComponent implements OnDestroy {
   editIcon = faPen;
   linkIcon = faLink;
 
+  networkService = inject(NetworkService);
+  subjectService = inject(SubjectService);
+
+  form!: FormGroup;
+  data: SubjectList[] = [];
+
+  filters: SubjectFilters = {} as SubjectFilters;
+
   all: Subject[] = [];
   
-  subject_A$: Observable<Subject> | undefined;
-  subject_B$: Observable<Subject> | undefined;
+  selected: any = {
+    last: {} as Subject,
+    pair: [] as any[],
+  };
+
   sub!: Subscription;
 
   controller!: GraphController;
@@ -50,24 +64,15 @@ export class NetworkComponent implements OnDestroy {
       },
     },
     callbacks: {
-      nodeClicked: (node: GraphNode) => {
-        if (!this.subject_A$ || this.subject_B$) {
-          this.subject_A$ = this.subjectService.getById(node.id).pipe(take(1));
-          this.subject_B$ = undefined;
-        } else {
-          this.subject_B$ = this.subjectService.getById(node.id).pipe(take(1));
+      nodeClicked: (node: any) => {
+        this.selected.last = _.find(this.data, (s: Subject) => s.id === node.id);
+        if (this.selected.pair.length > 1) {
+          this.selected.pair = [];
         }
+        this.selected.pair.push({ id: this.selected.last.id, name: this.selected.last.name, index: node.index });
       },
     },
   });
-
-  networkService = inject(NetworkService);
-  subjectService = inject(SubjectService);
-
-  form!: FormGroup;
-  data: SubjectList[] = [];
-
-  filters: SubjectFilters = {} as SubjectFilters;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -143,6 +148,14 @@ export class NetworkComponent implements OnDestroy {
   }  
   
   openEditModal() {
+    const onModalSuccess = (res: any) => {
+      this.applyFilters();
+    }
+
+    const onError = () => { };
+    const modalInstance = this.modalService.open(SubjectEditModalComponent, { centered: true })
+    modalInstance.componentInstance.subject = this.selected.last;
+    modalInstance.result.then(onModalSuccess, onError);
 
   }
 

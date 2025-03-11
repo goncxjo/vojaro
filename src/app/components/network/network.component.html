@@ -1,5 +1,5 @@
 <div class="network-wrapper d-flex justify-content-center align-items-center">
-    <div #graph id="graph" [hidden]="data.length === 0"></div>
+    <div #graph id="graph" class="flex-grow-1 h-100" [hidden]="data.length === 0"></div>
     @if(data.length === 0) {
         <h1>Sin datos</h1>
     }
