@@ -1,7 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap');
+
 * {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
+	font-family: "Ubuntu", sans-serif;
 }
 
 html, body {
@@ -31,11 +34,14 @@ app-root {
 	height: 100%;
 	z-index: 1; /* Envía al fondo */
 	pointer-events: auto; /* Permite interacción con el gráfico */
-  }
-  
-  .floating-content {
-	position: relative; /* Elementos sobre el gráfico */
-	z-index: 2; /* Asegura que estén delante */
-  }
+}
+
+.floating-content {
+position: relative; /* Elementos sobre el gráfico */
+z-index: 2; /* Asegura que estén delante */
+}
+
 /* Importing Bootstrap SCSS file. */
+@import './assets/bootswatch/united/variables';
 @import 'bootstrap/scss/bootstrap';
+@import './assets/bootswatch/united/bootswatch';
