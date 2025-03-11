@@ -1,34 +1,59 @@
-<div class="row mt-3 g-3">
-    <div class="col-12">
-        <form [formGroup]="form">
-            <app-subject-filters #subjectFilters></app-subject-filters>
-        </form>
-    </div>
-    <div class="col-12">
-        <div class="card network-wrapper">
-                <div #graph id="graph"></div>
+<!-- <p class="d-inline-flex gap-1">
+    <button class="btn btn-primary" (click)="add()">ADD</button>
+</p> -->
+
+<div class="network-wrapper">
+    <div #graph id="graph"></div>
+</div>
+
+
+<!-- 
+<div class="floating-content">
+    <div class="row mt-3 g-3">
+        <div class="col-12">
+            <form [formGroup]="form">
+                <app-subject-filters #subjectFilters></app-subject-filters>
+            </form>
+        </div>
+        <div class="col-12">
         </div>
     </div>
-</div>
-<div class="row">
-    @if(subject_A$ | async; as a) {
-    <div class="col-12">
-        <h3>
-            (A) {{a.name}}
-        </h3>
-        @if(subject_B$ | async; as b) {
-        <h3 class="ms-2">
-            &darr;
-        </h3>
-        <h3>
-            (B) {{b.name}}
-        </h3>
-        <p class="d-inline-flex gap-1">
-            <button class="btn btn-primary" (click)="link(a,b,true,false)">A => B (regularize)</button>
-            <button class="btn btn-primary" (click)="link(a,b,false,true)">A => B (approved)</button>
-            <button class="btn btn-primary" (click)="link(a,b,true,true)">A => B (both)</button>
-        </p>
+    <div class="row">
+        @if(subject_A$ | async; as a) {
+        <div class="col-12">
+            <h3>
+                (A) {{a.name}}
+            </h3>
+            @if(subject_B$ | async; as b) {
+            <h3 class="ms-2">
+                &darr;
+            </h3>
+            <h3>
+                (B) {{b.name}}
+            </h3>
+            <p class="d-inline-flex gap-1">
+                <button class="btn btn-primary" (click)="link(a,b,true,false)">A => B (regularize)</button>
+                <button class="btn btn-primary" (click)="link(a,b,false,true)">A => B (approved)</button>
+                <button class="btn btn-primary" (click)="link(a,b,true,true)">A => B (both)</button>
+            </p>
+            }
+        </div>
         }
     </div>
-    }
+    
 </div>
+-->
+
+<nav class="navbar navbar-expand navbar-dark bg-primary fixed-bottom z-3">
+    <ul class="navbar-nav mx-auto">
+    <li class="nav-item">
+        <a class="nav-link btn btn-primary mx-1" (click)="openFilterModal()">Filtrar</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link btn btn-secondary mx-1" (click)="openEditModal()">Editar</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link btn btn-success mx-1" (click)="openLinkModal()">Unir</a>
+    </li>
+    </ul>
+</nav>

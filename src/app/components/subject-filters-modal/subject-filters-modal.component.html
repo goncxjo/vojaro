@@ -1,0 +1,18 @@
+<div class="modal-header">
+    <h4 class="modal-title">Filtrar plan</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss({})"></button>
+</div>
+<div class="modal-body">
+    <div class="row mt-3 g-3">
+        <div class="col">
+            <form [formGroup]="form">
+                <app-subject-filters #subjectFilters></app-subject-filters>
+            </form>
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="activeModal.close({})">Cancelar</button>
+    <button type="button" class="btn btn-primary" (click)="sendFilters()">Aceptar</button>
+</div>

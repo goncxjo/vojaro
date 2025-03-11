@@ -14,7 +14,7 @@ export interface Subject {
     quarter: number;
     mustApproved: any[];
     mustRegularize: any[];
-    careerOptions: any[];
+    // careerOptions: any[];
 }
 
 export interface SubjectFilters {

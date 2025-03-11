@@ -1,12 +1,23 @@
 import { Injectable } from "@angular/core";
 import { SubjectList } from "../../backend/models/subject/subject";
 import _ from "lodash";
-import { defineLink, defineNodeWithDefaults } from "d3-graph-controller";
+import { defineGraph, defineLink, defineNodeWithDefaults, Graph, GraphController } from "d3-graph-controller";
 
 @Injectable({
   providedIn: 'root'
 })
 export class NetworkService {
+
+  draw(subjects: SubjectList[], container: HTMLDivElement, graph: Graph, config: any) {
+    const { nodes, links } = this.getDataSet(subjects);
+      
+    graph = defineGraph({
+      nodes: nodes,
+      links: links,
+    });
+
+    return new GraphController(container, graph, config)
+  }
 
   getDataSet(subjects: SubjectList[]) {
     let links: any[] = [];
@@ -22,8 +33,8 @@ export class NetworkService {
     return defineNodeWithDefaults({
       type: 'node',
       id: subject.id,
-      x: subject.quarter * 300,
-      y: subjectsPerQuarter.findIndex(x => x.id === subject.id) + 300,
+      x: subject.year * 600,
+      y: subjectsPerQuarter.findIndex(x => x.id === subject.id) + 600,
       label: {
         color: 'black',
         fontSize: '1rem',
