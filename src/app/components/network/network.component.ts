@@ -8,16 +8,21 @@ import { Observable, Subscription, take, tap } from 'rxjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SubjectFiltersModalComponent } from '../subject-filters-modal/subject-filters-modal.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faFilter, faEye, faPlus, faLink, faPen } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-network',
-  imports: [],
+  imports: [FontAwesomeModule],
   templateUrl: './network.component.html',
   styleUrl: './network.component.scss',
   standalone: true,
 })
 export class NetworkComponent implements OnDestroy {
   @ViewChild('graph') container!: ElementRef;
+  filterIcon = faFilter;
+  editIcon = faPen;
+  linkIcon = faLink;
 
   all: Subject[] = [];
   
@@ -112,11 +117,10 @@ export class NetworkComponent implements OnDestroy {
   }
 
   applyFilters() {
-    console.log(this.filters)
-
     this.sub = this.subjectService.getAll(this.filters).pipe(
       take(1),
       tap((res: any) => {
+        this.data = res;
         this.networkService.draw(res, this.container.nativeElement, this.graph, this.config)
       })
     ).subscribe()
@@ -126,7 +130,6 @@ export class NetworkComponent implements OnDestroy {
   
   openFilterModal() {
     const onModalSuccess = (res: any) => {
-      console.log(res)
       if (!res) {
         return;
       }

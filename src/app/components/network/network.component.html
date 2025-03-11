@@ -1,23 +1,12 @@
-<!-- <p class="d-inline-flex gap-1">
-    <button class="btn btn-primary" (click)="add()">ADD</button>
-</p> -->
-
-<div class="network-wrapper">
-    <div #graph id="graph"></div>
+<div class="network-wrapper d-flex justify-content-center align-items-center">
+    <div #graph id="graph" [hidden]="data.length === 0"></div>
+    @if(data.length === 0) {
+        <h1>Sin datos</h1>
+    }
 </div>
-
 
 <!-- 
 <div class="floating-content">
-    <div class="row mt-3 g-3">
-        <div class="col-12">
-            <form [formGroup]="form">
-                <app-subject-filters #subjectFilters></app-subject-filters>
-            </form>
-        </div>
-        <div class="col-12">
-        </div>
-    </div>
     <div class="row">
         @if(subject_A$ | async; as a) {
         <div class="col-12">
@@ -47,13 +36,22 @@
 <nav class="navbar navbar-expand navbar-dark bg-primary fixed-bottom z-3">
     <ul class="navbar-nav mx-auto">
     <li class="nav-item">
-        <a class="nav-link btn btn-primary mx-1" (click)="openFilterModal()">Filtrar</a>
+        <a class="nav-link btn btn-primary mx-1" (click)="openFilterModal()">
+            <fa-icon [icon]="filterIcon" />
+            Filtrar
+        </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link btn btn-secondary mx-1" (click)="openEditModal()">Editar</a>
+        <a class="nav-link btn btn-primary mx-1" (click)="openEditModal()">
+            <fa-icon [icon]="editIcon" />
+            Editar
+        </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link btn btn-success mx-1" (click)="openLinkModal()">Unir</a>
+        <a class="nav-link btn btn-primary mx-1" (click)="openLinkModal()">
+            <fa-icon [icon]="linkIcon" />
+            Unir
+        </a>
     </li>
     </ul>
 </nav>
