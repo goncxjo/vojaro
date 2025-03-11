@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap');
 
 * {
@@ -23,8 +24,12 @@ app-root {
 	@extend .min-vh-100;
 }
 
-@import 'assets/d3-graph-controller.css';
-@import 'bootstrap/scss/bootstrap';
+$web-font-path: false;
+
+/* Importing Bootstrap SCSS file. */
+@import "bootswatch/dist/united/variables";
+@import "bootstrap/scss/bootstrap";
+@import "bootswatch/dist/united/bootswatch";
 
 .network-wrapper {
 	position: fixed; /* Se fija al viewport */
@@ -40,8 +45,3 @@ app-root {
 position: relative; /* Elementos sobre el gráfico */
 z-index: 2; /* Asegura que estén delante */
 }
-
-/* Importing Bootstrap SCSS file. */
-@import './assets/bootswatch/united/variables';
-@import 'bootstrap/scss/bootstrap';
-@import './assets/bootswatch/united/bootswatch';
