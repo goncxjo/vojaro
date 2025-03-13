@@ -1,18 +1,16 @@
 import { Component, ElementRef, inject, OnDestroy, ViewChild } from '@angular/core';
-import { defineGraphConfig, Graph, GraphController, GraphNode } from 'd3-graph-controller'
 import { NetworkService } from '../../core/services/network.service';
 import { SubjectService } from '../../backend/services/subject.service';
 import { Subject, SubjectFilters, SubjectList } from '../../backend/models/subject/subject';
-import _ from 'lodash';
-import { Observable, Subscription, take, tap } from 'rxjs';
+import { Subscription, take, tap } from 'rxjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SubjectFiltersModalComponent } from '../subject-filters-modal/subject-filters-modal.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faFilter, faEye, faPlus, faLink, faPen } from '@fortawesome/free-solid-svg-icons';
+import { faFilter, faEye, faPlus, faLink, faPen, faRefresh } from '@fortawesome/free-solid-svg-icons';
 import { SubjectEditModalComponent } from '../subject-edit-modal/subject-edit-modal.component';
-import { Item } from '../../backend/models/item.type';
-import type { Selection } from 'd3-selection'
+import _ from 'lodash';
+import cytoscape, { NodeSingular } from 'cytoscape';
 
 @Component({
   selector: 'app-network',
@@ -22,10 +20,11 @@ import type { Selection } from 'd3-selection'
   standalone: true,
 })
 export class NetworkComponent implements OnDestroy {
-  @ViewChild('graph') container!: ElementRef;
+  @ViewChild('graph', { static: true }) container!: ElementRef;
   filterIcon = faFilter;
   editIcon = faPen;
   linkIcon = faLink;
+  refreshIcon = faRefresh;
 
   networkService = inject(NetworkService);
   subjectService = inject(SubjectService);
@@ -33,46 +32,19 @@ export class NetworkComponent implements OnDestroy {
   form!: FormGroup;
   data: SubjectList[] = [];
 
-  filters: SubjectFilters = {} as SubjectFilters;
+  filters: SubjectFilters = {
+    universityId: "LvXJZ7m6rmFEKcG7hKZj",
+    careerId: "clpONiwraXiYuLTTIYpT"
+  } as SubjectFilters;
 
   all: Subject[] = [];
-  
-  selected: any = {
-    last: {} as Subject,
-    pair: [] as any[],
-  };
+
+  selected!: SubjectList | null;
 
   sub!: Subscription;
+  
+  cy!: cytoscape.Core;
 
-  controller!: GraphController;
-  graph!: Graph;
-  config: any = defineGraphConfig({
-    zoom: {
-      initial: .5,
-      max: 2,
-      min: 0.1,
-    },
-    simulation: {
-      forces: {
-        centering: {
-          enabled: false,
-          strength: 10,
-        },
-        link: {
-          strength: 0,
-        },
-      },
-    },
-    callbacks: {
-      nodeClicked: (node: any) => {
-        this.selected.last = _.find(this.data, (s: Subject) => s.id === node.id);
-        if (this.selected.pair.length > 1) {
-          this.selected.pair = [];
-        }
-        this.selected.pair.push({ id: this.selected.last.id, name: this.selected.last.name, index: node.index });
-      },
-    },
-  });
 
   constructor(
     private formBuilder: FormBuilder,
@@ -87,24 +59,11 @@ export class NetworkComponent implements OnDestroy {
     this.form = this.buildForm();
   }
 
-  add() {
-    // _.forEach(this.all, (s) => {
-    //   this.subjectService.create(s)
-    //   console.log(s)
-    // })
-  }
-
-  edit() {
-    // _.forEach(this.all, (s) => {
-    //   this.subjectService.create(s)
-    // })
-  }
-
   link(a: Subject, b: Subject, mustRegularize: boolean, mustAproved: boolean) {
-    if(!b.mustRegularize) {
+    if (!b.mustRegularize) {
       b.mustRegularize = [];
     }
-    if(!b.mustApproved) {
+    if (!b.mustApproved) {
       b.mustApproved = [];
     }
 
@@ -118,53 +77,98 @@ export class NetworkComponent implements OnDestroy {
   }
 
   ngAfterViewInit() {
-    // this.applyFilters();
+    this.cy = this.networkService.create(this.container);
+    this.applyFilters();
   }
 
   applyFilters() {
     this.sub = this.subjectService.getAll(this.filters).pipe(
       take(1),
       tap((res: any) => {
+
         this.data = res;
-        this.networkService.draw(res, this.container.nativeElement, this.graph, this.config)
+        const { nodes, links } = this.networkService.getDataSet(res);
+        this.cy.elements().remove();
+        this.cy.add([...nodes,...links])
+
+        this.cy.fit();
+        this.cy.center();
+
+        this.cy.on('tap', (event) => {
+          const node = this.cy.nodes().children(event.target)[0];
+          this.resetOpacity()
+          if(node) {
+            this.selected = _.find(this.data, (s: SubjectList) => s.id === node.id()) || null;
+            this.focusNeighbourhood(event);
+          }
+          else {
+            this.selected = null;        
+          }
+        });
+
+        // this.cy.nodes().children().on('mouseover', this.focusNeighbourhood.bind(this));
+        // this.cy.nodes().children().on('mouseout', this.resetOpacity.bind(this));
       })
     ).subscribe()
-
-    
   }
-  
+
+  focusNeighbourhood(event: cytoscape.EventObject) {
+    const node: NodeSingular = event.target;
+    const adjacentEdges = node.connectedEdges();
+    const connectedNodes = adjacentEdges.connectedNodes()
+
+    node.addClass('selected')
+    adjacentEdges.addClass('show')
+    this.cy.nodes().children().not(connectedNodes).not(node).addClass('hide');
+  }
+
+  resetOpacity() {
+    this.cy.edges().removeClass('show');
+    this.cy.nodes().children().removeClass('selected');
+    this.cy.nodes().children().removeClass('hide');
+  }
+
+  cleanSelected() {
+    this.selected = null;
+  }
+
   openFilterModal() {
     const onModalSuccess = (res: any) => {
-      if (!res) {
-        return;
+      if (res) {
+        this.filters = res;
+        this.applyFilters();
       }
-      this.filters = res;
-      this.applyFilters();
     }
 
     const onError = () => { };
     const modalInstance = this.modalService.open(SubjectFiltersModalComponent, { centered: true })
     modalInstance.result.then(onModalSuccess, onError);
-  }  
-  
+  }
+
   openEditModal() {
     const onModalSuccess = (res: any) => {
       this.applyFilters();
     }
 
     const onError = () => { };
-    const modalInstance = this.modalService.open(SubjectEditModalComponent, { centered: true })
-    modalInstance.componentInstance.subject = this.selected.last;
-    modalInstance.result.then(onModalSuccess, onError);
 
+    if(this.selected) {
+      const modalInstance = this.modalService.open(SubjectEditModalComponent, { centered: true })
+      modalInstance.componentInstance.subject = this.selected;
+      modalInstance.result.then(onModalSuccess, onError);
+    }
   }
 
   openLinkModal() {
 
   }
 
+  reset() {
+    this.cy.reset();
+  }
+
   ngOnDestroy() {
     this.sub?.unsubscribe()
-    this.controller.shutdown()
+    this.cy.destroy()
   }
 }

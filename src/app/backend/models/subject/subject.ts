@@ -5,11 +5,7 @@ export interface SubjectList {
     careerId: string;
 }
 
-export interface Subject {
-    id: string;
-    name: string;
-    universityId: string;
-    careerId: string;
+export interface Subject extends SubjectList {
     year: number;
     quarter: number;
     mustApproved: any[];

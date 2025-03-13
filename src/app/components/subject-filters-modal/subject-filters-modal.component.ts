@@ -26,7 +26,11 @@ export class SubjectFiltersModalComponent implements OnInit {
     this.form = this.buildForm();
   }
 
-  sendFilters() {
-    this.activeModal.close(this.filters?.childForm?.getRawValue() ?? {})
+  get disableSubmit(): boolean {
+    return !this.form.getRawValue().careerId;
+  }
+
+  submit() {
+    this.activeModal.close(this.filters?.childForm?.getRawValue())
   }
 }

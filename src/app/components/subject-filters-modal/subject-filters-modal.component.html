@@ -1,6 +1,6 @@
 <div class="modal-header">
     <h4 class="modal-title">Filtrar</h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss({})"></button>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss(null)"></button>
 </div>
 <div class="modal-body">
     <div class="row mb-3 g-3">
@@ -13,6 +13,6 @@
 
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="activeModal.close({})">Cancelar</button>
-    <button type="button" class="btn btn-primary" (click)="sendFilters()">Aceptar</button>
+    <button type="button" class="btn btn-secondary" (click)="activeModal.close(null)">Cancelar</button>
+    <button type="button" class="btn btn-primary" (click)="submit()" [disabled]="disableSubmit">Aceptar</button>
 </div>
