@@ -19,7 +19,11 @@ export class UserService {
   }
 
   getUserName() {
-    return this.auth.currentUser?.displayName ?? 'Invitado'
+    return this.auth.currentUser?.displayName || 'Invitado'
+  }
+
+  getUserNameForAvatar() {
+    return this.auth.currentUser?.displayName || 'Usuario Invitado'
   }
 
   getUserId() {

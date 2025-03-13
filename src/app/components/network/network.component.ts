@@ -1,5 +1,5 @@
 import { Component, ElementRef, inject, OnDestroy, ViewChild } from '@angular/core';
-import { NetworkService } from '../../core/services/network.service';
+import { NetworkService } from './network.service';
 import { SubjectService } from '../../backend/services/subject.service';
 import { Subject, SubjectFilters, SubjectList } from '../../backend/models/subject/subject';
 import { Subscription, take, tap } from 'rxjs';
@@ -15,6 +15,7 @@ import cytoscape, { NodeSingular } from 'cytoscape';
 @Component({
   selector: 'app-network',
   imports: [FontAwesomeModule],
+  providers: [NetworkService],
   templateUrl: './network.component.html',
   styleUrl: './network.component.scss',
   standalone: true,

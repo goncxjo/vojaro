@@ -2,17 +2,11 @@ import { ElementRef, Injectable } from "@angular/core";
 import { Subject, SubjectList } from "../../backend/models/subject/subject";
 import _ from "lodash";
 import cytoscape from "cytoscape";
-import cytoscapeCxtmenu from "cytoscape-cxtmenu";
-// import { defineGraph, defineLink, defineNodeWithDefaults, Graph, GraphController } from "d3-graph-controller";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class NetworkService {
 
   create(container: ElementRef<any>) {
-    cytoscape.use(cytoscapeCxtmenu);
-
     return cytoscape({
       container: container.nativeElement,
       elements: [],

@@ -1,8 +1,17 @@
-<nav class="navbar bg-body-tertiary z-3">
+<nav class="navbar bg-body-secondary z-3 shadow-lg border-bottom">
     <div class="container">
       <span class="navbar-brand mb-0 h1">V O J A R O</span>
+      @defer (on timer(1500ms)) {
+        <ngx-avatars
+          name="userService.getUserNameForAvatar()"
+          size="34"
+          placement="bottom"
+          [ngbPopover]="popContent"
+          [autoClose]="'outside'"
+        ></ngx-avatars>
+      }
     </div>
-  </nav>
+</nav>
 <div class="container">
     <div class="row">
         <div class="col">
@@ -11,3 +20,15 @@
     </div>
 </div>
 
+<ng-template #popContent>
+	Hola, <b>{{ userService.getUserName() }}!</b>
+  <div class="d-grid gap-2">
+    @if(!userService.isLoggedIn()) {
+      <button class="btn btn-primary" type="button" (click)="login()">Iniciar sesión</button>
+    }
+    @else {
+      <button class="btn btn-primary" type="button">Editar perfil</button>
+      <button class="btn btn-primary" type="button">Cerrar sesión</button>
+    }
+  </div>
+</ng-template>
