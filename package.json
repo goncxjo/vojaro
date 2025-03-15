@@ -9,7 +9,6 @@
     "config": "ts-node src/environments/set-env.ts",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
-
   },
   "private": true,
   "dependencies": {
@@ -35,6 +34,7 @@
     "lodash": "^4.17.21",
     "ngx-toastr": "^19.0.0",
     "rxjs": "~7.8.0",
+    "ts-node": "^10.9.2",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
   },
