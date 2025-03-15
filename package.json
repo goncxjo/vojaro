@@ -30,7 +30,6 @@
     "bootswatch": "^5.3.3",
     "cytoscape": "^3.31.1",
     "lodash": "^4.17.21",
-    "ngx-avatars": "^1.8.0",
     "ngx-toastr": "^19.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

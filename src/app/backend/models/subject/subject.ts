@@ -3,6 +3,7 @@ export interface SubjectList {
     name: string;
     universityId: string;
     careerId: string;
+    year: number;
 }
 
 export interface Subject extends SubjectList {

@@ -2,45 +2,48 @@ import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { addDoc, collection, collectionData, CollectionReference, deleteDoc, doc, docData, Firestore, query, QueryConstraint, updateDoc, where } from '@angular/fire/firestore';
 import _ from 'lodash';
-import { Subject, SubjectFilters } from '../models/subject/subject';
+import { UserService } from '../../core/services/user.service';
+import { StudentSubject } from '../models/subject/subject-subject';
+import { SubjectFilters } from '../models/subject/subject';
 
-const PATH = 'subjects';
+const PATH = 'studentsSubjects';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SubjectService {
+export class StudentSubjectService {
   private _firestore: Firestore;
   private _collection: CollectionReference;
 
   constructor(
-      // private userService: UserService,
+      private userService: UserService,
   ) {
       this._firestore = inject(Firestore);
       this._collection = collection(this._firestore, PATH);
   }
 
-  getAll(filters: SubjectFilters): Observable<Subject[]> {
+  getAll(filters: SubjectFilters): Observable<StudentSubject[]> {
+    const userId = this.userService.getUserId();
+
     return collectionData(
       query(this._collection,
+        where('userId', '==', userId),
         where('universityId', '==', filters?.universityId || ''),
         where('careerId', '==', filters?.careerId || ''),
-    ), { idField: "id" }) as Observable<Subject[]>;
+    ), { idField: "id" }) as Observable<StudentSubject[]>;
   }
   
-  getById(id: string): Observable<Subject> {
+  getById(id: string): Observable<StudentSubject> {
     const docRef = doc(this._firestore, PATH, id);
-    return docData(docRef, { idField: "id" }) as Observable<Subject>;
+    return docData(docRef, { idField: "id" }) as Observable<StudentSubject>;
   }
   
-  async update(entity: Subject) {
-    // entity.user = this.userService.getUserId();
+  async update(entity: StudentSubject) {
     const docRef = doc(this._firestore, PATH, entity.id);
     return updateDoc(docRef, { ...entity });
   }
   
-  async create(doc: Subject) {
-    // doc.user = this.userService.getUserId();
+  async create(doc: StudentSubject) {
     return await addDoc(this._collection, doc);
   }
 

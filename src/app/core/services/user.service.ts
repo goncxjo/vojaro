@@ -22,12 +22,15 @@ export class UserService {
     return this.auth.currentUser?.displayName || 'Invitado'
   }
 
-  getUserNameForAvatar() {
-    return this.auth.currentUser?.displayName || 'Usuario Invitado'
+  getCurrentUser() {
+    return this.auth.currentUser ?? {
+      displayName: 'Invitado',
+      photoURL: `public/default-user.jpg`
+    };
   }
 
   getUserId() {
-    return this.auth.currentUser?.uid;
+    return this.auth.currentUser?.uid || '';
   }
 
   isLoggedIn() {

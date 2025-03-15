@@ -1,4 +1,4 @@
-import { Component, Input, AfterContentInit, AfterViewChecked } from '@angular/core';
+import { Component, Input, AfterContentInit, AfterViewChecked, input } from '@angular/core';
 import { FormControl, FormGroupDirective, ControlContainer, ReactiveFormsModule, FormGroup } from '@angular/forms';
 import * as _ from 'lodash';
 import { debounceTime, distinctUntilChanged, map, Observable, Subscription, tap } from 'rxjs';
@@ -25,9 +25,9 @@ export class CareerSelectComponent implements AfterContentInit, AfterViewChecked
   chlidForm!: FormGroup;
   susc!: Subscription;
 
-  @Input() isDisabled: boolean = false;
-  @Input() showOptionAll: boolean = false;
-  @Input() name: string = '';
+  isDisabled = input<boolean>(false);
+  // showOptionAll = input<boolean>();
+  name = input<string>('');
 
   constructor(
     private service: CollectionService<CareerList>,
@@ -38,14 +38,14 @@ export class CareerSelectComponent implements AfterContentInit, AfterViewChecked
 
   ngAfterContentInit(): void {
     this.chlidForm = this.parentForm.form;
-    this.chlidForm.addControl(this.name, new FormControl({value: '', disabled: this.isDisabled}));
-    this.disableInput(true);
+    this.chlidForm.addControl(this.name(), new FormControl({value: '', disabled: this.isDisabled()}));
+    // this.disableInput(true);
   }
 
   ngAfterViewChecked() {
     this.susc = this.chlidForm.controls['universityId'].valueChanges
     .pipe(
-      tap(() => this.disableInput(true)),
+      // tap(() => this.disableInput(true)),
       debounceTime(300),
       distinctUntilChanged()
     )
@@ -56,18 +56,18 @@ export class CareerSelectComponent implements AfterContentInit, AfterViewChecked
             return _.filter(res, (c: CareerList) => c.universityId == value)
           })
         );
-        this.disableInput(false)
+        // this.disableInput(false)
       }
     });
   }
 
-  get ctrl(): FormControl {
-    return this.chlidForm.controls[this.name] as FormControl;
-  }
+  // get ctrl(): FormControl {
+  //   return this.chlidForm.controls[this.name()] as FormControl;
+  // }
 
-  disableInput(value: boolean): void {
-    value ? this.ctrl.disable() : this.ctrl.enable();
-  }
+  // disableInput(value: boolean): void {
+  //   value ? this.ctrl.disable() : this.ctrl.enable();
+  // }
 
   ngOnDestroy() {
     this.susc.unsubscribe();

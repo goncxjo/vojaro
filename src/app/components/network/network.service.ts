@@ -1,7 +1,8 @@
 import { ElementRef, Injectable } from "@angular/core";
-import { Subject, SubjectList } from "../../backend/models/subject/subject";
+import { Subject } from "../../backend/models/subject/subject";
 import _ from "lodash";
 import cytoscape from "cytoscape";
+import { StudentSubject } from "../../backend/models/subject/subject-subject";
 
 @Injectable()
 export class NetworkService {
@@ -13,6 +14,7 @@ export class NetworkService {
       style: this.getStyles()
     });
   }
+
   getStyles(): cytoscape.StylesheetJson | Promise<cytoscape.StylesheetJson> | undefined {
     return [
       {
@@ -42,6 +44,30 @@ export class NetworkService {
         }
       },
       {
+        selector: ".approved",
+        style: {
+          'background-color': '#34a853',
+        }
+      },
+      {
+        selector: ".regularized",
+        style: {
+          'background-color': '#673ab7',
+        }
+      },
+      {
+        selector: ".in-progress",
+        style: {
+          'background-color': '#fbbc05',
+        }
+      },
+      {
+        selector: ".available",
+        style: {
+          'background-color': '#4285f4',
+        }
+      },
+      {
         selector: ".parent",
         style: {
           'background-color': '#F5F5F5',
@@ -50,7 +76,7 @@ export class NetworkService {
       {
         selector: ".selected",
         style: {
-          'border-color': '#0000ff',
+          'border-color': '#03a9f4',
           'border-width': 4,
           'opacity': 1,
         }
@@ -87,13 +113,67 @@ export class NetworkService {
     ]
   }
 
-  getDataSet(subjects: SubjectList[]) {
-    let nodes = this.transformSubjectsToNodes(subjects);
+  getDataSet(student: StudentSubject, subjects: Subject[]) {
+    let nodes = this.transformSubjectsToNodes(student, subjects);
     let links: any[] = this.getEdges(subjects);
     return { nodes, links }
   }
 
-  getEdges(subjects: SubjectList[]): any[] {
+    
+  transformSubjectsToNodes(student: StudentSubject, subjects: Subject[]) {
+    const xOffset = 200; // Distancia horizontal entre columnas
+    const yOffset = 50; // Distancia vertical entre nodos en la columna
+  
+    // Agrupar nodos por año
+    const subjectsByYear: Record<number, Subject[]> = {};
+    subjects.forEach(subject => {
+      subjectsByYear[subject.year] = subjectsByYear[subject.year] || [];
+      subjectsByYear[subject.year].push(subject);
+    });
+  
+    // Generar nodos equilibrados
+    const nodes: any[] = [];
+    Object.entries(subjectsByYear).forEach(([year, subjects]) => {
+      const yearNum = parseInt(year);
+      const totalNodes = subjects.length;
+      const totalHeight = (totalNodes - 1) * yOffset; // Altura total de la columna
+  
+      nodes.push({
+        group: 'nodes',
+        data: {
+          id: `year-${year}`,
+          name: `Año ${year}`
+        },
+        selectable: false,
+        grabbable: false,
+        classes: 'parent',  
+      })
+
+      subjects.forEach((subject, index) => {
+        const x = (yearNum - 1) * xOffset; // Posición X en base al año
+        const y = -totalHeight / 2 + index * yOffset; // Posición Y centrada en y = 0
+
+        const statusApproved = _.find(student?.approved || [], (s: string) => s === subject.id) ? 'approved' : '';
+        const statusRegularized = _.find(student?.regularized || [], (s: string) => s === subject.id) ? 'regularized' : '';
+        const statusInProgress = _.find(student?.inProgress || [], (s: string) => s === subject.id) ? 'in-progress' : '';
+        const statusAvailable = _.every(subject.mustApproved, (id) => _.includes(student?.approved, id)) ? 'available' : '';
+
+        nodes.push({
+          group: 'nodes',
+          data: {
+            ...subject,
+            parent: `year-${year}`,
+          },
+          position: { x, y },
+          classes: `center-center multiline-auto ${statusApproved} ${statusRegularized} ${statusInProgress} ${statusAvailable}`,  
+        });
+      });
+    });
+  
+    return nodes;
+  }
+
+  getEdges(subjects: Subject[]): any[] {
     const links: any[] = [];
     subjects.forEach((s: any) => {
       const approved = s.mustApproved || [];
@@ -130,129 +210,5 @@ export class NetworkService {
     });
     return links;
   }
-  
-  transformSubjectsToNodes(subjects: any[]) {
-    const xOffset = 200; // Distancia horizontal entre columnas
-    const yOffset = 50; // Distancia vertical entre nodos en la columna
-  
-    // Agrupar nodos por año
-    const subjectsByYear: Record<number, Subject[]> = {};
-    subjects.forEach(subject => {
-      subjectsByYear[subject.year] = subjectsByYear[subject.year] || [];
-      subjectsByYear[subject.year].push(subject);
-    });
-  
-    // Generar nodos equilibrados
-    const nodes: any[] = [];
-    Object.entries(subjectsByYear).forEach(([year, subjects]) => {
-      const yearNum = parseInt(year);
-      const totalNodes = subjects.length;
-      const totalHeight = (totalNodes - 1) * yOffset; // Altura total de la columna
-  
-      nodes.push({
-        group: 'nodes',
-        data: {
-          id: `year-${year}`,
-          name: `Año ${year}`
-        },
-        selectable: false,
-        grabbable: false,
-        classes: 'parent',  
-      })
 
-      subjects.forEach((subject, index) => {
-        const x = (yearNum - 1) * xOffset; // Posición X en base al año
-        const y = -totalHeight / 2 + index * yOffset; // Posición Y centrada en y = 0
-  
-        nodes.push({
-          group: 'nodes',
-          data: {
-            ...subject,
-            parent: `year-${year}`,
-          },
-          position: { x, y },
-          classes: 'center-center multiline-auto',  
-        });
-      });
-    });
-  
-    return nodes;
-  }
-
-  // transformSubjectsToNodes(subjects: any[]) {
-  //   const xOffset = 400; // Distancia horizontal entre columnas
-  //   const yOffset = 100; // Distancia vertical entre nodos
-  //   const columnOffset = 200; // Distancia entre las dos columnas del mismo año
-  
-  //   // Agrupar nodos por año
-  //   const subjectsByYear: Record<number, Subject[]> = {};
-  //   subjects.forEach(subject => {
-  //     subjectsByYear[subject.year] = subjectsByYear[subject.year] || [];
-  //     subjectsByYear[subject.year].push(subject);
-  //   });
-  
-  //   // Generar nodos con posiciones
-  //   const nodes: any[] = [];
-  //   Object.entries(subjectsByYear).forEach(([year, subjects]) => {
-  //     const yearNum = parseInt(year);
-  
-  //     // Calcular cantidad de conexiones para cada nodo
-  //     const subjectsWithConnections = subjects.map(subject => ({
-  //       ...subject,
-  //       connections: (subject.mustApproved?.length || 0) + (subject.mustRegularize?.length || 0),
-  //     }));
-  
-  //     // Ordenar los nodos por cantidad de conexiones, descendente
-  //     subjectsWithConnections.sort((a, b) => a.connections - b.connections);
-  
-  //     // Dividir los nodos en dos columnas
-  //     const middle = Math.ceil(subjectsWithConnections.length / 2);
-  //     const firstColumn = subjectsWithConnections.slice(0, middle);
-  //     const secondColumn = subjectsWithConnections.slice(middle);
-  
-  //     nodes.push({
-  //       group: 'nodes',
-  //       data: {
-  //         id: `year-${year}`,
-  //         name: `Año ${year}`
-  //       },
-  //       selectable: false,
-  //       grabbable: false,
-  //     })
-      
-  //     // Posicionar nodos en la primera columna
-  //     firstColumn.forEach((subject, index) => {
-  //       const x = (yearNum - 1) * xOffset; // Columna izquierda
-  //       const y = -((firstColumn.length - 1) * yOffset) / 2 + index * yOffset; // Centrar en Y
-  
-  //       nodes.push({
-  //         group: 'nodes',
-  //         data: {
-  //           ...subject,
-  //           parent: `year-${year}`
-  //         },
-  //         position: { x, y },
-  //         classes: 'bottom-center multiline-auto',  
-  //       });
-  //     });
-  
-  //     // Posicionar nodos en la segunda columna
-  //     secondColumn.forEach((subject, index) => {
-  //       const x = (yearNum - 1) * xOffset + columnOffset; // Columna derecha
-  //       const y = -((secondColumn.length - 1) * yOffset) / 2 + index * yOffset; // Centrar en Y
-  
-  //       nodes.push({
-  //         group: 'nodes',
-  //         data: {
-  //           ...subject,
-  //           parent: `year-${year}`
-  //         },
-  //         position: { x, y },
-  //         classes: 'bottom-center multiline-auto', 
-  //       });
-  //     });
-  //   });
-  
-  //   return nodes;
-  // }
 }

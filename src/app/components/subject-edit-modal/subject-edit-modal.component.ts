@@ -59,7 +59,9 @@ export class SubjectEditModalComponent {
       this.toastr.error('Por favor, completa los campos requeridos.', 'Error');
       return;
     }
+
     debugger;
+
     try {
       const form = this.form.getRawValue();
       const entity: Subject = {

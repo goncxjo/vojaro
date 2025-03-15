@@ -2,15 +2,19 @@ import { Component, ElementRef, inject, OnDestroy, ViewChild } from '@angular/co
 import { NetworkService } from './network.service';
 import { SubjectService } from '../../backend/services/subject.service';
 import { Subject, SubjectFilters, SubjectList } from '../../backend/models/subject/subject';
-import { Subscription, take, tap } from 'rxjs';
+import { combineLatest, forkJoin, Subscription, take, tap } from 'rxjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SubjectFiltersModalComponent } from '../subject-filters-modal/subject-filters-modal.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faFilter, faEye, faPlus, faLink, faPen, faRefresh } from '@fortawesome/free-solid-svg-icons';
+import { faFilter, faEye, faPlus, faLink, faPen, faRefresh, faCircleUp } from '@fortawesome/free-solid-svg-icons';
 import { SubjectEditModalComponent } from '../subject-edit-modal/subject-edit-modal.component';
 import _ from 'lodash';
 import cytoscape, { NodeSingular } from 'cytoscape';
+import { StudentSubjectService } from '../../backend/services/student-subject.service';
+import { SubjectStateSelectComponent } from '../subject-state-select/subject-state-select.component';
+import { StudentSubject } from '../../backend/models/subject/subject-subject';
+import { StudentSubjectEditModalComponent } from '../student-subject-edit-modal/student-subject-edit-modal.component';
 
 @Component({
   selector: 'app-network',
@@ -26,21 +30,24 @@ export class NetworkComponent implements OnDestroy {
   editIcon = faPen;
   linkIcon = faLink;
   refreshIcon = faRefresh;
+  updateNodeIcon = faCircleUp;
 
   networkService = inject(NetworkService);
+  studentSubjectService = inject(StudentSubjectService);
   subjectService = inject(SubjectService);
 
   form!: FormGroup;
-  data: SubjectList[] = [];
+  data: Subject [] = [];
 
   filters: SubjectFilters = {
     universityId: "LvXJZ7m6rmFEKcG7hKZj",
-    careerId: "clpONiwraXiYuLTTIYpT"
+    careerId: "clpONiwraXiYuLTTIYpT",
   } as SubjectFilters;
 
   all: Subject[] = [];
 
-  selected!: SubjectList | null;
+  selected!: Subject | null;
+  student!: StudentSubject | null;
 
   sub!: Subscription;
   
@@ -83,34 +90,39 @@ export class NetworkComponent implements OnDestroy {
   }
 
   applyFilters() {
-    this.sub = this.subjectService.getAll(this.filters).pipe(
+    const su = this.subjectService.getAll(this.filters); 
+    const sts = this.studentSubjectService.getAll(this.filters);
+
+    this.sub = combineLatest([sts, su]).pipe(
       take(1),
-      tap((res: any) => {
+    ).subscribe(res => {
+      this.student = res[0][0];
+      this.data = res[1];
+      const { nodes, links } = this.networkService.getDataSet(this.student, res[1]);
+      this.cy.elements().remove();
+      this.cy.add([...nodes,...links])
 
-        this.data = res;
-        const { nodes, links } = this.networkService.getDataSet(res);
-        this.cy.elements().remove();
-        this.cy.add([...nodes,...links])
+      this.cy.reset();
+      this.cy.pan({
+        x: 0,
+        y: 500 
+      });
 
-        this.cy.fit();
-        this.cy.center();
+      this.cy.on('tap', (event) => {
+        const node = this.cy.nodes().children(event.target)[0];
+        this.resetOpacity()
+        if(node) {
+          this.selected = _.find(this.data, (s: SubjectList) => s.id === node.id()) || null;
+          this.focusNeighbourhood(event);
+        }
+        else {
+          this.selected = null;        
+        }
+      });
 
-        this.cy.on('tap', (event) => {
-          const node = this.cy.nodes().children(event.target)[0];
-          this.resetOpacity()
-          if(node) {
-            this.selected = _.find(this.data, (s: SubjectList) => s.id === node.id()) || null;
-            this.focusNeighbourhood(event);
-          }
-          else {
-            this.selected = null;        
-          }
-        });
-
-        // this.cy.nodes().children().on('mouseover', this.focusNeighbourhood.bind(this));
-        // this.cy.nodes().children().on('mouseout', this.resetOpacity.bind(this));
-      })
-    ).subscribe()
+      // this.cy.nodes().children().on('mouseover', this.focusNeighbourhood.bind(this));
+      // this.cy.nodes().children().on('mouseout', this.resetOpacity.bind(this));
+    });
   }
 
   focusNeighbourhood(event: cytoscape.EventObject) {
@@ -156,6 +168,21 @@ export class NetworkComponent implements OnDestroy {
     if(this.selected) {
       const modalInstance = this.modalService.open(SubjectEditModalComponent, { centered: true })
       modalInstance.componentInstance.subject = this.selected;
+      modalInstance.result.then(onModalSuccess, onError);
+    }
+  }
+
+  openUpdateModal() {
+    const onModalSuccess = (res: any) => {
+      this.applyFilters();
+    }
+
+    const onError = () => { };
+
+    if(this.selected) {
+      const modalInstance = this.modalService.open(StudentSubjectEditModalComponent, { centered: true })
+      modalInstance.componentInstance.subject = this.selected;
+      modalInstance.componentInstance.entity = this.student;
       modalInstance.result.then(onModalSuccess, onError);
     }
   }

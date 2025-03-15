@@ -1,24 +1,22 @@
+@defer (on timer(1500ms)) {
 <nav class="navbar bg-body-secondary z-3 shadow-lg border-bottom">
     <div class="container">
       <span class="navbar-brand mb-0 h1">V O J A R O</span>
-      @defer (on timer(1500ms)) {
-        <ngx-avatars
-          name="userService.getUserNameForAvatar()"
-          size="34"
-          placement="bottom"
-          [ngbPopover]="popContent"
-          [autoClose]="'outside'"
-        ></ngx-avatars>
-      }
-    </div>
-</nav>
+        <ul class="navbar-nav ms-2" placement="bottom" [ngbPopover]="popContent" [autoClose]="'outside'">
+          <li class="nav-item user-profile">
+            <img class="nav-user-profile" src="{{ getUser().photoURL }}" id="img">
+          </li>
+        </ul>
+      </div>
+    </nav>
 <div class="container">
-    <div class="row">
-        <div class="col">
-            <router-outlet />
-        </div>
+  <div class="row">
+    <div class="col">
+      <router-outlet />
     </div>
+  </div>
 </div>
+}
 
 <ng-template #popContent>
 	Hola, <b>{{ userService.getUserName() }}!</b>

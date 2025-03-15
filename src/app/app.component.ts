@@ -16,6 +16,10 @@ export class AppComponent {
 
   userService = inject(UserService);
 
+  getUser() {
+    return this.userService.getCurrentUser();
+  }
+  
   login() {
     return this.userService.loginWithGoogle();
   }
