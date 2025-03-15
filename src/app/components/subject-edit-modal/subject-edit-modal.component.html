@@ -15,15 +15,15 @@
                     <app-career-select [name]="'careerId'" [isDisabled]="true"></app-career-select>
                 </div>
 				<div class="col-12">
-					<label for="name" class="form-label">Nombre <span class="text-danger">*</span></label>
+					<label for="name" class="form-label">Nombre @if(!readonly) { <span class="text-danger">*</span> }</label>
 					<input type="text" class="form-control" id="name" formControlName="name">
 				</div>
 				<div class="col-6">
-					<label for="year" class="form-label">Año <span class="text-danger">*</span></label>
+					<label for="year" class="form-label">Año @if(!readonly) { <span class="text-danger">*</span> }</label>
 					<input type="number" min="1" max="99" class="form-control" id="year" formControlName="year">
 				</div>
 				<div class="col-6">
-					<label for="quarter" class="form-label">Cuatrimestre <span class="text-danger">*</span></label>
+					<label for="quarter" class="form-label">Cuatrimestre @if(!readonly) { <span class="text-danger">*</span> }</label>
 					<input type="number" min="1" max="99" class="form-control" id="quarter" formControlName="quarter">
 				</div>
             </form>            

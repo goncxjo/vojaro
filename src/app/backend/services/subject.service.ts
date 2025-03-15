@@ -48,4 +48,17 @@ export class SubjectService {
     const docRef = doc(this._firestore, PATH, id);
     return await deleteDoc(docRef);
   }
+
+  new(): Subject {
+    return {
+      id: '',
+      name: '',
+      universityId: '',
+      careerId: '',
+      year: 0,
+      quarter: 0,
+      mustApproved: [],
+      mustRegularize: [],
+    }
+  }
 }

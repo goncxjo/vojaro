@@ -1,0 +1,13 @@
+<div class="modal-header">
+    <h4 class="modal-title">Actualizar estado asignatura</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss({})"></button>
+</div>
+<div class="modal-body">
+    <p>¿Deseas asociar <strong>{{subject_A.name}}</strong> con <strong>{{subject_B.name}}</strong>?</p>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="activeModal.close({})">Cancelar</button>
+    <button type="button" class="btn btn-primary" (click)="save(true, false)">Regulariza</button>
+    <button type="button" class="btn btn-primary" (click)="save(false, true)">Aprobada</button>
+    <button type="button" class="btn btn-primary" (click)="save(true, true)">Ambas</button>
+</div>

@@ -16,6 +16,7 @@ import { CareerSelectComponent } from '../career-select/career-select.component'
 export class SubjectEditModalComponent {
   form!: FormGroup;
   subject!: Subject;
+  readonly: boolean = false;
 
   constructor(
     private service: SubjectService,
@@ -41,7 +42,11 @@ export class SubjectEditModalComponent {
   ngAfterViewInit() {
     this.form.controls['universityId'].addValidators(Validators.required); 
     this.form.controls['careerId'].addValidators(Validators.required);
-    this.form.patchValue(this.subject)
+    this.form.patchValue(this.subject);
+
+    if (this.readonly) {
+      this.form.disable()
+    }
   }
 
   save() {
@@ -59,8 +64,6 @@ export class SubjectEditModalComponent {
       this.toastr.error('Por favor, completa los campos requeridos.', 'Error');
       return;
     }
-
-    debugger;
 
     try {
       const form = this.form.getRawValue();
