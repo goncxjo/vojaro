@@ -4,9 +4,12 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "dev": "ng serve --port 5200 --proxy-config src/proxy.conf.json",
+    "build": "npm run config && ng build",
+    "config": "ts-node src/environments/set-env.ts",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
+
   },
   "private": true,
   "dependencies": {
