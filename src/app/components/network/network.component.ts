@@ -113,7 +113,9 @@ export class NetworkComponent implements OnDestroy {
         if(node) {
           this.selected = _.find(this.data, (s: Subject) => s.id === node.id()) || this.subjectService.new();
           if(this.linkMode) {
-            this.openLinkModal();
+            if (!this.modalService.hasOpenModals()) {
+              this.openLinkModal();
+            }
           } else {
             this.subjectFromLink = Object.assign({}, this.selected);
           }

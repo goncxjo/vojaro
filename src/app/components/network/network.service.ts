@@ -23,9 +23,9 @@ export class NetworkService {
           'label': 'data(name)',
           'width': 40,
           'height': 40,
-          'background-color': '#BEBEBE',
           'text-outline-width': 1,
           'text-outline-color': '#fff',
+          'padding':'2px'
         }
       },
       {
@@ -46,31 +46,38 @@ export class NetworkService {
       {
         selector: ".approved",
         style: {
-          'background-color': '#34a853',
+          'background-color': '#8affc7',
         }
       },
       {
         selector: ".regularized",
         style: {
-          'background-color': '#673ab7',
+          'background-color': '#fff977',
         }
       },
       {
         selector: ".in-progress",
         style: {
-          'background-color': '#fbbc05',
+          'background-color': '#ffb58c',
         }
       },
       {
         selector: ".available",
         style: {
-          'background-color': '#4285f4',
+          'background-color': '	#a6cbff',
         }
       },
       {
         selector: ".parent",
         style: {
-          'background-color': '#F5F5F5',
+          'shape': 'round-rectangle',
+          'background-color': 'whitesmoke',
+          'background-opacity': 0.2,
+          'border-style': 'dashed',
+          'border-dash-offset': 28,
+          // 'border-width': 1,
+          'border-cap': 'round',
+          'border-join': 'round',
         }
       },
       {
@@ -82,26 +89,22 @@ export class NetworkService {
         }
       },
       {
-        selector: ".approved",
-        style: {
-          'background-color': '#00ff00'
-        }
-      },
-      {
         selector: 'edge',
         style: {
           'width': 3,
           'opacity': 0,
-          'line-color': '#ccc',
-          'target-arrow-color': '#ccc',
+          'target-arrow-color': '#343a40',
           'target-arrow-shape': 'triangle',
-          'curve-style': 'bezier'
+          'target-distance-from-node': 2,
+          'curve-style': 'bezier',
+          'line-fill': "linear-gradient"
+          
         },
       },
       {
         selector: 'edge.show',
         style: {
-          'opacity': .5,
+          'opacity': 1,
         },
       },
       {
@@ -109,7 +112,23 @@ export class NetworkService {
         style: {
           'opacity': .1,
         },
-      },
+      }, {
+        "selector": "edge.multi-unbundled-bezier",
+        "style": {
+          "curve-style": "unbundled-bezier",
+          "control-point-distances": [40, -40],
+          "control-point-weights": [0.250, 0.75]
+        }
+      },  {
+        "selector": "edge.taxi",
+        "style": {
+          "curve-style": "taxi",
+          "taxi-direction": "rightward",
+          "taxi-turn": 20,
+          "taxi-turn-min-distance": 5,
+          "taxi-radius": 10
+        }
+      }
     ]
   }
 
@@ -121,7 +140,7 @@ export class NetworkService {
 
     
   transformSubjectsToNodes(student: StudentSubject, subjects: Subject[]) {
-    const xOffset = 200; // Distancia horizontal entre columnas
+    const xOffset = 300; // Distancia horizontal entre columnas
     const yOffset = 50; // Distancia vertical entre nodos en la columna
   
     // Agrupar nodos por año
@@ -150,13 +169,26 @@ export class NetworkService {
       })
 
       subjects.forEach((subject, index) => {
-        const x = (yearNum - 1) * xOffset; // Posición X en base al año
+        const x = (yearNum - 1) * xOffset + (index % 2 != 0 ? 100 : 1); // Posición X en base al año
         const y = -totalHeight / 2 + index * yOffset; // Posición Y centrada en y = 0
 
-        const statusApproved = _.find(student?.approved || [], (s: string) => s === subject.id) ? 'approved' : '';
-        const statusRegularized = _.find(student?.regularized || [], (s: string) => s === subject.id) ? 'regularized' : '';
-        const statusInProgress = _.find(student?.inProgress || [], (s: string) => s === subject.id) ? 'in-progress' : '';
-        const statusAvailable = _.every(subject.mustApproved, (id) => _.includes(student?.approved, id)) ? 'available' : '';
+        let nodeClass = '';
+        
+        if(_.find(student?.approved || [], (s: string) => s === subject.id)) {
+          nodeClass = 'approved'
+        }
+        else if(_.find(student?.regularized || [], (s: string) => s === subject.id)) {
+          nodeClass = 'regularized'
+        }
+        else if(_.find(student?.inProgress || [], (s: string) => s === subject.id)) {
+          nodeClass = 'in-progress'
+        }
+        else if(student && _.every(subject.mustApproved, (id) => _.includes(student.approved, id))) {
+          nodeClass =  'available'
+        }
+        else {
+          nodeClass =  'not-available'
+        }
 
         nodes.push({
           group: 'nodes',
@@ -165,7 +197,7 @@ export class NetworkService {
             parent: `year-${year}`,
           },
           position: { x, y },
-          classes: `center-center multiline-auto ${statusApproved} ${statusRegularized} ${statusInProgress} ${statusAvailable}`,  
+          classes: `center-center multiline-auto ${nodeClass}`,  
         });
       });
     });
@@ -188,7 +220,8 @@ export class NetworkService {
               id: `${i}|${s.id}`,
               source: _.find(subjects, (x: any) => x.id == i)?.id,
               target: _.find(subjects, (x: any) => x.id == s.id)?.id,
-            }
+            },
+            classes: 'multi-unbundled-bezier'
           }
           links.push(newLink);
         }
