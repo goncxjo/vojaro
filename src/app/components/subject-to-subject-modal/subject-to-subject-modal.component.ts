@@ -32,8 +32,6 @@ export class SubjectToSubjectModalComponent {
       this.toastr.error('Ha ocurrido un error', 'Error');
     }
 
-    debugger;
-
     try {
       if (!this.subject_B.mustRegularize) {
         this.subject_B.mustRegularize = [];

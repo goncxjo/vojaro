@@ -1,24 +1,23 @@
 <div class="mt-3 z-3 position-absolute">
     @if(subjectFromLink.id && subjectFromLink.id !== selected.id) {
-        <div class="card text-bg-primary flex-row justify-content-center align-items-center shadow" data-bs-theme="dark">
-            <span class="selected-subject m-2 flex-grow-1">{{subjectFromLink.name}}</span>
-            <button type="button" class="btn-close mx-2" aria-label="Close" (click)="cleanSelected()"></button>
-        </div>
-        }
+    <div class="card text-bg-primary flex-row justify-content-center align-items-center shadow" data-bs-theme="dark">
+        <span class="selected-subject m-2 flex-grow-1">{{subjectFromLink.name}}</span>
+        <button type="button" class="btn-close mx-2" aria-label="Close" (click)="cleanSelected()"></button>
+    </div>
+    }
     @if(linkMode) {
-        <div class="card flex-row justify-content-center align-items-center shadow mt-3">
-            <span class="selected-subject m-2 flex-grow-1">Enlazar con...</span>
-            <button type="button" class="btn-close mx-2" aria-label="Close" (click)="cleanSelected()"></button>
-        </div>
-        }
-        @if(selected.id) {
-            <div class="card text-bg-primary flex-row justify-content-center align-items-center shadow mt-3" data-bs-theme="dark">
-                <span class="selected-subject m-2 flex-grow-1">{{selected.name}}</span>
-                <button type="button" class="btn-close mx-2" aria-label="Close" (click)="cleanSelected()"></button>
-            </div>
-        }
-    
-    
+    <div class="card flex-row justify-content-center align-items-center shadow mt-3">
+        <span class="selected-subject m-2 flex-grow-1">Enlazar con...</span>
+        <button type="button" class="btn-close mx-2" aria-label="Close" (click)="cleanSelected()"></button>
+    </div>
+    }
+    @if(selected.id) {
+    <div class="card text-bg-primary flex-row justify-content-center align-items-center shadow mt-3"
+        data-bs-theme="dark">
+        <span class="selected-subject m-2 flex-grow-1">{{selected.name}}</span>
+        <button type="button" class="btn-close mx-2" aria-label="Close" (click)="cleanSelected()"></button>
+    </div>
+    }
 </div>
 
 <div class="network-wrapper d-flex justify-content-center align-items-center">
@@ -43,14 +42,16 @@
                 <span class="d-block"> Refrescar</span>
             </button>
         </li>
+        @if(userService.isAdmin() && data.length > 0) {
         <li class="nav-item">
             <button class="nav-link btn btn-primary mx-1" (click)="openEditModal(false, true)">
                 <fa-icon [icon]="createIcon" />
                 <span class="d-block"> Crear</span>
             </button>
         </li>
-
         }
+        }
+
         @else {
         <li class="nav-item">
             <button class="nav-link btn btn-primary mx-1" (click)="openEditModal(true)">
@@ -58,24 +59,30 @@
                 <span class="d-block"> Ver</span>
             </button>
         </li>
+        @if(userService.isAdmin()) {
+
         <li class="nav-item">
             <button class="nav-link btn btn-primary mx-1" (click)="openEditModal()">
                 <fa-icon [icon]="editIcon" />
                 <span class="d-block"> Editar</span>
             </button>
         </li>
+        }
         <li class="nav-item">
             <button class="nav-link btn btn-primary mx-1" (click)="openUpdateModal()">
                 <fa-icon [icon]="updateNodeIcon" />
                 <span class="d-block"> Actualizar</span>
             </button>
         </li>
+        @if(userService.isAdmin()) {
+
         <li class="nav-item">
             <button class="nav-link btn btn-primary mx-1" (click)="startLinkMode()">
                 <fa-icon [icon]="linkIcon" />
                 <span class="d-block"> Unir</span>
             </button>
         </li>
+        }
         }
     </ul>
 </nav>

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { ControlContainer, FormControl, FormGroup, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 import { UniversitySelectComponent } from '../university-select/university-select.component';
 import { CareerSelectComponent } from '../career-select/career-select.component';
@@ -9,7 +9,7 @@ import { CareerSelectComponent } from '../career-select/career-select.component'
   imports: [
     ReactiveFormsModule,
     UniversitySelectComponent,
-    CareerSelectComponent
+    CareerSelectComponent,
   ],
   templateUrl: './subject-filters.component.html',
   styleUrl: './subject-filters.component.scss',
@@ -22,7 +22,7 @@ import { CareerSelectComponent } from '../career-select/career-select.component'
 })
 export class SubjectFilterComponent {
   childForm!: FormGroup<any>;
-  @Input() isDisabled: boolean = false;
+  isDisabled = input<boolean>(false);
   
   constructor(
     public parentForm: FormGroupDirective,
@@ -30,7 +30,5 @@ export class SubjectFilterComponent {
 
   ngAfterContentInit(): void {
     this.childForm = this.parentForm.form;
-    this.childForm.addControl('universityId', new FormControl({ value: '', disabled: this.isDisabled }));
-    this.childForm.addControl('careerId', new FormControl({ value: '', disabled: this.isDisabled }));
   }
 }

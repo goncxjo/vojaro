@@ -16,6 +16,7 @@ import { SubjectStateSelectComponent } from '../subject-state-select/subject-sta
 import { StudentSubject } from '../../backend/models/subject/subject-subject';
 import { StudentSubjectEditModalComponent } from '../student-subject-edit-modal/student-subject-edit-modal.component';
 import { SubjectToSubjectModalComponent } from '../subject-to-subject-modal/subject-to-subject-modal.component';
+import { UserService } from '../../core/services/user.service';
 
 @Component({
   selector: 'app-network',
@@ -38,18 +39,19 @@ export class NetworkComponent implements OnDestroy {
   networkService = inject(NetworkService);
   studentSubjectService = inject(StudentSubjectService);
   subjectService = inject(SubjectService);
+  userService: UserService = inject(UserService);
 
   form!: FormGroup;
   data: Subject [] = [];
 
   filters: SubjectFilters = {
-    universityId: "LvXJZ7m6rmFEKcG7hKZj",
-    careerId: "clpONiwraXiYuLTTIYpT",
+    universityId: "",
+    careerId: "",
   } as SubjectFilters;
 
   selected: Subject = this.subjectService.new();
   subjectFromLink: Subject = this.subjectService.new();
-  student!: StudentSubject | null;
+  student: StudentSubject = this.studentSubjectService.new();
 
   linkMode: boolean = false;
 
@@ -95,17 +97,15 @@ export class NetworkComponent implements OnDestroy {
     this.sub = combineLatest([sts, su]).pipe(
       take(1),
     ).subscribe(res => {
-      this.student = res[0][0];
+      this.student = res[0][0] || this.studentSubjectService.new(this.filters.universityId, this.filters.careerId);
       this.data = res[1];
       const { nodes, links } = this.networkService.getDataSet(this.student, res[1]);
       this.cy.elements().remove();
       this.cy.add([...nodes,...links])
 
-      this.cy.reset();
-      this.cy.pan({
-        x: 0,
-        y: 500 
-      });
+      // this.cy.re
+
+      this.cy.nodes().panify()
 
       this.cy.on('tap', (event) => {
         const node = this.cy.nodes().children(event.target)[0];
@@ -181,10 +181,12 @@ export class NetworkComponent implements OnDestroy {
     const modalInstance = this.modalService.open(SubjectEditModalComponent, { centered: true })
     modalInstance.componentInstance.readonly = readonly;
     if(this.selected.id) {
+      modalInstance.componentInstance.title = readonly ? 'Ver' : 'Editar';
       modalInstance.componentInstance.subject = this.selected;
     }
     else {
       const empty = this.subjectService.new();
+      modalInstance.componentInstance.title = 'Crear';
       empty.universityId = this.filters.universityId;
       empty.careerId = this.filters.careerId;
       modalInstance.componentInstance.subject = empty;

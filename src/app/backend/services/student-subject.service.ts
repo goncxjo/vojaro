@@ -51,4 +51,16 @@ export class StudentSubjectService {
     const docRef = doc(this._firestore, PATH, id);
     return await deleteDoc(docRef);
   }
+
+  new(universityId: string = '', careerId: string = ''): StudentSubject {
+    return {
+      id: '',
+      userId: '',
+      universityId,
+      careerId,
+      inProgress: [],
+      approved: [],
+      regularized: [],
+    }
+  }
 }

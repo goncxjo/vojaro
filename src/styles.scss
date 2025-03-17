@@ -46,6 +46,20 @@ position: relative; /* Elementos sobre el gráfico */
 z-index: 2; /* Asegura que estén delante */
 }
 
+.app-select {
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+	
+    &::after {
+        color: rgba($color: #000000, $alpha: 0.0)
+    }
+    &+.dropdown-menu.show {
+        width: 100%;
+		overflow-x: hidden;
+		text-overflow: ellipsis;
+    }
+}
+
 
 .magicpattern { 
 	width: 100%;

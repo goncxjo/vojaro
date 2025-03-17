@@ -20,13 +20,16 @@
 
 <ng-template #popContent>
 	Hola, <b>{{ userService.getUserName() }}!</b>
-  <div class="d-grid gap-2">
+  <div class="d-grid gap-2 mt-3">
     @if(!userService.isLoggedIn()) {
       <button class="btn btn-primary" type="button" (click)="login()">Iniciar sesión</button>
     }
     @else {
-      <button class="btn btn-primary" type="button">Editar perfil</button>
-      <button class="btn btn-primary" type="button">Cerrar sesión</button>
+      <button class="btn btn-primary" type="button" disabled>Editar perfil</button>
+      <button class="btn btn-primary" type="button" (click)="logout()">Cerrar sesión</button>
     }
   </div>
 </ng-template>
+
+
+<app-loading-screen></app-loading-screen>

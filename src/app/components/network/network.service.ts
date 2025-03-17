@@ -11,7 +11,10 @@ export class NetworkService {
     return cytoscape({
       container: container.nativeElement,
       elements: [],
-      style: this.getStyles()
+      style: this.getStyles(),
+      zoom: 0.5,
+      pan: { x: 0, y: 400 },
+      autolock: false,
     });
   }
 
@@ -21,11 +24,9 @@ export class NetworkService {
         selector: 'node',
         style: {
           'label': 'data(name)',
-          'width': 40,
-          'height': 40,
           'text-outline-width': 1,
           'text-outline-color': '#fff',
-          'padding':'2px'
+          'padding':'15px'
         }
       },
       {
@@ -78,6 +79,7 @@ export class NetworkService {
           // 'border-width': 1,
           'border-cap': 'round',
           'border-join': 'round',
+          'padding':'25px',
         }
       },
       {
@@ -165,6 +167,7 @@ export class NetworkService {
         },
         selectable: false,
         grabbable: false,
+        panable: true,
         classes: 'parent',  
       })
 
@@ -197,6 +200,9 @@ export class NetworkService {
             parent: `year-${year}`,
           },
           position: { x, y },
+          // grabbable: false,
+          // panable: true,
+          locked: true,
           classes: `center-center multiline-auto ${nodeClass}`,  
         });
       });

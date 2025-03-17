@@ -17,6 +17,7 @@ export class SubjectEditModalComponent {
   form!: FormGroup;
   subject!: Subject;
   readonly: boolean = false;
+  title: string = 'Editar';
 
   constructor(
     private service: SubjectService,
@@ -32,6 +33,8 @@ export class SubjectEditModalComponent {
       name: [{ value: '' }, Validators.required],
       year: [{ value: 1 }, Validators.required],
       quarter: [{ value: 1 }, Validators.required],
+      mustApproved: [{ value: []}],
+      mustRegularize: [{ value: []}],
     });
   }
 
@@ -81,7 +84,7 @@ export class SubjectEditModalComponent {
       if (entity.id) {
         this.service.update(entity).then(onSuccess, onError);
       } else {
-        return;
+        this.service.create(entity).then(onSuccess, onError);
       }
     } catch (error) {
       this.toastr.error('Ha ocurrido un problema', 'Error');

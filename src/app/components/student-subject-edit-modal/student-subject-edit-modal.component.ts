@@ -51,13 +51,13 @@ export class StudentSubjectEditModalComponent {
     this.form.patchValue(this.entity);
     this.form.controls['name'].patchValue(this.subject.name)
     
-    if (this.entity.approved.includes(this.subject.id)) {
+    if (this.entity.approved && this.entity.approved.includes(this.subject.id)) {
       this.form.controls['status'].setValue('approved')
     }
-    else if (this.entity.regularized.includes(this.subject.id)) {
+    else if (this.entity.regularized && this.entity.regularized.includes(this.subject.id)) {
       this.form.controls['status'].setValue('regularized')
     }
-    else if (this.entity.inProgress.includes(this.subject.id)) {
+    else if (this.entity.inProgress && this.entity.inProgress.includes(this.subject.id)) {
       this.form.controls['status'].setValue('in-progress')
     }
     

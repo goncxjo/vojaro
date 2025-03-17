@@ -1,15 +1,17 @@
-import { Component, Input, AfterContentInit, AfterViewChecked, input } from '@angular/core';
+import { Component, AfterContentInit, input, inject } from '@angular/core';
 import { FormControl, FormGroupDirective, ControlContainer, ReactiveFormsModule, FormGroup } from '@angular/forms';
 import * as _ from 'lodash';
-import { debounceTime, distinctUntilChanged, map, Observable, Subscription, tap } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { distinctUntilChanged, map, Subscription, switchMap, tap } from 'rxjs';
 import { CareerList } from '../../backend/models/career/career';
 import { CollectionService } from '../../backend/services/collection.service';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-career-select',
   standalone: true,
-  imports: [ReactiveFormsModule, AsyncPipe],
+  imports: [ReactiveFormsModule, FontAwesomeModule, NgbDropdownModule],
   templateUrl: './career-select.component.html',
   styleUrl: './career-select.component.scss',
   providers: [CollectionService],
@@ -20,17 +22,31 @@ import { CollectionService } from '../../backend/services/collection.service';
     },
   ]
 })
-export class CareerSelectComponent implements AfterContentInit, AfterViewChecked {
-  data$!: Observable<CareerList[]>;
-  chlidForm!: FormGroup;
-  susc!: Subscription;
-
-  isDisabled = input<boolean>(false);
-  // showOptionAll = input<boolean>();
+export class CareerSelectComponent implements AfterContentInit {
   name = input<string>('');
+  isDisabled = input<boolean>(false);
+  
+  chlidForm!: FormGroup;
+  
+  data: CareerList[] = [];
+  selected: CareerList | null = null;
+
+  sub!: Subscription;
+
+  isLoading: boolean = false;
+  loadIcon = faSpinner;
+  
+  get control() {
+    return this.chlidForm.controls[this.name()];
+  }
+
+  get university() {
+    return this.chlidForm.controls['universityId'];
+  }
+
+  private service = inject(CollectionService<CareerList>);
 
   constructor(
-    private service: CollectionService<CareerList>,
     public parentForm: FormGroupDirective
   ) {
     this.service.init('careers');
@@ -39,37 +55,34 @@ export class CareerSelectComponent implements AfterContentInit, AfterViewChecked
   ngAfterContentInit(): void {
     this.chlidForm = this.parentForm.form;
     this.chlidForm.addControl(this.name(), new FormControl({value: '', disabled: this.isDisabled()}));
-    // this.disableInput(true);
-  }
 
-  ngAfterViewChecked() {
-    this.susc = this.chlidForm.controls['universityId'].valueChanges
-    .pipe(
-      // tap(() => this.disableInput(true)),
-      debounceTime(300),
-      distinctUntilChanged()
+    this.sub = this.university.valueChanges.pipe(
+      distinctUntilChanged(),
+      tap(() => this.isLoading = true),
+      switchMap((value: string) => this.service.getAll().pipe(
+      map((res: CareerList[]) => {
+        return _.filter(res, (c: CareerList) => c.universityId == value)
+      }),
+      tap((res) => {
+        this.data = res;
+        const career = _.find(this.data, (c) => c.id === this.control.value) ?? null;
+        this.selectOption(career);
+        this.isLoading = false
+      })))
     )
-    .subscribe((value: string) => {
-      if (value) {
-        this.data$ = this.service.getAll().pipe(
-          map((res: CareerList[]) => {
-            return _.filter(res, (c: CareerList) => c.universityId == value)
-          })
-        );
-        // this.disableInput(false)
-      }
-    });
+    .subscribe()
   }
 
-  // get ctrl(): FormControl {
-  //   return this.chlidForm.controls[this.name()] as FormControl;
-  // }
+  selectDisabled(){
+    return this.isDisabled() || this.isLoading;
+  };
 
-  // disableInput(value: boolean): void {
-  //   value ? this.ctrl.disable() : this.ctrl.enable();
-  // }
+  selectOption(option: CareerList | null) {
+    this.selected = option;
+    this.control.patchValue(this.selected?.id); 
+  }
 
   ngOnDestroy() {
-    this.susc.unsubscribe();
+    this.sub.unsubscribe();
   }
 }
