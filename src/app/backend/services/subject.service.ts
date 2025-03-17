@@ -59,6 +59,7 @@ export class SubjectService {
       quarter: 0,
       mustApproved: [],
       mustRegularize: [],
+      careerTracks: [],
     }
   }
 }

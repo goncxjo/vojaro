@@ -2,17 +2,16 @@ import { Component, ElementRef, inject, OnDestroy, ViewChild } from '@angular/co
 import { NetworkService } from './network.service';
 import { SubjectService } from '../../backend/services/subject.service';
 import { Subject, SubjectFilters } from '../../backend/models/subject/subject';
-import { combineLatest, Subscription, take, tap } from 'rxjs';
+import { combineLatest, Subscription, take } from 'rxjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SubjectFiltersModalComponent } from '../subject-filters-modal/subject-filters-modal.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faFilter, faEye, faPlus, faLink, faPen, faRefresh, faCircleUp, faCirclePlus, faArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faLink, faPen, faRefresh, faCirclePlus, faArrowUp, faSitemap } from '@fortawesome/free-solid-svg-icons';
 import { SubjectEditModalComponent } from '../subject-edit-modal/subject-edit-modal.component';
 import _ from 'lodash';
 import cytoscape, { NodeSingular } from 'cytoscape';
 import { StudentSubjectService } from '../../backend/services/student-subject.service';
-import { SubjectStateSelectComponent } from '../subject-state-select/subject-state-select.component';
 import { StudentSubject } from '../../backend/models/subject/subject-subject';
 import { StudentSubjectEditModalComponent } from '../student-subject-edit-modal/student-subject-edit-modal.component';
 import { SubjectToSubjectModalComponent } from '../subject-to-subject-modal/subject-to-subject-modal.component';
@@ -28,7 +27,7 @@ import { UserService } from '../../core/services/user.service';
 })
 export class NetworkComponent implements OnDestroy {
   @ViewChild('graph', { static: true }) container!: ElementRef;
-  filterIcon = faFilter;
+  filterIcon = faSitemap;
   refreshIcon = faRefresh;
   viewIcon = faEye;
   createIcon = faCirclePlus;

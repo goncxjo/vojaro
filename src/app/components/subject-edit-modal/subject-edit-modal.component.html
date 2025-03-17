@@ -6,13 +6,17 @@
     <div class="row mb-3 g-3">
         <div class="col">
             <form [formGroup]="form" class="row g-3">
-                <div class="col-12 col-md-6">
+                <div class="col-12">
                     <label for="universityId" class="form-label">Universidad</label>
                     <app-university-select [name]="'universityId'" [isDisabled]="true"></app-university-select>
                 </div>
-                <div class="col-12 col-md-6">
+                <div class="col-12">
                     <label for="careerId" class="form-label">Carrera</label>
                     <app-career-select [name]="'careerId'" [isDisabled]="true"></app-career-select>
+                </div>
+                <div class="col-12">
+                    <label for="careerTracks" class="form-label">Orientaciones</label>
+                    <app-career-track-multiselect [name]="'careerTracks'"></app-career-track-multiselect>
                 </div>
 				<div class="col-12">
 					<label for="name" class="form-label">Nombre @if(!readonly) { <span class="text-danger">*</span> }</label>

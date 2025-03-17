@@ -7,11 +7,11 @@ export interface Subject {
     quarter: number;
     mustApproved: any[];
     mustRegularize: any[];
-    // careerOptions: any[];
+    careerTracks: any[];
 }
 
 export interface SubjectFilters {
     universityId: string;
     careerId: string;
-    careerOptions: any[];
+    careerTrackId: string;
 }

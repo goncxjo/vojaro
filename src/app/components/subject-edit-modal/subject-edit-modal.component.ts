@@ -6,10 +6,17 @@ import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { Subject } from '../../backend/models/subject/subject';
 import { UniversitySelectComponent } from '../university-select/university-select.component';
 import { CareerSelectComponent } from '../career-select/career-select.component';
+import { CareerTrackMultiSelectComponent } from '../career-track-multiselect/career-track-multiselect.component';
 
 @Component({
   selector: 'app-subject-edit-modal',
-  imports: [ToastrModule, ReactiveFormsModule, UniversitySelectComponent, CareerSelectComponent],
+  imports: [
+    ToastrModule,
+    ReactiveFormsModule,
+    UniversitySelectComponent,
+    CareerSelectComponent,
+    CareerTrackMultiSelectComponent
+  ],
   templateUrl: './subject-edit-modal.component.html',
   styleUrl: './subject-edit-modal.component.scss'
 })
@@ -35,6 +42,7 @@ export class SubjectEditModalComponent {
       quarter: [{ value: 1 }, Validators.required],
       mustApproved: [{ value: []}],
       mustRegularize: [{ value: []}],
+      careerTracks: [{ value: []}],
     });
   }
 
@@ -78,7 +86,8 @@ export class SubjectEditModalComponent {
         year: form.year,
         quarter: form.quarter,
         mustApproved: form.mustApproved,
-        mustRegularize: form.mustRegularize 
+        mustRegularize: form.mustRegularize,
+        careerTracks: form.careerTracks
       };
 
       if (entity.id) {

@@ -1,0 +1,22 @@
+<div ngbDropdown [autoClose]="false">
+    <button class="app-select form-select text-start" ngbDropdownToggle [disabled]="selectDisabled()">
+        @if(isLoading) {
+            <fa-icon [icon]="loadIcon" animation="spin-pulse"></fa-icon>
+        }
+        @else {
+            @for (item of selected; track $index) {
+                <span class="item-selected badge text-bg-primary me-1">
+                    {{ item?.name }}
+                </span>
+            }
+        }
+    </button>
+    <div ngbDropdownMenu aria-labelledby="dropdownMenu">
+        @for (item of data; track $index) {
+            <button class="dropdown-item" (click)="toggleOption(item)" [class.selected]="optionSelected(item)">
+                {{ item.name }}
+            </button>
+        }
+    </div>
+</div>
+<input type="hidden" [formControlName]="name()">
