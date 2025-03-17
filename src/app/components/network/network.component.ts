@@ -46,6 +46,7 @@ export class NetworkComponent implements OnDestroy {
   filters: SubjectFilters = {
     universityId: "",
     careerId: "",
+    careerTrackId: ""
   } as SubjectFilters;
 
   selected: Subject = this.subjectService.new();
@@ -90,44 +91,49 @@ export class NetworkComponent implements OnDestroy {
   }
 
   applyFilters() {
-    const su = this.subjectService.getAll(this.filters); 
-    const sts = this.studentSubjectService.getAll(this.filters);
+    if (this.filters.careerId) {      
+      const su = this.subjectService.getAll(this.filters); 
+      const sts = this.studentSubjectService.getAll(this.filters);
+      
+      this.sub = combineLatest([sts, su]).pipe(
+        take(1),
+      ).subscribe(res => {
+        this.student = res[0][0] || this.studentSubjectService.new(this.filters.universityId, this.filters.careerId);
+        this.data = res[1];
+        const { nodes, links } = this.networkService.getDataSet(this.student, res[1]);
+        this.cy.elements().remove();
+        this.cy.add([...nodes,...links])
 
-    this.sub = combineLatest([sts, su]).pipe(
-      take(1),
-    ).subscribe(res => {
-      this.student = res[0][0] || this.studentSubjectService.new(this.filters.universityId, this.filters.careerId);
-      this.data = res[1];
-      const { nodes, links } = this.networkService.getDataSet(this.student, res[1]);
-      this.cy.elements().remove();
-      this.cy.add([...nodes,...links])
+        this.cy.fit()
+        this.cy.zoom(0.5);
+        this.cy.pan({ x: 0, y: 400 })  
 
-      // this.cy.re
+        this.cy.nodes().panify()
 
-      this.cy.nodes().panify()
-
-      this.cy.on('tap', (event) => {
-        const node = this.cy.nodes().children(event.target)[0];
-        this.resetOpacity();
-        if(node) {
-          this.selected = _.find(this.data, (s: Subject) => s.id === node.id()) || this.subjectService.new();
-          if(this.linkMode) {
-            if (!this.modalService.hasOpenModals()) {
-              this.openLinkModal();
+        this.cy.on('tap', (event) => {
+          const node = this.cy.nodes().children(event.target)[0];
+          this.resetOpacity();
+          if(node) {
+            this.selected = _.find(this.data, (s: Subject) => s.id === node.id()) || this.subjectService.new();
+            if(this.linkMode) {
+              if (!this.modalService.hasOpenModals()) {
+                this.openLinkModal();
+              }
+            } else {
+              this.subjectFromLink = Object.assign({}, this.selected);
             }
-          } else {
-            this.subjectFromLink = Object.assign({}, this.selected);
+            this.focusNeighbourhood(event);
           }
-          this.focusNeighbourhood(event);
-        }
-        else {
-          this.stopLinkMode()
-        }
-      });
+          else {
+            this.stopLinkMode()
+          }
+        });
 
-      // this.cy.nodes().children().on('mouseover', this.focusNeighbourhood.bind(this));
-      // this.cy.nodes().children().on('mouseout', this.resetOpacity.bind(this));
-    });
+        // this.cy.nodes().children().on('mouseover', this.focusNeighbourhood.bind(this));
+        // this.cy.nodes().children().on('mouseout', this.resetOpacity.bind(this));
+      });
+    }
+
   }
 
   focusNeighbourhood(event: cytoscape.EventObject) {
@@ -227,7 +233,7 @@ export class NetworkComponent implements OnDestroy {
   }
 
   reset() {
-    this.cy.reset();
+    this.applyFilters();
   }
 
   ngOnDestroy() {

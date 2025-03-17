@@ -41,7 +41,7 @@ export class CareerTrackMultiSelectComponent implements AfterContentInit {
     return this.chlidForm.controls[this.name()];
   }
 
-  get university() {
+  get career() {
     return this.chlidForm.controls['careerId'];
   }
 
@@ -55,23 +55,24 @@ export class CareerTrackMultiSelectComponent implements AfterContentInit {
 
   ngAfterContentInit(): void {
     this.chlidForm = this.parentForm.form;
-    this.chlidForm.addControl(this.name(), new FormControl({value: '', disabled: this.isDisabled()}));
+    this.chlidForm.addControl(this.name(), new FormControl({value: [], disabled: this.isDisabled()}));
 
-    this.sub = this.university.valueChanges.pipe(
+    this.sub = this.career.valueChanges.pipe(
       distinctUntilChanged(),
       tap(() => this.isLoading = true),
       switchMap((value: string) => this.service.getAll().pipe(
       map((res: CareerTrack[]) => {
         return _.filter(res, (c: CareerTrack) => c.careerId == value)
-      }),
-      tap((res) => {
-        this.data = res;
-        const track = _.find(this.data, (c) => c.id === this.control.value) ?? null;
-        this.toggleOption(track);
-        this.isLoading = false
       })))
     )
-    .subscribe()
+    .subscribe((res) => {
+      this.data = res;
+      _.forEach(this.control.value, (id) => {
+        const track = _.find(this.data, (d) => d.id === id) ?? null;
+        this.toggleOption(track);
+      })
+      this.isLoading = false
+    })
   }
 
   selectDisabled(){

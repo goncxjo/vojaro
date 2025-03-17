@@ -21,11 +21,15 @@ export class SubjectService {
   }
 
   getAll(filters: SubjectFilters): Observable<Subject[]> {
+    const q: QueryConstraint[]= []; 
+    q.push(where('universityId', '==', filters?.universityId || ''));
+    q.push(where('careerId', '==', filters?.careerId || ''));
+    if (filters?.careerTrackId) {
+      q.push(where('careerTracks', 'array-contains-any', [filters?.careerTrackId || '']));
+    }
+
     return collectionData(
-      query(this._collection,
-        where('universityId', '==', filters?.universityId || ''),
-        where('careerId', '==', filters?.careerId || ''),
-    ), { idField: "id" }) as Observable<Subject[]>;
+      query(this._collection, ...q), { idField: "id" }) as Observable<Subject[]>;
   }
   
   getById(id: string): Observable<Subject> {

@@ -37,12 +37,12 @@ export class SubjectEditModalComponent {
   private buildForm(): FormGroup {
     return this.formBuilder.group({
       id: '',
-      name: [{ value: '' }, Validators.required],
-      year: [{ value: 1 }, Validators.required],
-      quarter: [{ value: 1 }, Validators.required],
-      mustApproved: [{ value: []}],
-      mustRegularize: [{ value: []}],
-      careerTracks: [{ value: []}],
+      name: ['', Validators.required],
+      year: [1, Validators.required],
+      quarter: [1, Validators.required],
+      mustApproved: [],
+      mustRegularize: [],
+      careerTracks: [],
     });
   }
 
@@ -75,7 +75,7 @@ export class SubjectEditModalComponent {
       this.toastr.error('Por favor, completa los campos requeridos.', 'Error');
       return;
     }
-
+    debugger;
     try {
       const form = this.form.getRawValue();
       const entity: Subject = {
