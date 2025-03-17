@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { SubjectFilterComponent } from '../subject-filters/subject-filters.component';
+import { SubjectFilterComponent } from '../../subject-filters/subject-filters.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({

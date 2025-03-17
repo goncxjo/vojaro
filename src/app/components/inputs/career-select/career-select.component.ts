@@ -2,19 +2,18 @@ import { Component, AfterContentInit, input, inject } from '@angular/core';
 import { FormControl, FormGroupDirective, ControlContainer, ReactiveFormsModule, FormGroup } from '@angular/forms';
 import * as _ from 'lodash';
 import { distinctUntilChanged, map, Subscription, switchMap, tap } from 'rxjs';
-import { CareerList } from '../../backend/models/career/career';
-import { CollectionService } from '../../backend/services/collection.service';
+import { CareerList } from '../../../backend/models/career/career';
+import { CollectionService } from '../../../backend/services/collection.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
-import { CareerTrack } from '../../backend/models/career-track/career-track';
 
 @Component({
-  selector: 'app-career-track-multiselect',
+  selector: 'app-career-select',
   standalone: true,
   imports: [ReactiveFormsModule, FontAwesomeModule, NgbDropdownModule],
-  templateUrl: './career-track-multiselect.component.html',
-  styleUrl: './career-track-multiselect.component.scss',
+  templateUrl: './career-select.component.html',
+  styleUrl: './career-select.component.scss',
   providers: [CollectionService],
   viewProviders: [
     {
@@ -23,14 +22,14 @@ import { CareerTrack } from '../../backend/models/career-track/career-track';
     },
   ]
 })
-export class CareerTrackMultiSelectComponent implements AfterContentInit {
+export class CareerSelectComponent implements AfterContentInit {
   name = input<string>('');
   isDisabled = input<boolean>(false);
   
   chlidForm!: FormGroup;
   
-  data: CareerTrack[] = [];
-  selected: CareerTrack[] = [];
+  data: CareerList[] = [];
+  selected: CareerList | null = null;
 
   sub!: Subscription;
 
@@ -41,8 +40,8 @@ export class CareerTrackMultiSelectComponent implements AfterContentInit {
     return this.chlidForm.controls[this.name()];
   }
 
-  get career() {
-    return this.chlidForm.controls['careerId'];
+  get university() {
+    return this.chlidForm.controls['universityId'];
   }
 
   private service = inject(CollectionService<CareerList>);
@@ -50,49 +49,37 @@ export class CareerTrackMultiSelectComponent implements AfterContentInit {
   constructor(
     public parentForm: FormGroupDirective
   ) {
-    this.service.init('careerTracks');
+    this.service.init('careers');
   }
 
   ngAfterContentInit(): void {
     this.chlidForm = this.parentForm.form;
-    this.chlidForm.addControl(this.name(), new FormControl({value: [], disabled: this.isDisabled()}));
+    this.chlidForm.addControl(this.name(), new FormControl({value: '', disabled: this.isDisabled()}));
 
-    this.sub = this.career.valueChanges.pipe(
+    this.sub = this.university.valueChanges.pipe(
       distinctUntilChanged(),
       tap(() => this.isLoading = true),
       switchMap((value: string) => this.service.getAll().pipe(
-      map((res: CareerTrack[]) => {
-        return _.filter(res, (c: CareerTrack) => c.careerId == value)
+      map((res: CareerList[]) => {
+        return _.filter(res, (c: CareerList) => c.universityId == value)
+      }),
+      tap((res) => {
+        this.data = res;
+        const career = _.find(this.data, (c) => c.id === this.control.value) ?? null;
+        this.selectOption(career);
+        this.isLoading = false
       })))
     )
-    .subscribe((res) => {
-      this.data = res;
-      _.forEach(this.control.value, (id) => {
-        const track = _.find(this.data, (d) => d.id === id) ?? null;
-        this.toggleOption(track);
-      })
-      this.isLoading = false
-    })
+    .subscribe()
   }
 
   selectDisabled(){
     return this.isDisabled() || this.isLoading;
   };
 
-  optionSelected(item: CareerTrack) {
-    return this.selected.includes(item);
-  }
-
-  toggleOption(option: CareerTrack | null) {
-    if(option) {
-      if(!this.optionSelected(option)) {
-        this.selected.push(option);
-      } else {
-        _.remove(this.selected, (s) => s.id == option.id);
-      }
-    }
-    
-    this.control.patchValue(_.map(this.selected, 'id'));
+  selectOption(option: CareerList | null) {
+    this.selected = option;
+    this.control.patchValue(this.selected?.id); 
   }
 
   ngOnDestroy() {

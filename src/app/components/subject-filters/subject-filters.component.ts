@@ -1,8 +1,8 @@
 import { Component, input } from '@angular/core';
 import { ControlContainer, FormControl, FormGroup, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
-import { UniversitySelectComponent } from '../university-select/university-select.component';
-import { CareerSelectComponent } from '../career-select/career-select.component';
-import { CareerTrackSelectComponent } from '../career-track-select/career-track-select.component';
+import { UniversitySelectComponent } from '../inputs/university-select/university-select.component';
+import { CareerSelectComponent } from '../inputs/career-select/career-select.component';
+import { CareerTrackSelectComponent } from '../inputs/career-track-select/career-track-select.component';
 
 @Component({
   selector: 'app-subject-filters',

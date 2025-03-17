@@ -5,16 +5,16 @@ import { Subject, SubjectFilters } from '../../backend/models/subject/subject';
 import { combineLatest, Subscription, take } from 'rxjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { SubjectFiltersModalComponent } from '../subject-filters-modal/subject-filters-modal.component';
+import { SubjectFiltersModalComponent } from '../modals/subject-filters-modal/subject-filters-modal.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faEye, faLink, faPen, faRefresh, faCirclePlus, faArrowUp, faSitemap } from '@fortawesome/free-solid-svg-icons';
-import { SubjectEditModalComponent } from '../subject-edit-modal/subject-edit-modal.component';
+import { faEye, faLink, faPen, faRefresh, faCirclePlus, faArrowUp, faSitemap, faQuestion, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+import { SubjectEditModalComponent } from '../modals/subject-edit-modal/subject-edit-modal.component';
 import _ from 'lodash';
 import cytoscape, { NodeSingular } from 'cytoscape';
 import { StudentSubjectService } from '../../backend/services/student-subject.service';
 import { StudentSubject } from '../../backend/models/subject/subject-subject';
-import { StudentSubjectEditModalComponent } from '../student-subject-edit-modal/student-subject-edit-modal.component';
-import { SubjectToSubjectModalComponent } from '../subject-to-subject-modal/subject-to-subject-modal.component';
+import { StudentSubjectEditModalComponent } from '../modals/student-subject-edit-modal/student-subject-edit-modal.component';
+import { SubjectToSubjectModalComponent } from '../modals/subject-to-subject-modal/subject-to-subject-modal.component';
 import { UserService } from '../../core/services/user.service';
 
 @Component({
@@ -34,6 +34,7 @@ export class NetworkComponent implements OnDestroy {
   editIcon = faPen;
   linkIcon = faLink;
   updateNodeIcon = faArrowUp;
+  referenceIcon = faQuestionCircle;
 
   networkService = inject(NetworkService);
   studentSubjectService = inject(StudentSubjectService);

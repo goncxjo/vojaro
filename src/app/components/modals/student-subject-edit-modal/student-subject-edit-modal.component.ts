@@ -2,14 +2,14 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
-import { UniversitySelectComponent } from '../university-select/university-select.component';
-import { CareerSelectComponent } from '../career-select/career-select.component';
-import { SubjectStateSelectComponent } from '../subject-state-select/subject-state-select.component';
-import { UserService } from '../../core/services/user.service';
-import { StudentSubject } from '../../backend/models/subject/subject-subject';
-import { StudentSubjectService } from '../../backend/services/student-subject.service';
+import { UniversitySelectComponent } from '../../inputs/university-select/university-select.component';
+import { CareerSelectComponent } from '../../inputs/career-select/career-select.component';
+import { SubjectStateSelectComponent } from '../../inputs/subject-state-select/subject-state-select.component';
+import { UserService } from '../../../core/services/user.service';
+import { StudentSubject } from '../../../backend/models/subject/subject-subject';
+import { StudentSubjectService } from '../../../backend/services/student-subject.service';
 import _ from 'lodash';
-import { Subject } from '../../backend/models/subject/subject';
+import { Subject } from '../../../backend/models/subject/subject';
 
 @Component({
   selector: 'app-student-subject-edit-modal',

@@ -27,11 +27,15 @@
     }
 </div>
 
+<div class="floating-button text-info m-3 z-3">
+    <fa-icon [icon]="referenceIcon" size="3x" />
+</div>
+
 <nav class="navbar navbar-expand navbar-dark bg-primary fixed-bottom z-3">
     <ul class="btn-actions navbar-nav mx-auto">
         @if(!selected.id) {
         <li class="nav-item">
-            <button class="nav-link btn btn-primary mx-1" (click)="openFilterModal()">
+            <button type="button" class="nav-link btn btn-primary mx-1" (click)="openFilterModal()">
                 <fa-icon [icon]="filterIcon" />
                 <span class="d-block"> Mi plan</span>
             </button>

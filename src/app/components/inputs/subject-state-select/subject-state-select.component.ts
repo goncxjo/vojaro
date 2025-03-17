@@ -1,6 +1,6 @@
 import { AfterContentInit, AfterViewInit, Component, DoCheck, forwardRef, Injector, input, Input, OnInit, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NgControl, NG_VALUE_ACCESSOR, FormsModule, ReactiveFormsModule, ControlContainer, FormGroupDirective, FormControl, FormGroup } from '@angular/forms';
-import { Item } from '../../backend/models/item.type';
+import { Item } from '../../../backend/models/item.type';
 
 @Component({
   selector: 'app-subject-state-select',
