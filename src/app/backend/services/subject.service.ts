@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { addDoc, collection, collectionData, CollectionReference, deleteDoc, doc, docData, Firestore, query, QueryConstraint, updateDoc, where } from '@angular/fire/firestore';
 import _ from 'lodash';
 import { Subject, SubjectFilters } from '../models/subject/subject';
@@ -21,15 +21,19 @@ export class SubjectService {
   }
 
   getAll(filters: SubjectFilters): Observable<Subject[]> {
-    const q: QueryConstraint[]= []; 
-    q.push(where('universityId', '==', filters?.universityId || ''));
-    q.push(where('careerId', '==', filters?.careerId || ''));
-    if (filters?.careerTrackId) {
-      q.push(where('careerTracks', 'array-contains-any', [filters?.careerTrackId || '']));
-    }
+    const res = collectionData(
+      query(this._collection,
+        where('universityId', '==', filters?.universityId || ''),
+        where('careerId', '==', filters?.careerId || ''),
+    ), { idField: "id" }) as Observable<Subject[]>;
 
-    return collectionData(
-      query(this._collection, ...q), { idField: "id" }) as Observable<Subject[]>;
+    return res.pipe(
+      map((ss: Subject[]) => {
+        return ss.filter((s: Subject) => {
+          return s.careerTracks ? s.careerTracks.find(t => t === filters?.careerTrackId) : true;
+        })
+      })
+    )
   }
   
   getById(id: string): Observable<Subject> {
