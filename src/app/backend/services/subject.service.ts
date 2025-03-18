@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
-import { addDoc, collection, collectionData, CollectionReference, deleteDoc, doc, docData, Firestore, query, QueryConstraint, updateDoc, where } from '@angular/fire/firestore';
+import { from, map, Observable } from 'rxjs';
+import { addDoc, collection, CollectionReference, doc, DocumentReference, DocumentSnapshot, Firestore, getDoc, getDocs, query, QuerySnapshot, updateDoc, where } from '@angular/fire/firestore';
 import _ from 'lodash';
 import { Subject, SubjectFilters } from '../models/subject/subject';
+import { HttpService } from '../../core/services/http.service';
 
 const PATH = 'subjects';
 
@@ -12,6 +13,7 @@ const PATH = 'subjects';
 export class SubjectService {
   private _firestore: Firestore;
   private _collection: CollectionReference;
+  private httpService = inject(HttpService);
 
   constructor(
       // private userService: UserService,
@@ -21,40 +23,57 @@ export class SubjectService {
   }
 
   getAll(filters: SubjectFilters): Observable<Subject[]> {
-    const res = collectionData(
-      query(this._collection,
-        where('universityId', '==', filters?.universityId || ''),
-        where('careerId', '==', filters?.careerId || ''),
-    ), { idField: "id" }) as Observable<Subject[]>;
+    const _query = query(this._collection,
+      where('universityId', '==', filters?.universityId || ''),
+      where('careerId', '==', filters?.careerId || ''),
+    );
 
-    return res.pipe(
-      map((ss: Subject[]) => {
-        return ss.filter((s: Subject) => {
-          return s.careerTracks ? s.careerTracks.find(t => t === filters?.careerTrackId) : true;
+    return this.httpService.run<Subject[]>(
+      from(getDocs(_query)).pipe(
+        map((res: QuerySnapshot) => {
+          return res.docs.map((n) => {
+            return this.createSubject(n);
+          });
         })
-      })
+      )
     )
   }
   
   getById(id: string): Observable<Subject> {
     const docRef = doc(this._firestore, PATH, id);
-    return docData(docRef, { idField: "id" }) as Observable<Subject>;
+    return this.httpService.run<Subject>( 
+      from(getDoc(docRef)).pipe(
+        map((res: DocumentSnapshot) => this.createSubject(res))
+      )
+    );
   }
   
   async update(entity: Subject) {
-    // entity.user = this.userService.getUserId();
     const docRef = doc(this._firestore, PATH, entity.id);
-    return updateDoc(docRef, { ...entity });
+    return this.httpService.run<Subject>( 
+      from(updateDoc(docRef, {...entity})).pipe(
+        map((_) => this.createSubject(entity))
+      )
+    );
   }
   
-  async create(doc: Subject) {
-    // doc.user = this.userService.getUserId();
-    return await addDoc(this._collection, doc);
+  async create(entity: Subject) {
+    return this.httpService.run<Subject>( 
+      from(addDoc(this._collection, {...entity})).pipe(
+        map((res: DocumentReference) => this.createSubject(res, res.id))
+      )
+    );
   }
 
   async delete(id: string) {
-    const docRef = doc(this._firestore, PATH, id);
-    return await deleteDoc(docRef);
+    // const docRef = doc(this._firestore, PATH, id);
+    // return await deleteDoc(docRef);
+  }
+
+  private createSubject(res: DocumentSnapshot | Partial<Subject>, id?: string): Subject {
+    const d = res instanceof DocumentSnapshot ? res.data() ?? this.new() : res;
+    d['id'] = res.id || id;
+    return d as Subject;
   }
 
   new(): Subject {
