@@ -1,9 +1,9 @@
-import { Component, inject, ViewChild } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { NgbModal, NgbPopover, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from './core/services/user.service';
 import { LoadingScreenComponent } from './core/loading-screen/loading-screen.component';
-import { NetworkReferencesModalComponent } from './components/modals/network-references-modal/network-references-modal.component';
+import { WelcomeModalComponent } from './components/modals/welcome-modal/welcome-modal.component';
 
 @Component({
   selector: 'app-root',
@@ -13,13 +13,14 @@ import { NetworkReferencesModalComponent } from './components/modals/network-ref
 })
 export class AppComponent {
   title = 'vojaro';
-  @ViewChild('p') p!: NgbPopover
 
   userService = inject(UserService);
 
   constructor(
     private modalService: NgbModal,
-  ) { }
+  ) {
+    this.modalService.open(WelcomeModalComponent, { centered: true, scrollable: true })
+  }
 
 
   getUser() {
