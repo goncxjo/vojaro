@@ -1,9 +1,10 @@
-<div class="mt-3 z-3 position-absolute">
-    @if(subjectFromLink.id && subjectFromLink.id !== selected.id) {
-    <div class="card text-bg-primary flex-row justify-content-center align-items-center shadow" data-bs-theme="dark">
-        <span class="selected-subject m-2 flex-grow-1">{{subjectFromLink.name}}</span>
-        <button type="button" class="btn-close mx-2" aria-label="Close" (click)="cleanSelected()"></button>
-    </div>
+<div class="z-3 position-absolute">
+    @if(selected.id) {
+        <div class="card text-bg-primary flex-row justify-content-center align-items-center shadow mt-3"
+            data-bs-theme="dark">
+            <span class="selected-subject m-2 flex-grow-1">{{selected.name}}</span>
+            <button type="button" class="btn-close mx-2" aria-label="Close" (click)="cleanSelected()"></button>
+        </div>
     }
     @if(linkMode) {
     <div class="card flex-row justify-content-center align-items-center shadow mt-3">
@@ -11,23 +12,25 @@
         <button type="button" class="btn-close mx-2" aria-label="Close" (click)="cleanSelected()"></button>
     </div>
     }
-    @if(selected.id) {
-    <div class="card text-bg-primary flex-row justify-content-center align-items-center shadow mt-3"
-        data-bs-theme="dark">
-        <span class="selected-subject m-2 flex-grow-1">{{selected.name}}</span>
-        <button type="button" class="btn-close mx-2" aria-label="Close" (click)="cleanSelected()"></button>
-    </div>
+    @if(subjectToLink.id) {
+        <div class="card text-bg-primary flex-row justify-content-center align-items-center shadow mt-3" data-bs-theme="dark">
+            <span class="selected-subject m-2 flex-grow-1">{{subjectToLink.name}}</span>
+            <button type="button" class="btn-close mx-2" aria-label="Close" (click)="cleanSelected()"></button>
+        </div>    
     }
 </div>
 
 <div class="network-wrapper d-flex justify-content-center align-items-center">
     <div #graph id="graph" class="magicpattern flex-grow-1 h-100" [hidden]="data.length === 0"></div>
     @if(data.length === 0) {
-    <h1>Sin datos</h1>
+        <div class="row text-center">
+            <h1>Esto está vacío...</h1>
+            <h6>(probá abajo haciendo click en "Mi plan")</h6>
+        </div>
     }
 </div>
 
-<div class="floating-button text-info m-3 z-3" (click)="openReferencesModal()">
+<div class="floating-button btn btn-light rounded-5 text-info p-0 m-3 z-3" (click)="openReferencesModal()">
     <fa-icon [icon]="referenceIcon" size="3x" />
 </div>
 
@@ -47,13 +50,19 @@
             </button>
         </li>
         @if(userService.isAdmin() && data.length > 0) {
+            <li class="nav-item">
+                <button class="nav-link btn btn-primary mx-1" (click)="openEditModal(false, true)">
+                    <fa-icon [icon]="createIcon" />
+                    <span class="d-block"> Agregar</span>
+                </button>
+            </li>
+        }
         <li class="nav-item">
-            <button class="nav-link btn btn-primary mx-1" (click)="openEditModal(false, true)">
-                <fa-icon [icon]="createIcon" />
-                <span class="d-block"> Crear</span>
+            <button class="nav-link btn btn-primary mx-1" (click)="openWelcomeModal()">
+                <fa-icon [icon]="aboutIcon" />
+                <span class="d-block">Acerca de</span>
             </button>
         </li>
-        }
         }
 
         @else {

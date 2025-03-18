@@ -23,6 +23,7 @@ export class SubjectStateSelectComponent implements AfterContentInit {
   readonly name = input<string>('');
 
   readonly statuses: Item[] = [
+    { id: '', name: '(Ninguna)' },
     { id: 'approved', name: 'Aprobada' },
     { id: 'regularized', name: 'Regularizada' },
     { id: 'in-progress', name: 'Cursando' }

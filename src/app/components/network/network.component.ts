@@ -7,7 +7,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SubjectFiltersModalComponent } from '../modals/subject-filters-modal/subject-filters-modal.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faEye, faLink, faPen, faRefresh, faCirclePlus, faArrowUp, faSitemap, faQuestion, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faLink, faPen, faRefresh, faCirclePlus, faArrowUp, faSitemap, faQuestion, faQuestionCircle, faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import { SubjectEditModalComponent } from '../modals/subject-edit-modal/subject-edit-modal.component';
 import _ from 'lodash';
 import cytoscape, { NodeSingular } from 'cytoscape';
@@ -17,6 +17,7 @@ import { StudentSubjectEditModalComponent } from '../modals/student-subject-edit
 import { SubjectToSubjectModalComponent } from '../modals/subject-to-subject-modal/subject-to-subject-modal.component';
 import { UserService } from '../../core/services/user.service';
 import { NetworkReferencesModalComponent } from '../modals/network-references-modal/network-references-modal.component';
+import { WelcomeModalComponent } from '../modals/welcome-modal/welcome-modal.component';
 
 @Component({
   selector: 'app-network',
@@ -36,6 +37,7 @@ export class NetworkComponent implements OnDestroy {
   linkIcon = faLink;
   updateNodeIcon = faArrowUp;
   referenceIcon = faQuestionCircle;
+  aboutIcon = faCircleInfo;
 
   networkService = inject(NetworkService);
   studentSubjectService = inject(StudentSubjectService);
@@ -52,7 +54,7 @@ export class NetworkComponent implements OnDestroy {
   } as SubjectFilters;
 
   selected: Subject = this.subjectService.new();
-  subjectFromLink: Subject = this.subjectService.new();
+  subjectToLink: Subject = this.subjectService.new();
   student: StudentSubject = this.studentSubjectService.new();
 
   linkMode: boolean = false;
@@ -84,7 +86,7 @@ export class NetworkComponent implements OnDestroy {
   stopLinkMode() {
     this.linkMode = false;
     this.selected = this.subjectService.new();
-    this.subjectFromLink = this.subjectService.new();
+    this.subjectToLink = this.subjectService.new();
   }
 
   ngAfterViewInit() {
@@ -115,14 +117,16 @@ export class NetworkComponent implements OnDestroy {
         this.cy.on('tap', (event) => {
           const node = this.cy.nodes().children(event.target)[0];
           this.resetOpacity();
+
           if(node) {
-            this.selected = _.find(this.data, (s: Subject) => s.id === node.id()) || this.subjectService.new();
-            if(this.linkMode) {
+            const subjectSelected = _.find(this.data, (s: Subject) => s.id === node.id()) || this.subjectService.new();
+            if(this.linkMode && !this.subjectToLink.id) {
+              this.subjectToLink = subjectSelected;
               if (!this.modalService.hasOpenModals()) {
                 this.openLinkModal();
               }
             } else {
-              this.subjectFromLink = Object.assign({}, this.selected);
+              this.selected = subjectSelected;
             }
             this.focusNeighbourhood(event);
           }
@@ -148,8 +152,9 @@ export class NetworkComponent implements OnDestroy {
     this.cy.nodes().children().not(connectedNodes).not(node).addClass('hide');
     if (this.linkMode) {
       const otherNode = this.cy.filter((e,i) => {
-        return e.isNode() && e.data('id') == this.subjectFromLink.id
-      })
+        return e.isNode() && e.data('id') == this.selected.id
+      });
+      
       otherNode.addClass('selected')
       otherNode.removeClass('hide');      
     }
@@ -163,6 +168,7 @@ export class NetworkComponent implements OnDestroy {
 
   cleanSelected() {
     this.selected = this.subjectService.new();
+    this.subjectToLink = this.subjectService.new();
   }
 
   openFilterModal() {
@@ -181,6 +187,7 @@ export class NetworkComponent implements OnDestroy {
   openEditModal(readonly: boolean = false, createMode: boolean = false) {
     const onModalSuccess = (res: any) => {
       this.applyFilters();
+      this.cleanSelected();
     }
 
     const onError = () => { };
@@ -204,6 +211,7 @@ export class NetworkComponent implements OnDestroy {
   openUpdateModal() {
     const onModalSuccess = (res: any) => {
       this.applyFilters();
+      this.cleanSelected();
     }
 
     const onError = () => { };
@@ -218,6 +226,7 @@ export class NetworkComponent implements OnDestroy {
 
   openLinkModal() {
     const onModalSuccess = (res: any) => {
+      this.cleanSelected();
       this.stopLinkMode();
       this.applyFilters();
     }
@@ -228,14 +237,18 @@ export class NetworkComponent implements OnDestroy {
 
     if(this.linkMode) {
       const modalInstance = this.modalService.open(SubjectToSubjectModalComponent, { centered: true })
-      modalInstance.componentInstance.subject_A = this.subjectFromLink;
-      modalInstance.componentInstance.subject_B = this.selected;
+      modalInstance.componentInstance.subject_A = this.selected;
+      modalInstance.componentInstance.subject_B = this.subjectToLink;
       modalInstance.result.then(onModalSuccess, onError);
     }
   }
 
   openReferencesModal() {
-    this.modalService.open(NetworkReferencesModalComponent, { centered: true })
+    this.modalService.open(NetworkReferencesModalComponent, { centered: true, scrollable: true })
+  }
+
+  openWelcomeModal() {
+    this.modalService.open(WelcomeModalComponent, { centered: true, scrollable: true })
   }
 
   reset() {

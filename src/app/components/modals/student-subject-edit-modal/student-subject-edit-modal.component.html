@@ -1,21 +1,21 @@
 <div class="modal-header">
-    <h4 class="modal-title">Actualizar estado asignatura</h4>
+    <h4 class="modal-title">Actualizar estado</h4>
     <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss({})"></button>
 </div>
 <div class="modal-body">
     <div class="row mb-3 g-3">
         <div class="col">
             <form [formGroup]="form" class="row g-3">
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-md-6" [hidden]="true">
                     <label for="universityId" class="form-label">Universidad</label>
                     <app-university-select [name]="'universityId'" [isDisabled]="true"></app-university-select>
                 </div>
-                <div class="col-12 col-md-6">
+                <div class="col-12 col-md-6" [hidden]="true">
                     <label for="careerId" class="form-label">Carrera</label>
                     <app-career-select [name]="'careerId'" [isDisabled]="true"></app-career-select>
                 </div>
 				<div class="col-12">
-					<label for="name" class="form-label">Nombre</label>
+					<label for="name" class="form-label">Nombre asignatura</label>
 					<input type="text" class="form-control" id="name" formControlName="name" [attr.disabled]="true">
 				</div>
                 <div class="col-12 col-md-6">

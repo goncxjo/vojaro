@@ -102,6 +102,11 @@ export class StudentSubjectEditModalComponent {
         _.remove(form.approved, (s: string) => s === this.subject.id);
         _.remove(form.regularized, (s: string) => s === this.subject.id);
       }
+      else {
+        _.remove(form.approved, (s: string) => s === this.subject.id);
+        _.remove(form.regularized, (s: string) => s === this.subject.id);
+        _.remove(form.inProgress, (s: string) => s === this.subject.id);
+      }
 
       const entity: StudentSubject = {
         id: form.id,
