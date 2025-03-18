@@ -16,6 +16,7 @@ import { StudentSubject } from '../../backend/models/subject/subject-subject';
 import { StudentSubjectEditModalComponent } from '../modals/student-subject-edit-modal/student-subject-edit-modal.component';
 import { SubjectToSubjectModalComponent } from '../modals/subject-to-subject-modal/subject-to-subject-modal.component';
 import { UserService } from '../../core/services/user.service';
+import { NetworkReferencesModalComponent } from '../modals/network-references-modal/network-references-modal.component';
 
 @Component({
   selector: 'app-network',
@@ -231,6 +232,10 @@ export class NetworkComponent implements OnDestroy {
       modalInstance.componentInstance.subject_B = this.selected;
       modalInstance.result.then(onModalSuccess, onError);
     }
+  }
+
+  openReferencesModal() {
+    this.modalService.open(NetworkReferencesModalComponent, { centered: true })
   }
 
   reset() {

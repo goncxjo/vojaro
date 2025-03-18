@@ -1,0 +1,53 @@
+<div class="modal-header">
+    <h5 class="modal-title" id="modal-title">Referencias
+    </h5>
+</div>
+<div class="modal-body">
+    <div class="container">
+        <div class="row">
+          <div class="col-12 fw-bold">Símbolos</div>
+          <hr>
+          <div class="col-1 text-center text-dark"><fa-icon [icon]="asignatura" /></div>
+          <div class="col-11">Asignatura</div>
+          <div class="col-1 text-center text-dark"><fa-icon [icon]="optativa" /></div>
+          <div class="col-11">Asignatura optativa</div>
+          <div class="col-1 text-center text-dark"><fa-icon [icon]="tesis" /></div>
+          <div class="col-11">Asignatura final</div>
+          <div class="col-1 text-center text-dark"><fa-icon [icon]="correlativa" /></div>
+          <div class="col-11">Correlativa</div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-12 fw-bold">Estados asignatura</div>
+          <hr>
+          <div class="col-1 text-center approved-text" style="stroke: black; stroke-width: 10px;"><fa-icon [icon]="asignatura" /></div>
+          <div class="col-11">Aprobada</div>
+          <div class="col-1 text-center regularized-text" style="stroke: black; stroke-width: 10px;"><fa-icon [icon]="asignatura" /></div>
+          <div class="col-11">Regularizada</div>
+          <div class="col-1 text-center in-progress-text" style="stroke: black; stroke-width: 10px;"><fa-icon [icon]="asignatura" /></div>
+          <div class="col-11">En curso</div>
+          <div class="col-1 text-center available-text" style="stroke: black; stroke-width: 10px;"><fa-icon [icon]="asignatura" /></div>
+          <div class="col-11">Disponible</div>
+          <div class="col-1 text-center text-body-secondary" style="stroke: black; stroke-width: 10px;"><fa-icon [icon]="asignatura" /></div>
+          <div class="col-11">No disponible (por defecto)</div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-12 fw-bold">Observaciones</div>
+            <hr>
+            <div class="col">
+            <p>
+                Los estados <strong>Disponible</strong> y <strong>No disponible</strong> son los únicos que se asignan automáticamente.
+                El resto de los estados dependen del usuario.
+            </p>
+            <p>
+                Las asignaturas sin correlativas, tendrán automáticamente el estado <strong>Disponible</strong>.
+                Si una asignatura con correlativas cumple con las condiciones de correlatividad, tendrá el estado <strong>Disponible</strong>.
+                En caso contrario, será <strong>No Disponible</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-outline-secondary" (click)="modal.close('ok')">OK</button>
+</div>

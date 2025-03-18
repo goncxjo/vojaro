@@ -41,6 +41,32 @@ $web-font-path: false;
 	pointer-events: auto; /* Permite interacción con el gráfico */
 }
 
+.approved {
+	background-color: #8affc7;
+}
+.regularized {
+	background-color: #fff977;
+}
+.in-progress {
+	background-color: #ffb58c;
+}
+.available {
+	background-color: #a6cbff
+}
+
+.approved-text {
+	color: #8affc7;
+}
+.regularized-text {
+	color: #fff977;
+}
+.in-progress-text {
+	color: #ffb58c;
+}
+.available-text {
+	color: #a6cbff
+}
+
 .floating-content {
 position: relative; /* Elementos sobre el gráfico */
 z-index: 2; /* Asegura que estén delante */

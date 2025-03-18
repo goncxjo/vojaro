@@ -26,6 +26,7 @@ import { CareerTrack } from '../../../backend/models/career-track/career-track';
 export class CareerTrackSelectComponent implements AfterContentInit {
   name = input<string>('');
   isDisabled = input<boolean>(false);
+  showOptionAll = input<boolean>(false);
   
   chlidForm!: FormGroup;
   
@@ -81,6 +82,14 @@ export class CareerTrackSelectComponent implements AfterContentInit {
   selectOption(option: CareerTrack | null) {
     this.selected = option;
     this.control.patchValue(this.selected?.id); 
+  }
+
+  cleanSelected() {
+    this.selected = null;
+  }
+
+  hideOptionAll() {
+    return !this.showOptionAll;
   }
 
   ngOnDestroy() {
