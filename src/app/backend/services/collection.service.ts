@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
-import { map, Observable, of, take } from 'rxjs';
-import { collection, collectionData, CollectionReference, doc, docData, Firestore, query } from '@angular/fire/firestore';
+import { from, map, Observable, of, take } from 'rxjs';
+import { collection, collectionData, CollectionReference, doc, docData, DocumentSnapshot, Firestore, getDoc, getDocs, query, QuerySnapshot } from '@angular/fire/firestore';
 import { Item } from '../models/item.type';
 import _ from 'lodash';
+import { HttpService } from '../../core/services/http.service';
 
 @Injectable()
 export class CollectionService<T extends Item> {
@@ -10,6 +11,7 @@ export class CollectionService<T extends Item> {
   private _collection!: CollectionReference;
   private _path!: string;
   private serviceReady: boolean = false;
+  private httpService = inject(HttpService);
   
   constructor() {
       this._firestore = inject(Firestore);
@@ -31,20 +33,22 @@ export class CollectionService<T extends Item> {
       return of([]);
     }
     else {
-      const res = collectionData(
-        query(this._collection), { idField: "id" }
-      ) as Observable<T[]>;
-      
-      if (name) {
-        return res.pipe(
-          take(1),
-          map((e: T[]) => {
-            var regex = new RegExp(`${name}`, 'gi');  
-            return _.filter(e, (c: T) => regex.test(c.name));
+      return this.httpService.run<T[]>(
+        from(getDocs(this._collection)).pipe(
+          map((res: QuerySnapshot) => {
+            return res.docs.map((n) => {
+              return this.createItem(n);
+            });
           }),
-        )      
-      }
-      return res.pipe(take(1));
+          map((e: T[]) => {
+            if(name) {
+              var regex = new RegExp(`${name}`, 'gi');  
+              return _.filter(e, (c: T) => regex.test(c.name));
+            }
+            return e;
+          }),
+        )
+      )
     }
   }
   
@@ -55,8 +59,17 @@ export class CollectionService<T extends Item> {
     }
     else {
       const docRef = doc(this._firestore, this._path, id);
-      const res = docData(docRef, { idField: "id" }) as Observable<T>;
-      return res.pipe(take(1));
+      return this.httpService.run<T>( 
+        from(getDoc(docRef)).pipe(
+          map((res: DocumentSnapshot) => this.createItem(res))
+        )
+      );
     }
+  }
+
+  private createItem(res: DocumentSnapshot | Partial<T>, id?: string): T {
+    const d = res instanceof DocumentSnapshot ? res.data() ?? { id: '', name: ''} : res;
+    d['id'] = res.id || id;
+    return d as T;
   }
 }
