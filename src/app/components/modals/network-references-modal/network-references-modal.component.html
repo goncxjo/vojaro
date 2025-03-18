@@ -6,7 +6,7 @@
     <div class="container">
         <div class="row">
           <div class="col-12 fw-bold">Símbolos</div>
-          <hr>
+          <hr class="mx-0 my-1">
           <div class="col-1 text-center text-dark"><fa-icon [icon]="asignatura" /></div>
           <div class="col-11">Asignatura</div>
           <div class="col-1 text-center text-dark"><fa-icon [icon]="optativa" /></div>
@@ -18,7 +18,7 @@
         </div>
         <div class="row mt-3">
           <div class="col-12 fw-bold">Estados asignatura</div>
-          <hr>
+          <hr class="mx-0 my-1">
           <div class="col-1 text-center approved-text" style="stroke: black; stroke-width: 10px;"><fa-icon [icon]="asignatura" /></div>
           <div class="col-11">Aprobada</div>
           <div class="col-1 text-center regularized-text" style="stroke: black; stroke-width: 10px;"><fa-icon [icon]="asignatura" /></div>
@@ -32,11 +32,11 @@
         </div>
         <div class="row mt-3">
             <div class="col-12 fw-bold">Observaciones</div>
-            <hr>
+            <hr class="mx-0 my-1">
             <div class="col">
             <p>
                 Los estados <strong>Disponible</strong> y <strong>No disponible</strong> son los únicos que se asignan automáticamente.
-                El resto de los estados dependen del usuario.
+                <strong>El resto de los estados dependen del usuario.</strong>
             </p>
             <p>
                 Las asignaturas sin correlativas, tendrán automáticamente el estado <strong>Disponible</strong>.

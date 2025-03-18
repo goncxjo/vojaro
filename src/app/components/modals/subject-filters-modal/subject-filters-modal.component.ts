@@ -27,7 +27,7 @@ export class SubjectFiltersModalComponent implements OnInit {
   }
 
   get disableSubmit(): boolean {
-    return !this.form.get('universityId')?.value && !this.form.get('careerId')?.value;
+    return !this.form.get('careerId')?.value;
   }
 
   submit() {
