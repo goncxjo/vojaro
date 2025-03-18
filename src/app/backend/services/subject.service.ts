@@ -31,9 +31,10 @@ export class SubjectService {
     return this.httpService.run<Subject[]>(
       from(getDocs(_query)).pipe(
         map((res: QuerySnapshot) => {
-          return res.docs.map((n) => {
-            return this.createSubject(n);
-          });
+          const subjects = res.docs.map((n) => this.createSubject(n));
+          return subjects.filter((s: Subject) => {
+            return s.careerTracks ? s.careerTracks.find(t => t === filters?.careerTrackId) : true;
+          })
         })
       )
     )
