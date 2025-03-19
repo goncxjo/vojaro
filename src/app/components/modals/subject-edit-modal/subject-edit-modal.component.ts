@@ -7,6 +7,7 @@ import { Subject } from '../../../api/models/subject/subject';
 import { UniversitySelectComponent } from '../../inputs/university-select/university-select.component';
 import { CareerSelectComponent } from '../../inputs/career-select/career-select.component';
 import { CareerTrackMultiSelectComponent } from '../../inputs/career-track-multiselect/career-track-multiselect.component';
+import { SubjectTypeSelectComponent } from '../../inputs/subject-type-select/subject-type-select.component';
 
 @Component({
   selector: 'app-subject-edit-modal',
@@ -15,7 +16,8 @@ import { CareerTrackMultiSelectComponent } from '../../inputs/career-track-multi
     ReactiveFormsModule,
     UniversitySelectComponent,
     CareerSelectComponent,
-    CareerTrackMultiSelectComponent
+    CareerTrackMultiSelectComponent,
+    SubjectTypeSelectComponent,
   ],
   templateUrl: './subject-edit-modal.component.html',
   styleUrl: './subject-edit-modal.component.scss'
@@ -85,6 +87,7 @@ export class SubjectEditModalComponent {
         careerId: form.careerId,
         year: form.year,
         quarter: form.quarter,
+        type: form.type,
         mustApproved: form.mustApproved,
         mustRegularize: form.mustRegularize,
         careerTracks: form.careerTracks

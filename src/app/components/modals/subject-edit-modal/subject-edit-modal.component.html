@@ -27,10 +27,14 @@
                     <input type="number" min="1" max="99" class="form-control" id="year" formControlName="year">
                 </div>
                 <div class="col-6">
-                    <label for="quarter" class="form-label">Cuatrimestre @if(!readonly) { <span
-                            class="text-danger">*</span> }</label>
+                    <label for="quarter" class="form-label">Cuatrimestre @if(!readonly) { <span class="text-danger">*</span> } </label>
                     <input type="number" min="1" max="99" class="form-control" id="quarter" formControlName="quarter">
                 </div>
+                <div class="col-6">
+                    <label for="type" class="form-label">Tipo asignatura</label>
+                    <app-subject-type-select [name]="'type'"></app-subject-type-select>
+                </div>
+
             </form>
         </div>
     </div>

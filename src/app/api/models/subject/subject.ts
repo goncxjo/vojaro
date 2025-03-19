@@ -5,6 +5,7 @@ export interface Subject {
     careerId: string;
     year: number;
     quarter: number;
+    type: string;
     mustApproved: any[];
     mustRegularize: any[];
     careerTracks: any[];

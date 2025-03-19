@@ -89,9 +89,15 @@ export class NetworkService {
         }
       },
       {
-        selector: ".optional",
+        selector: ".elective",
         style: {
-          "shape": "star"
+          "shape": "round-rectangle"
+        }
+      },
+      {
+        selector: ".cross-disciplinary",
+        style: {
+          "shape": "round-triangle"
         }
       },
       {
@@ -215,7 +221,7 @@ export class NetworkService {
           // grabbable: false,
           // panable: true,
           locked: true,
-          classes: `center-center multiline-auto ${nodeClass}`,  
+          classes: `${subject.type} center-center multiline-auto ${nodeClass}`,  
         });
       });
     });

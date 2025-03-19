@@ -1,7 +1,7 @@
 
 import { Component, inject } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faCircle, faRightLong, faSquare, faStar } from '@fortawesome/free-solid-svg-icons';
+import { faCircle, faPlay, faRightLong, faSquare, faStar, faTriangleCircleSquare } from '@fortawesome/free-solid-svg-icons';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -15,6 +15,7 @@ export class NetworkReferencesModalComponent {
   asignatura = faCircle;
   optativa = faSquare;
   correlativa = faRightLong;
+  interdisciplinaria = faPlay;
   tesis = faStar;
 
   modal = inject(NgbActiveModal);

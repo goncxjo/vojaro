@@ -85,6 +85,7 @@ export class SubjectService {
       careerId: '',
       year: 0,
       quarter: 0,
+      type: '',
       mustApproved: [],
       mustRegularize: [],
       careerTracks: [],
