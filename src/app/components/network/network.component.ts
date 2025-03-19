@@ -85,8 +85,7 @@ export class NetworkComponent implements OnDestroy {
   
   stopLinkMode() {
     this.linkMode = false;
-    this.selected = this.subjectService.new();
-    this.subjectToLink = this.subjectService.new();
+    this.cleanSelected();
   }
 
   ngAfterViewInit() {
@@ -167,6 +166,7 @@ export class NetworkComponent implements OnDestroy {
   }
 
   cleanSelected() {
+    this.resetOpacity();
     this.selected = this.subjectService.new();
     this.subjectToLink = this.subjectService.new();
   }
@@ -186,8 +186,10 @@ export class NetworkComponent implements OnDestroy {
 
   openEditModal(readonly: boolean = false, createMode: boolean = false) {
     const onModalSuccess = (res: any) => {
-      this.applyFilters();
       this.cleanSelected();
+      if (res.id) {
+        this.applyFilters();
+      }
     }
 
     const onError = () => { };
@@ -210,8 +212,10 @@ export class NetworkComponent implements OnDestroy {
 
   openUpdateModal() {
     const onModalSuccess = (res: any) => {
-      this.applyFilters();
       this.cleanSelected();
+      if (res.id) {
+        this.applyFilters();
+      }
     }
 
     const onError = () => { };
@@ -226,7 +230,6 @@ export class NetworkComponent implements OnDestroy {
 
   openLinkModal() {
     const onModalSuccess = (res: any) => {
-      this.cleanSelected();
       this.stopLinkMode();
       this.applyFilters();
     }

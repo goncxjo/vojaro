@@ -36,16 +36,14 @@ export class CollectionService<T extends Item> {
       return this.httpService.run<T[]>(
         from(getDocs(this._collection)).pipe(
           map((res: QuerySnapshot) => {
-            return res.docs.map((n) => {
+            const items = res.docs.map((n) => {
               return this.createItem(n);
             });
-          }),
-          map((e: T[]) => {
             if(name) {
               var regex = new RegExp(`${name}`, 'gi');  
-              return _.filter(e, (c: T) => regex.test(c.name));
+              return _.filter(items, (i: T) => regex.test(i.name));
             }
-            return e;
+            return items;
           }),
         )
       )
