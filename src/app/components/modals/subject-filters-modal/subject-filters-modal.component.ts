@@ -28,9 +28,11 @@ export class SubjectFiltersModalComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    if (this.filters) {
-      this.form.setValue(this.filters);
-    }
+    setTimeout(() => {
+      if (this.filters) {
+        this.form.setValue(this.filters);
+      }
+    }, 500);
   }
 
   get disableSubmit(): boolean {

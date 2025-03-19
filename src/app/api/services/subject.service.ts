@@ -33,7 +33,10 @@ export class SubjectService {
         map((res: QuerySnapshot) => {
           const subjects = res.docs.map((n) => this.createSubject(n));
           return subjects.filter((s: Subject) => {
-            return s.careerTracks && s.careerTracks.length > 0 ? s.careerTracks.find(t => t === filters?.careerTrackId) : true;
+            if (s.careerTracks?.length > 0) {
+              return s.careerTracks.find(t => t === filters.careerTrackId) ;
+            }
+            return true;
           })
         })
       )

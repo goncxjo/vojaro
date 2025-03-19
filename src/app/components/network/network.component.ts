@@ -7,7 +7,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SubjectFiltersModalComponent } from '../modals/subject-filters-modal/subject-filters-modal.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faEye, faLink, faPen, faRefresh, faCirclePlus, faArrowUp, faSitemap, faQuestion, faQuestionCircle, faCircleInfo } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faLink, faPen, faRefresh, faCirclePlus, faArrowUp, faSitemap, faQuestion, faQuestionCircle, faCircleInfo, faCircleCheck, faCircleUp } from '@fortawesome/free-solid-svg-icons';
 import { SubjectEditModalComponent } from '../modals/subject-edit-modal/subject-edit-modal.component';
 import _ from 'lodash';
 import cytoscape, { NodeSingular } from 'cytoscape';
@@ -18,6 +18,7 @@ import { SubjectToSubjectModalComponent } from '../modals/subject-to-subject-mod
 import { UserService } from '../../core/services/user.service';
 import { NetworkReferencesModalComponent } from '../modals/network-references-modal/network-references-modal.component';
 import { WelcomeModalComponent } from '../modals/welcome-modal/welcome-modal.component';
+import { SubjectElectiveSelectModalComponent } from '../modals/subject-elective-select-modal/subject-elective-select-modal.component';
 
 @Component({
   selector: 'app-network',
@@ -35,9 +36,10 @@ export class NetworkComponent implements OnDestroy {
   createIcon = faCirclePlus;
   editIcon = faPen;
   linkIcon = faLink;
-  updateNodeIcon = faArrowUp;
+  updateNodeIcon = faCircleUp;
   referenceIcon = faQuestionCircle;
   aboutIcon = faCircleInfo;
+  electiveIcon = faCircleCheck;
 
   networkService = inject(NetworkService);
   studentSubjectService = inject(StudentSubjectService);
@@ -46,6 +48,7 @@ export class NetworkComponent implements OnDestroy {
 
   form!: FormGroup;
   data: Subject [] = [];
+  electives: any[] = [];
 
   filters: SubjectFilters = {
     universityId: "",
@@ -95,6 +98,7 @@ export class NetworkComponent implements OnDestroy {
 
   applyFilters() {
     if (this.filters.careerId) {      
+      this.electives = [];
       const su = this.subjectService.getAll(this.filters); 
       const sts = this.studentSubjectService.getAll(this.filters);
       
@@ -103,18 +107,16 @@ export class NetworkComponent implements OnDestroy {
       ).subscribe(res => {
         this.student = res[0][0] || this.studentSubjectService.new(this.filters.universityId, this.filters.careerId);
         this.data = res[1];
-        
+
         const { nodes, links, data } = this.networkService.getDataSet(this.student, res[1]);
         this.cy.elements().remove();
         this.cy.add([...nodes,...links])
 
-        this.cy.scratch('_electives', data);
+        this.electives = data;
 
         this.cy.fit()
         this.cy.zoom(0.5);
         this.cy.pan({ x: 0, y: 400 })  
-
-        this.cy.nodes().panify()
 
         this.cy.on('tap', (event) => {
           const node = this.cy.nodes().children(event.target)[0];
@@ -245,6 +247,38 @@ export class NetworkComponent implements OnDestroy {
       modalInstance.componentInstance.subject_B = this.subjectToLink;
       modalInstance.result.then(onModalSuccess, onError);
     }
+  }
+
+  isElective(subject: Subject) {
+    return subject.type === 'elective' || subject.type === 'placeholder'
+  }
+
+  openElectiveModal() {
+    const placeholder = Object.assign({}, this.selected);
+
+    const onModalSuccess = (res: any) => {
+      let ref = this.cy.getElementById(placeholder.id);
+      let newElem = this.electives.find(e => e.data.id == res.id);
+      if (newElem) {
+        newElem.position = ref.position();
+        newElem.data.parent = ref.data('parent');
+        if (ref.data('type') == 'elective') {
+          this.cy.add(ref)
+        }
+        this.cy.add(newElem)        
+        this.cy.add(newElem.data.links)
+      }
+      this.resetOpacity()
+    }
+
+    const onError = () => { 
+      // this.stopLinkMode();
+    };
+
+    const modalInstance = this.modalService.open(SubjectElectiveSelectModalComponent, { centered: true })
+    modalInstance.componentInstance.data = _.map(this.electives, (e) => e.data);
+    modalInstance.componentInstance.selected = this.selected;
+    modalInstance.result.then(onModalSuccess, onError);
   }
 
   openReferencesModal() {

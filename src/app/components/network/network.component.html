@@ -87,6 +87,14 @@
                 <span class="d-block"> Actualizar</span>
             </button>
         </li>
+        @if(isElective(selected)) {
+            <li class="nav-item">
+                <button class="nav-link btn btn-primary mx-1" (click)="openElectiveModal()">
+                    <fa-icon [icon]="electiveIcon" />
+                    <span class="d-block"> Electiva</span>
+                </button>
+            </li>
+        }
         @if(userService.isAdmin()) {
 
         <li class="nav-item">

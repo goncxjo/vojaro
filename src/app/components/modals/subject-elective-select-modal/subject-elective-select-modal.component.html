@@ -1,0 +1,32 @@
+<div class="modal-header">
+    <h4 class="modal-title">Seleccionar electiva</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss({})"></button>
+</div>
+<div class="modal-body">
+    <div class="row mb-3 g-3">
+        <div class="col">
+            <form [formGroup]="form" class="row g-3">
+                <div class="col-12">
+                    <label for="status" class="form-label">Asignatura electiva <span class="text-danger">*</span></label>
+                    <div ngbDropdown>
+                        <button class="app-select form-select text-start" ngbDropdownToggle>
+                            {{ selected?.name }}
+                        </button>
+                        <div ngbDropdownMenu aria-labelledby="dropdownMenu">
+                            @for (item of data; track $index) {
+                                <button class="dropdown-item" (click)="selectOption(item)">
+                                    {{ item.name }}
+                                </button>
+                            }
+                        </div>
+                    </div>
+                    <input type="hidden" [formControlName]="'subject'">
+                </div>
+            </form>            
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="activeModal.close({})">Cancelar</button>
+    <button type="button" class="btn btn-primary" (click)="activeModal.close(selected)">Aceptar</button>
+</div>

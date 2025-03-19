@@ -1,7 +1,7 @@
 import { ElementRef, Injectable } from "@angular/core";
 import { Subject } from "../../api/models/subject/subject";
-import _ from "lodash";
-import cytoscape from "cytoscape";
+import _, {  } from "lodash";
+import cytoscape, { EdgeDefinition, ElementDefinition } from "cytoscape";
 import { StudentSubject } from "../../api/models/subject/subject-subject";
 
 @Injectable()
@@ -160,26 +160,36 @@ export class NetworkService {
 
   getDataSet(student: StudentSubject, subjects: Subject[]) {
     let [electives, _subjects] = _.partition(subjects, (s) => s.type === 'elective');
-    let nodes = this.transformSubjectsToNodes(student, _subjects);
-    let data = this.transformSubjectsToNodesAsElective(student, electives);
-    let links: any[] = this.getEdges(subjects);
+    let nodes: ElementDefinition[] = this.transformSubjectsToNodes(student, _subjects);
+    
+    let _links: EdgeDefinition[] = this.getEdges(subjects);
+    let [electivesLinks, links] = _.partition(_links, (l) => electives.some((e) => l.data.id?.includes(`|${e.id}`)));
+
+    let data = this.transformSubjectsToNodesAsElective(student, electives, electivesLinks);
+
     return { nodes, links, data }
   }
 
-  transformSubjectsToNodesAsElective(student: StudentSubject, subjects: Subject[]) {
-    const nodes: any[] = [];
+  transformSubjectsToNodesAsElective(student: StudentSubject, subjects: Subject[], links: EdgeDefinition[]) {
+    const nodes: ElementDefinition[] = [];
     _.forEach(subjects, (subject: Subject) => {
-      nodes.push({
+      const _links = _.filter(links, (l: EdgeDefinition) => l.data.id?.includes(`|${subject.id}`));
+      const node: ElementDefinition = {
         group: 'nodes',
         data: {
           ...subject,
         },
         locked: true,
         classes: `${subject.type} center-center multiline-auto ${this.getNodeClass(student, subject)}`,  
-      });
+      };
+      
+      node.data['links'] = _links;
+      
+      nodes.push(node);
     });
     return nodes;
   }
+
   transformSubjectsToNodes(student: StudentSubject, subjects: Subject[]) {
     const xOffset = 300; // Distancia horizontal entre columnas
     const yOffset = 50; // Distancia vertical entre nodos en la columna
@@ -192,7 +202,7 @@ export class NetworkService {
     });
   
     // Generar nodos equilibrados
-    const nodes: any[] = [];
+    const nodes: ElementDefinition[] = [];
     Object.entries(subjectsByYear).forEach(([year, subjects]) => {
       const yearNum = parseInt(year);
       const totalNodes = subjects.length;
@@ -206,7 +216,7 @@ export class NetworkService {
         },
         selectable: false,
         grabbable: false,
-        panable: true,
+        pannable: true,
         classes: 'parent',  
       })
 
@@ -221,8 +231,8 @@ export class NetworkService {
             parent: `year-${year}`,
           },
           position: { x, y },
-          // grabbable: false,
-          // panable: true,
+          grabbable: false,
+          pannable: true,
           locked: true,
           classes: `${subject.type} center-center multiline-auto ${this.getNodeClass(student, subject)}`,  
         });
@@ -231,6 +241,7 @@ export class NetworkService {
   
     return nodes;
   }
+
   getNodeClass(student: StudentSubject, subject: Subject) {
     let nodeClass = '';
         
@@ -253,20 +264,21 @@ export class NetworkService {
   }
 
   getEdges(subjects: Subject[]): any[] {
-    const links: any[] = [];
+    const links: EdgeDefinition[] = [];
     subjects.forEach((s: any) => {
       const approved = s.mustApproved || [];
       const regularized = s.mustRegularized || [];
       const realRegularized = _.difference(regularized, approved);
   
       approved.forEach((i: any) => {
-        if(_.some(subjects, (x: any) => x.id == i) && _.some(subjects, (x: any) => x.id == i)) {
-          const newLink = {
+        const source = _.find(subjects, (x: any) => x.id == i);
+        if(source) {
+          const newLink: EdgeDefinition = {
             group: 'edges',
             data: {
               id: `${i}|${s.id}`,
-              source: _.find(subjects, (x: any) => x.id == i)?.id,
-              target: _.find(subjects, (x: any) => x.id == s.id)?.id,
+              source: source.id,
+              target: s.id,
             },
             classes: 'multi-unbundled-bezier'
           }
@@ -275,13 +287,14 @@ export class NetworkService {
       });
   
       realRegularized.forEach((i: any) => {
-        if(_.some(subjects, (x: any) => x.id == i) && _.some(subjects, (x: any) => x.id == i)) {
-          const newLink = {
+        const source = _.find(subjects, (x: any) => x.id == i);
+        if(source) {
+          const newLink: EdgeDefinition = {
             group: 'edges',
             data: {
               id: `${i}|${s.id}`,
-              source: _.find(subjects, (x: any) => x.id == i)?.id,
-              target: _.find(subjects, (x: any) => x.id == s.id)?.id,
+              source: source.id,
+              target: s.id,
             }
           }
           links.push(newLink);
