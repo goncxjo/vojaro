@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { SubjectFilterComponent } from '../../subject-filters/subject-filters.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { SubjectFilters } from '../../../api/models/subject/subject';
 
 @Component({
   selector: 'app-subject-filters-modal',
@@ -9,8 +10,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   templateUrl: './subject-filters-modal.component.html',
   styleUrl: './subject-filters-modal.component.scss'
 })
-export class SubjectFiltersModalComponent implements OnInit {
-  @ViewChild('subjectFilters') filters!: SubjectFilterComponent;
+export class SubjectFiltersModalComponent implements OnInit, AfterViewInit {
+  filters!: Partial<SubjectFilters>;
   form!: FormGroup;
 
   constructor(
@@ -26,11 +27,17 @@ export class SubjectFiltersModalComponent implements OnInit {
     this.form = this.buildForm();
   }
 
+  ngAfterViewInit(): void {
+    if (this.filters) {
+      this.form.setValue(this.filters);
+    }
+  }
+
   get disableSubmit(): boolean {
     return !this.form.get('careerId')?.value;
   }
 
   submit() {
-    this.activeModal.close(this.filters?.childForm?.getRawValue())
+    this.activeModal.close(this.form.getRawValue())
   }
 }
