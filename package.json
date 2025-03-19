@@ -1,6 +1,6 @@
 {
   "name": "vojaro",
-  "version": "0.0.25076",
+  "version": "0.0.25078",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
