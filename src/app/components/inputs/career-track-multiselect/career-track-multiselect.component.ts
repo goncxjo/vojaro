@@ -2,12 +2,12 @@ import { Component, AfterContentInit, input, inject } from '@angular/core';
 import { FormControl, FormGroupDirective, ControlContainer, ReactiveFormsModule, FormGroup } from '@angular/forms';
 import * as _ from 'lodash';
 import { distinctUntilChanged, map, Subscription, switchMap, tap } from 'rxjs';
-import { CareerList } from '../../../backend/models/career/career';
-import { CollectionService } from '../../../backend/services/collection.service';
+import { CareerList } from '../../../api/models/career/career';
+import { CollectionService } from '../../../api/services/collection.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
-import { CareerTrack } from '../../../backend/models/career-track/career-track';
+import { CareerTrack } from '../../../api/models/career-track/career-track';
 
 @Component({
   selector: 'app-career-track-multiselect',

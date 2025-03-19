@@ -2,8 +2,8 @@ import { inject, Injectable, signal } from '@angular/core';
 import { Auth, signOut, signInWithPopup, GoogleAuthProvider, User } from '@angular/fire/auth';
 import { doc, docData, Firestore, setDoc } from '@angular/fire/firestore';
 import { debounceTime, distinctUntilKeyChanged, filter, iif, Observable, of, Subscription, switchMap, take, tap } from 'rxjs';
-import { AppUser } from '../../backend/models/user/user';
-import { Roles } from '../../backend/models/user/roles.enum';
+import { AppUser } from '../../api/models/user/user';
+import { Roles } from '../../api/models/user/roles.enum';
 
 const PATH = 'users';
 

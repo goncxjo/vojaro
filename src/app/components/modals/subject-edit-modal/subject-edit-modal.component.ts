@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { SubjectService } from '../../../backend/services/subject.service';
+import { SubjectService } from '../../../api/services/subject.service';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
-import { Subject } from '../../../backend/models/subject/subject';
+import { Subject } from '../../../api/models/subject/subject';
 import { UniversitySelectComponent } from '../../inputs/university-select/university-select.component';
 import { CareerSelectComponent } from '../../inputs/career-select/career-select.component';
 import { CareerTrackMultiSelectComponent } from '../../inputs/career-track-multiselect/career-track-multiselect.component';

@@ -6,10 +6,10 @@ import { UniversitySelectComponent } from '../../inputs/university-select/univer
 import { CareerSelectComponent } from '../../inputs/career-select/career-select.component';
 import { SubjectStateSelectComponent } from '../../inputs/subject-state-select/subject-state-select.component';
 import { UserService } from '../../../core/services/user.service';
-import { StudentSubject } from '../../../backend/models/subject/subject-subject';
-import { StudentSubjectService } from '../../../backend/services/student-subject.service';
+import { StudentSubject } from '../../../api/models/subject/subject-subject';
+import { StudentSubjectService } from '../../../api/services/student-subject.service';
 import _ from 'lodash';
-import { Subject } from '../../../backend/models/subject/subject';
+import { Subject } from '../../../api/models/subject/subject';
 
 @Component({
   selector: 'app-student-subject-edit-modal',

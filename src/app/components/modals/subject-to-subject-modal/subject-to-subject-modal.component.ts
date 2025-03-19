@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { SubjectService } from '../../../backend/services/subject.service';
+import { SubjectService } from '../../../api/services/subject.service';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
-import { Subject } from '../../../backend/models/subject/subject';
+import { Subject } from '../../../api/models/subject/subject';
 
 @Component({
   selector: 'app-subject-to-subject-modal',

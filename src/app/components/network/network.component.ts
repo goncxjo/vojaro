@@ -1,7 +1,7 @@
 import { Component, ElementRef, inject, OnDestroy, ViewChild } from '@angular/core';
 import { NetworkService } from './network.service';
-import { SubjectService } from '../../backend/services/subject.service';
-import { Subject, SubjectFilters } from '../../backend/models/subject/subject';
+import { SubjectService } from '../../api/services/subject.service';
+import { Subject, SubjectFilters } from '../../api/models/subject/subject';
 import { combineLatest, Subscription, take } from 'rxjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -11,8 +11,8 @@ import { faEye, faLink, faPen, faRefresh, faCirclePlus, faArrowUp, faSitemap, fa
 import { SubjectEditModalComponent } from '../modals/subject-edit-modal/subject-edit-modal.component';
 import _ from 'lodash';
 import cytoscape, { NodeSingular } from 'cytoscape';
-import { StudentSubjectService } from '../../backend/services/student-subject.service';
-import { StudentSubject } from '../../backend/models/subject/subject-subject';
+import { StudentSubjectService } from '../../api/services/student-subject.service';
+import { StudentSubject } from '../../api/models/subject/subject-subject';
 import { StudentSubjectEditModalComponent } from '../modals/student-subject-edit-modal/student-subject-edit-modal.component';
 import { SubjectToSubjectModalComponent } from '../modals/subject-to-subject-modal/subject-to-subject-modal.component';
 import { UserService } from '../../core/services/user.service';

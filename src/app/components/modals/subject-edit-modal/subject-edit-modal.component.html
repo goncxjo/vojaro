@@ -18,28 +18,28 @@
                     <label for="careerTracks" class="form-label">Orientaciones</label>
                     <app-career-track-multiselect [name]="'careerTracks'"></app-career-track-multiselect>
                 </div>
-				<div class="col-12">
-					<label for="name" class="form-label">Nombre @if(!readonly) { <span class="text-danger">*</span> }</label>
-					<input type="text" class="form-control" id="name" formControlName="name">
-				</div>
-				<div class="col-6">
-					<label for="year" class="form-label">Año @if(!readonly) { <span class="text-danger">*</span> }</label>
-					<input type="number" min="1" max="99" class="form-control" id="year" formControlName="year">
-				</div>
-				<div class="col-6">
-					<label for="quarter" class="form-label">Cuatrimestre @if(!readonly) { <span class="text-danger">*</span> }</label>
-					<input type="number" min="1" max="99" class="form-control" id="quarter" formControlName="quarter">
-				</div>
-            </form>            
+                <div class="col-12">
+                    <label for="name" class="form-label">Nombre @if(!readonly) { <span class="text-danger">*</span> } </label>
+                    <input type="text" class="form-control" id="name" formControlName="name">
+                </div>
+                <div class="col-6">
+                    <label for="year" class="form-label">Año @if(!readonly) { <span class="text-danger">*</span> } </label>
+                    <input type="number" min="1" max="99" class="form-control" id="year" formControlName="year">
+                </div>
+                <div class="col-6">
+                    <label for="quarter" class="form-label">Cuatrimestre @if(!readonly) { <span
+                            class="text-danger">*</span> }</label>
+                    <input type="number" min="1" max="99" class="form-control" id="quarter" formControlName="quarter">
+                </div>
+            </form>
         </div>
     </div>
 </div>
 <div class="modal-footer">
-    @if(!readonly) {
-        <button type="button" class="btn btn-secondary" (click)="activeModal.close({})">Cancelar</button>
-        <button type="button" class="btn btn-primary" (click)="save()">Aceptar</button>
-    }
-    @else {
-        <button type="button" class="btn btn-secondary" (click)="activeModal.close({})">Aceptar</button>
-    }
+    <button type="button" class="btn btn-secondary" (click)="activeModal.close({})">
+        @if(!readonly) { Cancelar } @else { Aceptar }
+    </button>
+    <button type="button" class="btn btn-primary" (click)="save()">
+        Aceptar
+    </button>
 </div>

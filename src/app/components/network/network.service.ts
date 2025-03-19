@@ -1,8 +1,8 @@
 import { ElementRef, Injectable } from "@angular/core";
-import { Subject } from "../../backend/models/subject/subject";
+import { Subject } from "../../api/models/subject/subject";
 import _ from "lodash";
 import cytoscape from "cytoscape";
-import { StudentSubject } from "../../backend/models/subject/subject-subject";
+import { StudentSubject } from "../../api/models/subject/subject-subject";
 
 @Injectable()
 export class NetworkService {
@@ -80,6 +80,18 @@ export class NetworkService {
           'border-cap': 'round',
           'border-join': 'round',
           'padding':'25px',
+        }
+      },
+      {
+        selector: ".final",
+        style: {
+          "shape": "star"
+        }
+      },
+      {
+        selector: ".optional",
+        style: {
+          "shape": "star"
         }
       },
       {
