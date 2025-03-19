@@ -180,7 +180,8 @@ export class NetworkComponent implements OnDestroy {
     }
 
     const onError = () => { };
-    const modalInstance = this.modalService.open(SubjectFiltersModalComponent, { centered: true })
+    const modalInstance = this.modalService.open(SubjectFiltersModalComponent, { centered: true });    
+    modalInstance.componentInstance.filters = this.filters;
     modalInstance.result.then(onModalSuccess, onError);
   }
 
