@@ -1,13 +1,16 @@
-import { AfterContentInit, AfterViewInit, Component, DoCheck, forwardRef, Injector, input, Input, OnInit, ViewChild } from '@angular/core';
-import { ControlValueAccessor, NgControl, NG_VALUE_ACCESSOR, FormsModule, ReactiveFormsModule, ControlContainer, FormGroupDirective, FormControl, FormGroup } from '@angular/forms';
+import { Component, AfterContentInit, input } from '@angular/core';
+import { FormControl, FormGroupDirective, ControlContainer, ReactiveFormsModule, FormGroup } from '@angular/forms';
+import * as _ from 'lodash';
 import { Item } from '../../../api/models/item.type';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-subject-state-select',
   templateUrl: './subject-state-select.component.html',
   styleUrls: ['./subject-state-select.component.scss'],
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, FontAwesomeModule, NgbDropdownModule],
   viewProviders: [
     {
       provide: ControlContainer,
@@ -15,26 +18,35 @@ import { Item } from '../../../api/models/item.type';
     },
   ]
 })
-export class SubjectStateSelectComponent implements AfterContentInit {
-  childForm!: FormGroup;
+export class SubjectStateSelectComponent implements AfterContentInit { 
+  name = input<string>('');
+  isDisabled = input<boolean>(false);
   
-  readonly isDisabled = input<boolean>(false);
-  // readonly showOptionAll = input<boolean>(false);
-  readonly name = input<string>('');
+  chlidForm!: FormGroup;
+  
+  data: Item[] = [
+      { id: '', name: '(Ninguna)' },
+      { id: 'approved', name: 'Aprobada' },
+      { id: 'regularized', name: 'Regularizada' },
+      { id: 'in-progress', name: 'Cursando' }
+  ]; 
+  selected: Item | null = null;
 
-  readonly statuses: Item[] = [
-    { id: '', name: '(Ninguna)' },
-    { id: 'approved', name: 'Aprobada' },
-    { id: 'regularized', name: 'Regularizada' },
-    { id: 'in-progress', name: 'Cursando' }
-  ] 
-  
+  get control() {
+    return this.chlidForm.controls[this.name()];
+  }
+
   constructor(
     public parentForm: FormGroupDirective
   ) { }
 
   ngAfterContentInit(): void {
-    this.childForm = this.parentForm.form;
-    this.childForm.addControl(this.name(), new FormControl({ value: '', disabled: this.isDisabled() }));
+    this.chlidForm = this.parentForm.form;
+    this.chlidForm.addControl(this.name(), new FormControl({value: '', disabled: this.isDisabled()}));
+  }
+
+  selectOption(option: Item | null) {
+    this.selected = option;
+    this.control.patchValue(this.selected?.id); 
   }
 }
