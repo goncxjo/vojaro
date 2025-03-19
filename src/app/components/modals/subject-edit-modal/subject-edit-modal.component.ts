@@ -82,14 +82,14 @@ export class SubjectEditModalComponent {
       const form = this.form.getRawValue();
       const entity: Subject = {
         id: form.id,
-        name: form.name,
+        name: form.type === 'placeholder' ? 'Electiva' : form.name,
         universityId: form.universityId,
         careerId: form.careerId,
         year: form.year,
         quarter: form.quarter,
         type: form.type,
-        mustApproved: form.mustApproved,
-        mustRegularize: form.mustRegularize,
+        mustApproved: form.type === 'placeholder' ? [] : form.mustApproved,
+        mustRegularize: form.type === 'placeholder' ? [] : form.mustRegularize,
         careerTracks: form.careerTracks
       };
 

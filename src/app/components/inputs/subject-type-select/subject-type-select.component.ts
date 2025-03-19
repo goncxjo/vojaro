@@ -28,6 +28,7 @@ export class SubjectTypeSelectComponent implements AfterContentInit, AfterViewIn
       { id: '', name: 'Normal' },
       { id: 'cross-disciplinary', name: 'Interdisciplinaria' },
       { id: 'elective', name: 'Electiva' },
+      { id: 'placeholder', name: '<Espacio electiva>' },
       { id: 'final', name: 'Final' }
   ]; 
   selected: Item | null = null;

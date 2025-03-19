@@ -95,6 +95,12 @@ export class NetworkService {
         }
       },
       {
+        selector: ".placeholder",
+        style: {
+          "shape": "round-rectangle",
+        }
+      },
+      {
         selector: ".cross-disciplinary",
         style: {
           "shape": "round-triangle"
@@ -153,12 +159,27 @@ export class NetworkService {
   }
 
   getDataSet(student: StudentSubject, subjects: Subject[]) {
-    let nodes = this.transformSubjectsToNodes(student, subjects);
+    let [electives, _subjects] = _.partition(subjects, (s) => s.type === 'elective');
+    let nodes = this.transformSubjectsToNodes(student, _subjects);
+    let data = this.transformSubjectsToNodesAsElective(student, electives);
     let links: any[] = this.getEdges(subjects);
-    return { nodes, links }
+    return { nodes, links, data }
   }
 
-    
+  transformSubjectsToNodesAsElective(student: StudentSubject, subjects: Subject[]) {
+    const nodes: any[] = [];
+    _.forEach(subjects, (subject: Subject) => {
+      nodes.push({
+        group: 'nodes',
+        data: {
+          ...subject,
+        },
+        locked: true,
+        classes: `${subject.type} center-center multiline-auto ${this.getNodeClass(student, subject)}`,  
+      });
+    });
+    return nodes;
+  }
   transformSubjectsToNodes(student: StudentSubject, subjects: Subject[]) {
     const xOffset = 300; // Distancia horizontal entre columnas
     const yOffset = 50; // Distancia vertical entre nodos en la columna
@@ -193,24 +214,6 @@ export class NetworkService {
         const x = (yearNum - 1) * xOffset + (index % 2 != 0 ? 100 : 1); // Posición X en base al año
         const y = -totalHeight / 2 + index * yOffset; // Posición Y centrada en y = 0
 
-        let nodeClass = '';
-        
-        if(_.find(student?.approved || [], (s: string) => s === subject.id)) {
-          nodeClass = 'approved'
-        }
-        else if(_.find(student?.regularized || [], (s: string) => s === subject.id)) {
-          nodeClass = 'regularized'
-        }
-        else if(_.find(student?.inProgress || [], (s: string) => s === subject.id)) {
-          nodeClass = 'in-progress'
-        }
-        else if(student && _.every(subject.mustApproved, (id) => _.includes(student.approved, id))) {
-          nodeClass =  'available'
-        }
-        else {
-          nodeClass =  'not-available'
-        }
-
         nodes.push({
           group: 'nodes',
           data: {
@@ -221,12 +224,32 @@ export class NetworkService {
           // grabbable: false,
           // panable: true,
           locked: true,
-          classes: `${subject.type} center-center multiline-auto ${nodeClass}`,  
+          classes: `${subject.type} center-center multiline-auto ${this.getNodeClass(student, subject)}`,  
         });
       });
     });
   
     return nodes;
+  }
+  getNodeClass(student: StudentSubject, subject: Subject) {
+    let nodeClass = '';
+        
+    if(_.find(student?.approved || [], (s: string) => s === subject.id)) {
+      nodeClass = 'approved'
+    }
+    else if(_.find(student?.regularized || [], (s: string) => s === subject.id)) {
+      nodeClass = 'regularized'
+    }
+    else if(_.find(student?.inProgress || [], (s: string) => s === subject.id)) {
+      nodeClass = 'in-progress'
+    }
+    else if(student && _.every(subject.mustApproved, (id) => _.includes(student.approved, id))) {
+      nodeClass =  'available'
+    }
+    else {
+      nodeClass =  'not-available'
+    }
+    return nodeClass;
   }
 
   getEdges(subjects: Subject[]): any[] {

@@ -103,9 +103,12 @@ export class NetworkComponent implements OnDestroy {
       ).subscribe(res => {
         this.student = res[0][0] || this.studentSubjectService.new(this.filters.universityId, this.filters.careerId);
         this.data = res[1];
-        const { nodes, links } = this.networkService.getDataSet(this.student, res[1]);
+        
+        const { nodes, links, data } = this.networkService.getDataSet(this.student, res[1]);
         this.cy.elements().remove();
         this.cy.add([...nodes,...links])
+
+        this.cy.scratch('_electives', data);
 
         this.cy.fit()
         this.cy.zoom(0.5);
@@ -133,9 +136,6 @@ export class NetworkComponent implements OnDestroy {
             this.stopLinkMode()
           }
         });
-
-        // this.cy.nodes().children().on('mouseover', this.focusNeighbourhood.bind(this));
-        // this.cy.nodes().children().on('mouseout', this.resetOpacity.bind(this));
       });
     }
 
@@ -252,7 +252,7 @@ export class NetworkComponent implements OnDestroy {
   }
 
   openWelcomeModal() {
-    this.modalService.open(WelcomeModalComponent, { centered: true, scrollable: true })
+    this.modalService.open(WelcomeModalComponent, { centered: true, scrollable: true, size: 'lg' })
   }
 
   reset() {
