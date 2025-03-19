@@ -263,7 +263,7 @@ export class NetworkComponent implements OnDestroy {
         newElem.position = ref.position();
         newElem.data.parent = ref.data('parent');
         if (ref.data('type') == 'elective') {
-          this.cy.add(ref)
+          this.cy.remove(ref)
         }
         this.cy.add(newElem)        
         this.cy.add(newElem.data.links)
@@ -286,7 +286,7 @@ export class NetworkComponent implements OnDestroy {
   }
 
   openWelcomeModal() {
-    this.modalService.open(WelcomeModalComponent, { centered: true, scrollable: true, size: 'lg' })
+    this.modalService.open(WelcomeModalComponent, { centered: true })
   }
 
   reset() {
