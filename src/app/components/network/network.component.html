@@ -81,6 +81,8 @@
             </button>
         </li>
         }
+        @if(userService.isAdmin() || userService.isEditor()) {
+
         <li class="nav-item">
             <button class="nav-link btn btn-primary mx-1" (click)="openUpdateModal()">
                 <fa-icon [icon]="updateNodeIcon" />
@@ -95,6 +97,7 @@
                 </button>
             </li>
         }
+    }
         @if(userService.isAdmin()) {
 
         <li class="nav-item">
