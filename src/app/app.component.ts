@@ -19,7 +19,7 @@ export class AppComponent {
   constructor(
     private modalService: NgbModal,
   ) {
-    this.modalService.open(WelcomeModalComponent, { centered: true })
+    this.modalService.open(WelcomeModalComponent, { centered: true, scrollable: true })
   }
 
 

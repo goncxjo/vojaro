@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { Auth, signOut, signInWithPopup, GoogleAuthProvider, User } from '@angular/fire/auth';
 import { doc, docData, Firestore, setDoc } from '@angular/fire/firestore';
-import { debounceTime, distinctUntilKeyChanged, filter, iif, Observable, of, Subscription, switchMap, take, tap } from 'rxjs';
+import { debounceTime, filter, Observable, Subscription, switchMap, take, tap } from 'rxjs';
 import { AppUser } from '../../api/models/user/user';
 import { Roles } from '../../api/models/user/roles.enum';
 
@@ -15,7 +15,7 @@ export class UserService {
 
   private emptyUser = {
     id: '',
-    name: 'Invitado',
+    name: 'Invitad@',
     role: Roles.VIEWER
   } as AppUser
 
@@ -73,12 +73,12 @@ export class UserService {
   }
 
   getUserName() {
-    return this.auth.currentUser?.displayName || 'Invitado'
+    return this.auth.currentUser?.displayName || 'Invitad@'
   }
 
   getCurrentUser() {
     return this.auth.currentUser ?? {
-      displayName: 'Invitado',
+      displayName: 'Invitad@',
       photoURL: `default-user.jpg`
     };
   }

@@ -1,7 +1,6 @@
 
 import { Component, inject } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faCircle, faRightLong, faSquare, faStar } from '@fortawesome/free-solid-svg-icons';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -13,4 +12,10 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class WelcomeModalComponent {
   modal = inject(NgbActiveModal);
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      document.getElementById('welcome-modal')?.scrollIntoView();
+    }, 500);
+  }
 }
