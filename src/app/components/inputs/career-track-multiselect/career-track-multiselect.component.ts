@@ -75,7 +75,7 @@ export class CareerTrackMultiSelectComponent implements AfterContentInit {
     })
   }
 
-  selectDisabled(){
+  inputDisabled(){
     return this.isDisabled() || this.isLoading;
   };
 

@@ -40,10 +40,11 @@
     </div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="activeModal.close({})">
-        @if(!readonly) { Cancelar } @else { Aceptar }
-    </button>
-    <button type="button" class="btn btn-primary" (click)="save()">
-        Aceptar
-    </button>
+    @if(!readonly) {
+        <button type="button" class="btn btn-secondary" (click)="activeModal.close({})">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="save()">Aceptar</button>
+    } @else {
+        <button type="button" class="btn btn-secondary" (click)="activeModal.close({})">Aceptar</button>
+    }
+
 </div>

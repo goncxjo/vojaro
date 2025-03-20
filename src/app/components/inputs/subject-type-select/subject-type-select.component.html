@@ -1,5 +1,5 @@
 <div ngbDropdown>
-    <button class="app-select form-select text-start" ngbDropdownToggle [disabled]="isDisabled()">
+    <button class="app-select form-select text-start" ngbDropdownToggle [attr.disabled]="disableInput()">
         {{ selected?.name }}
     </button>
     <div ngbDropdownMenu aria-labelledby="dropdownMenu">

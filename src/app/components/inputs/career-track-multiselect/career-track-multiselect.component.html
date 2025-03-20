@@ -1,5 +1,5 @@
 <div ngbDropdown [autoClose]="'outside'">
-    <button class="app-select form-select text-start" ngbDropdownToggle [disabled]="selectDisabled()">
+    <button class="app-select form-select text-start" ngbDropdownToggle [attr.disabled]="inputDisabled()">
         @if(isLoading) {
             <fa-icon [icon]="loadIcon" animation="spin-pulse"></fa-icon>
         }

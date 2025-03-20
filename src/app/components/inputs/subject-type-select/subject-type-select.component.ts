@@ -18,7 +18,7 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
     },
   ]
 })
-export class SubjectTypeSelectComponent implements AfterContentInit, AfterViewInit { 
+export class SubjectTypeSelectComponent implements AfterContentInit { 
   name = input<string>('');
   isDisabled = input<boolean>(false);
   
@@ -28,7 +28,7 @@ export class SubjectTypeSelectComponent implements AfterContentInit, AfterViewIn
       { id: '', name: 'Normal' },
       { id: 'cross-disciplinary', name: 'Interdisciplinaria' },
       { id: 'elective', name: 'Electiva' },
-      { id: 'placeholder', name: '<Espacio electiva>' },
+      { id: 'placeholder', name: 'Espacio para electiva' },
       { id: 'final', name: 'Final' }
   ]; 
   selected: Item | null = null;
@@ -50,11 +50,12 @@ export class SubjectTypeSelectComponent implements AfterContentInit, AfterViewIn
     }, 500);
   }
 
-  ngAfterViewInit(): void {
-  }
-
   selectOption(option: Item | null) {
     this.selected = option;
     this.control.patchValue(this.selected?.id); 
+  }
+
+  disableInput() {
+    return this.isDisabled();
   }
 }
