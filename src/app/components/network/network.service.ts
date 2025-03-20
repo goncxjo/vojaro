@@ -65,7 +65,13 @@ export class NetworkService {
       {
         selector: ".available",
         style: {
-          'background-color': '	#a6cbff',
+          'background-color': '#a6cbff',
+        }
+      },
+      {
+        selector: ".not-available",
+        style: {
+          'background-color': '#bfc9ca',
         }
       },
       {
@@ -254,7 +260,7 @@ export class NetworkService {
     else if(_.find(student?.inProgress || [], (s: string) => s === subject.id)) {
       nodeClass = 'in-progress'
     }
-    else if(student && _.every(subject.mustApproved, (id) => _.includes(student.approved, id))) {
+    else if(student.id && _.every(subject.mustApproved, (id) => _.includes(student.approved, id))) {
       nodeClass =  'available'
     }
     else {
