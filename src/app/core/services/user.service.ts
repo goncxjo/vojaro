@@ -1,9 +1,10 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { Auth, signOut, signInWithPopup, GoogleAuthProvider, User } from '@angular/fire/auth';
-import { doc, docData, Firestore, setDoc } from '@angular/fire/firestore';
-import { debounceTime, filter, Observable, Subscription, switchMap, take, tap } from 'rxjs';
+import { doc, docData, DocumentSnapshot, Firestore, getDoc, setDoc } from '@angular/fire/firestore';
+import { debounceTime, filter, from, map, Observable, Subscription, switchMap, take, tap } from 'rxjs';
 import { AppUser } from '../../api/models/user/user';
 import { Roles } from '../../api/models/user/roles.enum';
+import { HttpService } from './http.service';
 
 const PATH = 'users';
 
@@ -12,10 +13,12 @@ const PATH = 'users';
 })
 export class UserService {
   private _firestore: Firestore;
+  private httpService = inject(HttpService);
 
   private emptyUser = {
     id: '',
     name: 'Invitad@',
+    email: '',
     role: Roles.VIEWER
   } as AppUser
 
@@ -32,7 +35,7 @@ export class UserService {
             take(1),
             debounceTime(1000),
             tap((res) => this.userInfo.set(res)),
-            filter((res) => !res.id),
+            filter((res) => !res.email), // TODO: veridicar de otra manera
             switchMap((res) => this.createUserInfo(user)),
         ).subscribe()
       }
@@ -41,27 +44,43 @@ export class UserService {
   
   getUserInfo(id: string): Observable<AppUser> {
     const docRef = doc(this._firestore, PATH, id);
-    return docData(docRef, { idField: "id" }) as Observable<AppUser>;
+    return this.httpService.run<AppUser>( 
+      from(getDoc(docRef)).pipe(
+        map((res: DocumentSnapshot) => this.createAppUser(res))
+      )
+    );
   }
 
-  initAppUser(user: User) {
-    this.userInfo.set({
-      id: user.uid, 
-      name: user.displayName ?? '',
-      role: Roles.EDITOR
-    });
-  }
-
-  async createUserInfo(user: User) {  
+  async createUserInfo(user: User) {
     const entity = {
       name: user.displayName ?? '',
+      email: user.email ?? '',
       role: Roles.EDITOR
     };
 
     this.userInfo.set({ id: user.uid, ...entity });
 
     const docRef = doc(this._firestore, PATH, user.uid);
-    return setDoc(docRef, { ...entity }, { merge: true });
+    return this.httpService.run<AppUser>( 
+      from(setDoc(docRef, {...entity})).pipe(
+        map((_) => this.createAppUser(entity))
+      )
+    );
+  }
+
+  private createAppUser(res: DocumentSnapshot | Partial<AppUser>, id?: string): AppUser {
+    const d = res instanceof DocumentSnapshot ? res.data() ?? this.emptyUser : res;
+    d['id'] = res.id || id;    
+    return d as AppUser;
+  }
+
+  initAppUser(user: User) {
+    this.userInfo.set({
+      id: user.uid, 
+      name: user.displayName ?? '',
+      email: user.email ?? '',
+      role: Roles.EDITOR
+    });
   }
 
   loginWithGoogle() {
