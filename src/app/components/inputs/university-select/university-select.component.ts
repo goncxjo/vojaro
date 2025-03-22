@@ -1,9 +1,9 @@
 import { Component, AfterContentInit, input, inject } from '@angular/core';
 import { FormControl, FormGroupDirective, ControlContainer, ReactiveFormsModule, FormGroup } from '@angular/forms';
 import * as _ from 'lodash';
-import { Subscription, tap } from 'rxjs';
-import { UniversityList } from '../../../api/models/university/university';
-import { CollectionService } from '../../../api/services/collection.service';
+import { finalize, Subscription, tap } from 'rxjs';
+import { University } from '../../../api/models/university/university';
+import { UniversityService } from '../../../api/services/university.service';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
@@ -14,7 +14,6 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
   imports: [ReactiveFormsModule, FontAwesomeModule, NgbDropdownModule],
   templateUrl: './university-select.component.html',
   styleUrl: './university-select.component.scss',
-  providers: [CollectionService],
   viewProviders: [
     {
       provide: ControlContainer,
@@ -26,10 +25,10 @@ export class UniversitySelectComponent implements AfterContentInit {
   name = input<string>('');
   isDisabled = input<boolean>(false);
   
-  chlidForm!: FormGroup;
+  childForm!: FormGroup;
   
-  data: UniversityList[] = [];
-  selected: UniversityList | null = null;
+  data: University[] = [];
+  selected: University | null = null;
 
   sub!: Subscription;
 
@@ -37,28 +36,26 @@ export class UniversitySelectComponent implements AfterContentInit {
   loadIcon = faSpinner;
   
   get control() {
-    return this.chlidForm.controls[this.name()];
+    return this.childForm.controls[this.name()];
   }
 
-  private service = inject(CollectionService<UniversityList>);
+  private service = inject(UniversityService);
 
   constructor(
     public parentForm: FormGroupDirective
-  ) {
-    this.service.init('universities');
-  }
+  ) { }
 
   ngAfterContentInit(): void {
-    this.chlidForm = this.parentForm.form;
-    this.chlidForm.addControl(this.name(), new FormControl({value: '', disabled: this.isDisabled()}));
+    this.childForm = this.parentForm.form;
+    this.childForm.addControl(this.name(), new FormControl({value: '', disabled: this.isDisabled()}));
 
     this.sub = this.service.getAll().pipe(
-      tap(() => this.isLoading = true)
-    ).subscribe((res) => {
+      tap(() => this.isLoading = true),
+      finalize(() => this.isLoading = false)
+    ).subscribe((res: University[]) => {
       this.data = res;
       const entity = _.find(this.data, (c) => c.id === this.control.value) ?? null;
       this.selectOption(entity);
-      this.isLoading = false;
     })
   }
 
@@ -66,7 +63,7 @@ export class UniversitySelectComponent implements AfterContentInit {
     return this.isDisabled() || this.isLoading;
   };
 
-  selectOption(option: UniversityList | null) {
+  selectOption(option: University | null) {
     this.selected = option;
     this.control.patchValue(this.selected?.id); 
   }

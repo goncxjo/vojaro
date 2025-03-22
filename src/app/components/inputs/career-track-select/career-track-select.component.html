@@ -9,7 +9,7 @@
     </button>
     <div ngbDropdownMenu aria-labelledby="dropdownMenu">
         @if (!hideOptionAll()) {
-            <button class="dropdown-item" (click)="cleanSelected()">
+            <button class="dropdown-item" (click)="selectOption(null)">
                 (Ninguna)
             </button>
         }

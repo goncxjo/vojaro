@@ -1,13 +1,12 @@
-import { Component, AfterContentInit, input, inject } from '@angular/core';
+import { Component, AfterContentInit, inject, input } from '@angular/core';
 import { FormControl, FormGroupDirective, ControlContainer, ReactiveFormsModule, FormGroup } from '@angular/forms';
 import * as _ from 'lodash';
-import { distinctUntilChanged, map, Subscription, switchMap, tap } from 'rxjs';
-import { CareerList } from '../../../api/models/career/career';
-import { CollectionService } from '../../../api/services/collection.service';
+import { distinctUntilChanged, of, Subscription, switchMap, tap } from 'rxjs';
+import { CareerTrack } from '../../../api/models/career-track/career-track';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
-import { CareerTrack } from '../../../api/models/career-track/career-track';
+import { CareerTrackService } from '../../../api/services/career-track.service';
 
 @Component({
   selector: 'app-career-track-select',
@@ -15,7 +14,6 @@ import { CareerTrack } from '../../../api/models/career-track/career-track';
   imports: [ReactiveFormsModule, FontAwesomeModule, NgbDropdownModule],
   templateUrl: './career-track-select.component.html',
   styleUrl: './career-track-select.component.scss',
-  providers: [CollectionService],
   viewProviders: [
     {
       provide: ControlContainer,
@@ -28,7 +26,7 @@ export class CareerTrackSelectComponent implements AfterContentInit {
   isDisabled = input<boolean>(false);
   showOptionAll = input<boolean>(false);
   
-  chlidForm!: FormGroup;
+  childForm!: FormGroup;
   
   data: CareerTrack[] = [];
   selected: CareerTrack | null = null;
@@ -39,60 +37,57 @@ export class CareerTrackSelectComponent implements AfterContentInit {
   loadIcon = faSpinner;
   
   get control() {
-    return this.chlidForm.controls[this.name()];
+    return this.childForm.controls[this.name()];
   }
 
-  get university() {
-    return this.chlidForm.controls['careerId'];
+  get career() {
+    return this.childForm.controls['careerId'];
   }
 
-  private service = inject(CollectionService<CareerList>);
+  private service = inject(CareerTrackService);
 
   constructor(
     public parentForm: FormGroupDirective
-  ) {
-    this.service.init('careerTracks');
-  }
+  ) { }
 
   ngAfterContentInit(): void {
-    this.chlidForm = this.parentForm.form;
-    this.chlidForm.addControl(this.name(), new FormControl({value: '', disabled: this.isDisabled()}));
+    this.childForm = this.parentForm.form;
+    this.childForm.addControl(this.name(), new FormControl({value: '', disabled: this.isDisabled()}));
 
-    this.sub = this.university.valueChanges.pipe(
+    this.sub = this.career.valueChanges.pipe(
       distinctUntilChanged(),
-      tap(() => this.isLoading = true),
-      switchMap((value: string) => this.service.getAll().pipe(
-      map((res: CareerTrack[]) => {
-        return _.filter(res, (c: CareerTrack) => c.careerId == value)
+      tap(() => {
+        this.isLoading = true;
+        this.data = [];
+        this.selectOption(null);
       }),
-      tap((res) => {
-        this.data = res;
-        const track = _.find(this.data, (c) => c.id === this.control.value) ?? null;
-        this.selectOption(track);
-        this.isLoading = false
-      })))
-    )
-    .subscribe()
+      switchMap((careerId: string) => 
+        careerId ? this.service.getByCareer(careerId) : of([])
+      )
+    ).subscribe((tracks) => {
+      this.data = tracks;
+      const selectedTrack = _.find(tracks, (t) => t.id === this.control.value) ?? null;
+      this.selectOption(selectedTrack);
+      this.isLoading = false
+    });
   }
 
-  selectDisabled(){
+  selectDisabled() {
     return this.isDisabled() || this.isLoading;
-  };
+  }
 
   selectOption(option: CareerTrack | null) {
     this.selected = option;
     this.control.patchValue(this.selected?.id); 
   }
 
-  cleanSelected() {
-    this.selected = null;
-  }
-
   hideOptionAll() {
-    return !this.showOptionAll;
+    return !this.showOptionAll();
   }
 
-  ngOnDestroy() {
-    this.sub.unsubscribe();
+  ngOnDestroy(): void {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
   }
 }

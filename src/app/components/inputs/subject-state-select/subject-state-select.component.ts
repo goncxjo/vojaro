@@ -1,7 +1,7 @@
 import { Component, AfterContentInit, input } from '@angular/core';
 import { FormControl, FormGroupDirective, ControlContainer, ReactiveFormsModule, FormGroup } from '@angular/forms';
 import * as _ from 'lodash';
-import { Item } from '../../../api/models/item.type';
+import { SubjectStateOption, SUBJECT_STATE_OPTIONS } from '../../../api/models/subject/subject-state';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -22,18 +22,13 @@ export class SubjectStateSelectComponent implements AfterContentInit {
   name = input<string>('');
   isDisabled = input<boolean>(false);
   
-  chlidForm!: FormGroup;
+  childForm!: FormGroup;
   
-  data: Item[] = [
-      { id: '', name: '(Ninguna)' },
-      { id: 'approved', name: 'Aprobada' },
-      { id: 'regularized', name: 'Regularizada' },
-      { id: 'in-progress', name: 'Cursando' }
-  ]; 
-  selected: Item | null = null;
+  data: SubjectStateOption[] = SUBJECT_STATE_OPTIONS;
+  selected: SubjectStateOption | null = null;
 
   get control() {
-    return this.chlidForm.controls[this.name()];
+    return this.childForm.controls[this.name()];
   }
 
   constructor(
@@ -41,11 +36,11 @@ export class SubjectStateSelectComponent implements AfterContentInit {
   ) { }
 
   ngAfterContentInit(): void {
-    this.chlidForm = this.parentForm.form;
-    this.chlidForm.addControl(this.name(), new FormControl({value: '', disabled: this.isDisabled()}));
+    this.childForm = this.parentForm.form;
+    this.childForm.addControl(this.name(), new FormControl({value: '', disabled: this.isDisabled()}));
   }
 
-  selectOption(option: Item | null) {
+  selectOption(option: SubjectStateOption | null) {
     this.selected = option;
     this.control.patchValue(this.selected?.id); 
   }
