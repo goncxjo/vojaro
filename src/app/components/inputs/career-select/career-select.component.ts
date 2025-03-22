@@ -55,11 +55,7 @@ export class CareerSelectComponent implements AfterContentInit {
 
     this.sub = this.university.valueChanges.pipe(
       distinctUntilChanged(),
-      tap(() => {
-        this.isLoading = true;
-        this.data = [];
-        this.selectOption(null);
-      }),
+      tap(() => this.isLoading = true),
       switchMap((universityId: string) => 
         universityId ? this.service.getByUniversity(universityId) : of([])
       ),

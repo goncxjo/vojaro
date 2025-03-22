@@ -54,20 +54,20 @@ export class CareerTrackMultiSelectComponent implements AfterContentInit {
 
     this.sub = this.career.valueChanges.pipe(
       distinctUntilChanged(),
-      tap(() => {
-        this.isLoading = true;
-        this.data = [];
-        this.selected = [];
-        this.control.patchValue([]);
-      }),
+      tap(() => this.isLoading = true ),
       switchMap((careerId: string) => 
         careerId ? this.service.getByCareer(careerId) : of([])
       )
     ).subscribe((tracks) => {
       this.data = tracks;
-      const selectedIds = this.control.value || [];
-      this.selected = tracks.filter((track) => selectedIds.includes(track.id));
+      const selectedIds = this.control.value || [];      
+      tracks.forEach((track) => {
+        if (selectedIds.includes(track.id)) {
+          this.toggleOption(track);
+        }
+      })
       this.isLoading = false;
+
     });
   }
 
