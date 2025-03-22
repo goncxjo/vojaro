@@ -1,8 +1,11 @@
 import { ElementRef, Injectable } from "@angular/core";
 import { Subject } from "../../api/models/subject/subject";
-import _, {  } from "lodash";
-import cytoscape, { EdgeDefinition, ElementDefinition } from "cytoscape";
+import _ from "lodash";
+import cytoscape, { EdgeDefinition, ElementDefinition, NodeDataDefinition } from "cytoscape";
 import { StudentSubject } from "../../api/models/subject/subject-subject";
+import { networkStyles } from "./network.styles";
+
+type NodeStatus = 'approved' | 'regularized' | 'in-progress' | 'available' | 'not-available';
 
 @Injectable()
 export class NetworkService {
@@ -11,210 +14,60 @@ export class NetworkService {
     return cytoscape({
       container: container.nativeElement,
       elements: [],
-      style: this.getStyles(),
+      style: networkStyles,
       zoom: 0.5,
       pan: { x: 0, y: 400 },
       autolock: false,
     });
   }
 
-  getStyles(): cytoscape.StylesheetJson | Promise<cytoscape.StylesheetJson> | undefined {
-    return [
-      {
-        selector: 'node',
-        style: {
-          'label': 'data(name)',
-          'text-outline-width': 1,
-          'text-outline-color': '#fff',
-          'padding':'15px'
-        }
-      },
-      {
-        selector: ".center-center",
-        style: {
-          "font-size": '10',
-          "text-valign": "center",
-          "text-halign": "center"
-        }
-      },
-      {
-        selector: ".multiline-auto",
-        style: {
-          "text-wrap": "wrap",
-          "text-max-width": '100'
-        }
-      },
-      {
-        selector: ".approved",
-        style: {
-          'background-color': '#8affc7',
-        }
-      },
-      {
-        selector: ".regularized",
-        style: {
-          'background-color': '#fff977',
-        }
-      },
-      {
-        selector: ".in-progress",
-        style: {
-          'background-color': '#ffb58c',
-        }
-      },
-      {
-        selector: ".available",
-        style: {
-          'background-color': '#a6cbff',
-        }
-      },
-      {
-        selector: ".not-available",
-        style: {
-          'background-color': '#bfc9ca',
-        }
-      },
-      {
-        selector: ".parent",
-        style: {
-          'shape': 'round-rectangle',
-          'background-color': 'whitesmoke',
-          'background-opacity': 0.2,
-          'border-style': 'dashed',
-          'border-dash-offset': 28,
-          // 'border-width': 1,
-          'border-cap': 'round',
-          'border-join': 'round',
-          'padding':'25px',
-        }
-      },
-      {
-        selector: ".final",
-        style: {
-          "shape": "star"
-        }
-      },
-      {
-        selector: ".elective",
-        style: {
-          "shape": "round-rectangle"
-        }
-      },
-      {
-        selector: ".placeholder",
-        style: {
-          "shape": "round-rectangle",
-        }
-      },
-      {
-        selector: ".cross-disciplinary",
-        style: {
-          "shape": "round-triangle"
-        }
-      },
-      {
-        selector: ".selected",
-        style: {
-          'border-color': '#03a9f4',
-          'border-width': 4,
-          'opacity': 1,
-        }
-      },
-      {
-        selector: 'edge',
-        style: {
-          'width': 3,
-          'opacity': 0,
-          'target-arrow-color': '#343a40',
-          'target-arrow-shape': 'triangle',
-          'target-distance-from-node': 2,
-          'curve-style': 'bezier',
-          'line-fill': "linear-gradient"
-          
-        },
-      },
-      {
-        selector: 'edge.show',
-        style: {
-          'opacity': 1,
-        },
-      },
-      {
-        selector: 'node.hide',
-        style: {
-          'opacity': .1,
-        },
-      }, {
-        "selector": "edge.multi-unbundled-bezier",
-        "style": {
-          "curve-style": "unbundled-bezier",
-          "control-point-distances": [40, -40],
-          "control-point-weights": [0.250, 0.75]
-        }
-      },  {
-        "selector": "edge.taxi",
-        "style": {
-          "curve-style": "taxi",
-          "taxi-direction": "rightward",
-          "taxi-turn": 20,
-          "taxi-turn-min-distance": 5,
-          "taxi-radius": 10
-        }
-      }
-    ]
-  }
-
   getDataSet(student: StudentSubject, subjects: Subject[]) {
-    let [electives, _subjects] = _.partition(subjects, (s) => s.type === 'elective');
-    let nodes: ElementDefinition[] = this.transformSubjectsToNodes(student, _subjects);
+    const [electives, regularSubjects] = _.partition(subjects, (s) => s.type === 'elective');
+    const nodes: ElementDefinition[] = this.transformSubjectsToNodes(student, regularSubjects);
     
-    let _links: EdgeDefinition[] = this.getEdges(subjects);
-    let [electivesLinks, links] = _.partition(_links, (l) => electives.some((e) => l.data.id?.includes(`|${e.id}`)));
+    const edges: EdgeDefinition[] = this.getEdges(subjects);
+    const [electivesLinks, links] = _.partition(edges, (l) => 
+      electives.some((e) => l.data.id?.includes(`|${e.id}`))
+    );
 
-    let data = this.transformSubjectsToNodesAsElective(student, electives, electivesLinks);
+    const electiveNodes = this.transformSubjectsToNodesAsElective(student, electives, electivesLinks);
 
-    return { nodes, links, data }
+    return { nodes, links, data: electiveNodes };
   }
 
   transformSubjectsToNodesAsElective(student: StudentSubject, subjects: Subject[], links: EdgeDefinition[]) {
-    const nodes: ElementDefinition[] = [];
-    _.forEach(subjects, (subject: Subject) => {
-      const _links = _.filter(links, (l: EdgeDefinition) => l.data.id?.includes(`|${subject.id}`));
-      const node: ElementDefinition = {
+    return subjects.map((subject: Subject) => {
+      const subjectLinks = links.filter((l: EdgeDefinition) => l.data.id?.includes(`|${subject.id}`));
+      
+      return {
         group: 'nodes',
         data: {
           ...subject,
+          links: subjectLinks
         },
         locked: true,
         classes: `${subject.type} center-center multiline-auto ${this.getNodeClass(student, subject)}`,  
       };
-      
-      node.data['links'] = _links;
-      
-      nodes.push(node);
     });
-    return nodes;
   }
 
   transformSubjectsToNodes(student: StudentSubject, subjects: Subject[]) {
-    const xOffset = 300; // Distancia horizontal entre columnas
-    const yOffset = 50; // Distancia vertical entre nodos en la columna
+    const xOffset = 300;
+    const yOffset = 50;
   
-    // Agrupar nodos por año
-    const subjectsByYear: Record<number, Subject[]> = {};
-    subjects.forEach(subject => {
-      subjectsByYear[subject.year] = subjectsByYear[subject.year] || [];
-      subjectsByYear[subject.year].push(subject);
-    });
+    // Agrupar materias por año
+    const subjectsByYear = subjects.reduce<Record<number, Subject[]>>((acc, subject) => {
+      acc[subject.year] = acc[subject.year] || [];
+      acc[subject.year].push(subject);
+      return acc;
+    }, {});
   
-    // Generar nodos equilibrados
-    const nodes: ElementDefinition[] = [];
-    Object.entries(subjectsByYear).forEach(([year, subjects]) => {
+    return Object.entries(subjectsByYear).flatMap(([year, yearSubjects]) => {
       const yearNum = parseInt(year);
-      const totalNodes = subjects.length;
-      const totalHeight = (totalNodes - 1) * yOffset; // Altura total de la columna
-  
-      nodes.push({
+      const totalNodes = yearSubjects.length;
+      const totalHeight = (totalNodes - 1) * yOffset;
+
+      const yearNode: ElementDefinition = {
         group: 'nodes',
         data: {
           id: `year-${year}`,
@@ -223,91 +76,66 @@ export class NetworkService {
         selectable: false,
         grabbable: false,
         pannable: true,
-        classes: 'parent',  
-      })
+        classes: 'parent',
+      };
 
-      subjects.forEach((subject, index) => {
-        const x = (yearNum - 1) * xOffset + (index % 2 != 0 ? 100 : 1); // Posición X en base al año
-        const y = -totalHeight / 2 + index * yOffset; // Posición Y centrada en y = 0
+      const subjectNodes: ElementDefinition[] = yearSubjects.map((subject, index) => ({
+        group: 'nodes',
+        data: {
+          ...subject,
+          parent: `year-${year}`,
+        },
+        position: {
+          x: (yearNum - 1) * xOffset + (index % 2 !== 0 ? 100 : 0),
+          y: -totalHeight / 2 + index * yOffset
+        },
+        grabbable: false,
+        pannable: true,
+        locked: true,
+        classes: `${subject.type} center-center multiline-auto ${this.getNodeClass(student, subject)}`,
+      }));
 
-        nodes.push({
-          group: 'nodes',
+      return [yearNode, ...subjectNodes];
+    });
+  }
+
+  getNodeClass(student: StudentSubject, subject: Subject): NodeStatus {
+    if (!student) return 'not-available';
+
+    const { approved = [], regularized = [], inProgress = [] } = student;
+    
+    if (approved.includes(subject.id)) return 'approved';
+    if (regularized.includes(subject.id)) return 'regularized';
+    if (inProgress.includes(subject.id)) return 'in-progress';
+    if (student.id && subject.mustApproved.every(id => approved.includes(id))) return 'available';
+    
+    return 'not-available';
+  }
+
+  getEdges(subjects: Subject[]): EdgeDefinition[] {
+    return subjects.flatMap((subject) => {
+      const approved = subject.mustApproved || [];
+      const regularized = (subject.mustRegularize || []).filter(id => !approved.includes(id));
+
+      const createEdge = (sourceId: string, type: 'approved' | 'regularized'): EdgeDefinition | null => {
+        const source = subjects.find(s => s.id === sourceId);
+        if (!source) return null;
+
+        return {
+          group: 'edges',
           data: {
-            ...subject,
-            parent: `year-${year}`,
+            id: `${sourceId}|${subject.id}`,
+            source: sourceId,
+            target: subject.id,
           },
-          position: { x, y },
-          grabbable: false,
-          pannable: true,
-          locked: true,
-          classes: `${subject.type} center-center multiline-auto ${this.getNodeClass(student, subject)}`,  
-        });
-      });
+          classes: type === 'approved' ? 'multi-unbundled-bezier' : undefined
+        };
+      };
+
+      return [
+        ...approved.map(id => createEdge(id, 'approved')),
+        ...regularized.map(id => createEdge(id, 'regularized'))
+      ].filter((edge): edge is EdgeDefinition => edge !== null);
     });
-  
-    return nodes;
   }
-
-  getNodeClass(student: StudentSubject, subject: Subject) {
-    let nodeClass = '';
-        
-    if(_.find(student?.approved || [], (s: string) => s === subject.id)) {
-      nodeClass = 'approved'
-    }
-    else if(_.find(student?.regularized || [], (s: string) => s === subject.id)) {
-      nodeClass = 'regularized'
-    }
-    else if(_.find(student?.inProgress || [], (s: string) => s === subject.id)) {
-      nodeClass = 'in-progress'
-    }
-    else if(student.id && _.every(subject.mustApproved, (id) => _.includes(student.approved, id))) {
-      nodeClass =  'available'
-    }
-    else {
-      nodeClass =  'not-available'
-    }
-    return nodeClass;
-  }
-
-  getEdges(subjects: Subject[]): any[] {
-    const links: EdgeDefinition[] = [];
-    subjects.forEach((s: any) => {
-      const approved = s.mustApproved || [];
-      const regularized = s.mustRegularized || [];
-      const realRegularized = _.difference(regularized, approved);
-  
-      approved.forEach((i: any) => {
-        const source = _.find(subjects, (x: any) => x.id == i);
-        if(source) {
-          const newLink: EdgeDefinition = {
-            group: 'edges',
-            data: {
-              id: `${i}|${s.id}`,
-              source: source.id,
-              target: s.id,
-            },
-            classes: 'multi-unbundled-bezier'
-          }
-          links.push(newLink);
-        }
-      });
-  
-      realRegularized.forEach((i: any) => {
-        const source = _.find(subjects, (x: any) => x.id == i);
-        if(source) {
-          const newLink: EdgeDefinition = {
-            group: 'edges',
-            data: {
-              id: `${i}|${s.id}`,
-              source: source.id,
-              target: s.id,
-            }
-          }
-          links.push(newLink);
-        }
-      });
-    });
-    return links;
-  }
-
 }
