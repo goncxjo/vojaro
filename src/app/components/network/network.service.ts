@@ -101,13 +101,13 @@ export class NetworkService {
 
   getNodeClass(student: StudentSubject, subject: Subject): NodeStatus {
     if (!student) return 'not-available';
-
+    
     const { approved = [], regularized = [], inProgress = [] } = student;
     
     if (approved.includes(subject.id)) return 'approved';
     if (regularized.includes(subject.id)) return 'regularized';
     if (inProgress.includes(subject.id)) return 'in-progress';
-    if (student.id && subject.mustApproved.every(id => approved.includes(id))) return 'available';
+    if (student.id && (subject.mustApproved || []).every(id => approved.includes(id))) return 'available';
     
     return 'not-available';
   }

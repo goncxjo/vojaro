@@ -6,9 +6,9 @@ export interface Subject {
     year: number;
     quarter: number;
     type: string;
-    mustApproved: any[];
-    mustRegularize: any[];
-    careerTracks: any[];
+    mustApproved: string[];
+    mustRegularize: string[];
+    careerTracks: string[];
 }
 
 export interface SubjectFilters {
