@@ -8,3 +8,16 @@
         border-radius: inherit;
     }
 }
+
+.app-container {
+    display: flex;
+    flex: 1;
+    
+    & > main {
+        // display: flex;
+        flex: 1;
+        & > * {
+            width: 100%;
+        }
+    }
+}

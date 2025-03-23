@@ -4,10 +4,11 @@ import { NgbModal, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from './core/services/user.service';
 import { LoadingScreenComponent } from './core/loading-screen/loading-screen.component';
 import { WelcomeModalComponent } from './components/modals/welcome-modal/welcome-modal.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NgbPopoverModule, LoadingScreenComponent],
+  imports: [RouterOutlet, NgbPopoverModule, LoadingScreenComponent, MatToolbarModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -19,7 +20,7 @@ export class AppComponent {
   constructor(
     private modalService: NgbModal,
   ) {
-    this.modalService.open(WelcomeModalComponent, { centered: true, scrollable: true })
+    // this.modalService.open(WelcomeModalComponent, { centered: true, scrollable: true })
   }
 
 

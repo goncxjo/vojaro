@@ -1,10 +1,26 @@
 import { Routes } from '@angular/router';
-import { NetworkComponent } from './components/network/network.component';
+import { PlanViewerComponent } from './components/plan-viewer/plan-viewer.component';
+import { PlanGraphViewComponent } from './components/plan-graph-view/plan-graph-view.component';
+import { PlanGridViewComponent } from './components/plan-grid-view/plan-grid-view.component';
 
 export const routes: Routes = [
     {
       path: '',
-      component: NetworkComponent,
+      component: PlanViewerComponent,
+      children: [
+        {
+          path: '',
+          component: PlanGraphViewComponent
+        },    
+        {
+          path: 'graph',
+          component: PlanGraphViewComponent
+        },
+        {
+          path: 'grid',
+          component: PlanGridViewComponent
+        },
+      ]
     },  
     {
       path: '**',
