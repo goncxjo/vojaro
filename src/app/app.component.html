@@ -1,50 +1,9 @@
-<mat-toolbar>
-  <span>V O J A R O</span>
-</mat-toolbar>
+<app-navbar></app-navbar>
 
 <div class="app-container">
   <main>
     <router-outlet />
   </main>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- @defer (on timer(1500ms)) {
-<nav class="navbar bg-body-secondary z-3 shadow border-bottom">
-  <div class="container">
-    <span class="navbar-brand mb-0 h1">V O J A R O</span>
-      <ul class="navbar-nav ms-2" placement="bottom" [ngbPopover]="popContent" [autoClose]="'outside'">
-        <li class="nav-item user-profile">
-          <img class="nav-user-profile" src="{{ getUser().photoURL }}" id="img">
-        </li>
-      </ul>
-    </div>
-  }
-</nav>
-<ng-template #popContent>
-Hola, <b>{{ userService.getUserName() }}!</b>
-<div class="d-grid gap-2 mt-3">
-  @if(!userService.isLoggedIn()) {
-    <button class="btn btn-primary" type="button" (click)="login()">Iniciar sesión</button>
-  }
-  @else {
-    <button class="btn btn-primary" type="button" disabled>Editar perfil</button>
-    <button class="btn btn-primary" type="button" (click)="logout()">Cerrar sesión</button>
-  }
-</div>
-</ng-template> -->
-
 
 <app-loading-screen></app-loading-screen>
