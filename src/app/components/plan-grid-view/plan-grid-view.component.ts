@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { SubjectStore } from '../../core/stores/subject.store';
 
 @Component({
   selector: 'app-plan-grid-view',
@@ -7,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './plan-grid-view.component.scss'
 })
 export class PlanGridViewComponent {
-
+  subjectStore = inject(SubjectStore);
 }

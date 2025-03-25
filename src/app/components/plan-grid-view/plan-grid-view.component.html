@@ -1,1 +1,25 @@
-<p>plan-grid-view works!</p>
+<div>
+    <div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
+        <table class="table">
+          <!-- head -->
+          <thead>
+            <tr>
+              <th></th>
+              <th>Asignatura</th>
+              <th>Año</th>
+              <th>Periodo</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (subject of subjectStore.subjects(); track subject.id) {
+              <tr>
+                <th>{{ subject.id }}</th>
+                <td>{{ subject.name }}</td>
+                <td>{{ subject.year }}</td>
+                <td>{{ subject.quarter }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+</div>

@@ -1,5 +1,5 @@
 import { Component, ElementRef, inject, viewChild } from '@angular/core';
-import { GraphControllerService } from '../plan-viewer/graph-controller.service';
+import { GraphControllerService } from './graph-controller.service';
 @Component({
   selector: 'app-plan-graph-view',
   imports: [],

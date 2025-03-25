@@ -29,6 +29,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@ng-bootstrap/ng-bootstrap": "^18.0.0",
+    "@ngrx/operators": "^19.0.1",
     "@ngrx/signals": "^19.0.1",
     "@popperjs/core": "^2.11.8",
     "@tailwindcss/postcss": "^4.0.15",
