@@ -6,10 +6,11 @@ import { LoadingScreenComponent } from './layout/loading-screen/loading-screen.c
 import { WelcomeModalComponent } from './components/modals/welcome-modal/welcome-modal.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NavbarComponent } from './layout/navbar/navbar.component';
+import { ModalWrapperComponent } from './layout/modal-wrapper/modal-wrapper.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NgbPopoverModule, LoadingScreenComponent, MatToolbarModule, NavbarComponent],
+  imports: [RouterOutlet, NgbPopoverModule, LoadingScreenComponent, MatToolbarModule, NavbarComponent, ModalWrapperComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

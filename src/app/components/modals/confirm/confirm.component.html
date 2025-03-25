@@ -1,4 +1,4 @@
-<div class="modal-header">
+<!-- <div class="modal-header">
     <h5 class="modal-title" id="modal-title">{{ title }}
     </h5>
 </div>
@@ -8,4 +8,15 @@
 <div class="modal-footer">
     <button type="button" class="btn btn-outline-secondary" (click)="modal.close('cancel')">Cancelar</button>
     <button type="button" class="btn btn-danger" (click)="modal.close('ok')">Continuar</button>
-</div>
+</div> -->
+
+    <div class="modal-box">
+        <h3 class="text-lg font-bold">{{ title }}</h3>
+        <p class="py-4">{{ message }}</p>
+        <div class="modal-action">
+            <form method="dialog">
+                <button type="button" class="btn" (click)="close()">Cancelar</button>
+                <button type="button" class="btn" (click)="close('ok')">Continuar</button>
+            </form>
+        </div>
+    </div>

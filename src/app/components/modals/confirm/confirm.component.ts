@@ -1,6 +1,7 @@
 
 import { Component, inject, Input, Output } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalService } from '../../../core/services/modal.service';
 
 @Component({
   selector: 'app-confirm',
@@ -12,6 +13,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export class ConfirmComponent {
   @Input() title: string = 'Confirmación';
   @Input() message: string = '¿Estás seguro que querés continuar?';
-
-  modal = inject(NgbActiveModal);
+  @Input() close!: (value?: any) => void;
+  
+  modal = inject(ModalService);
 }
