@@ -92,14 +92,8 @@ export class UserService {
   }
 
   getUserName() {
-    return this.auth.currentUser?.displayName || 'Invitad@'
-  }
-
-  getCurrentUser() {
-    return this.auth.currentUser ?? {
-      displayName: 'Invitad@',
-      photoURL: `default-user.jpg`
-    };
+    const firstName = this.auth.currentUser?.displayName || 'Invitad@';
+    return firstName.split(' ')[0];
   }
 
   getUserId() {

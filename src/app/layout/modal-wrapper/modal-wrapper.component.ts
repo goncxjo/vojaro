@@ -4,7 +4,6 @@ import { ModalData, ModalService } from '../../core/services/modal.service';
 @Component({
   selector: 'app-modal-wrapper',
   template: `
-    <span>{{modals().length}}</span>
     @for (modal of modals(); track modal.id) {
       <dialog id="{{modal.id}}" class="modal" [open]="modal.id">
         <ng-container #container></ng-container>

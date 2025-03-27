@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { UserService } from '../../core/services/user.service';
 
 @Component({
   selector: 'app-navbar',
@@ -8,4 +9,17 @@ import { Component } from '@angular/core';
 })
 export class NavbarComponent {
 
+  userService = inject(UserService);
+
+  getUserName() {
+    return this.userService.getUserName();
+  }
+  
+  login() {
+    return this.userService.loginWithGoogle();
+  }
+  
+  logout() {
+    return this.userService.logout();
+  }
 }

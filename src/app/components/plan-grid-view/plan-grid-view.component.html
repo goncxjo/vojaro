@@ -4,7 +4,6 @@
           <!-- head -->
           <thead>
             <tr>
-              <th></th>
               <th>Asignatura</th>
               <th>Año</th>
               <th>Periodo</th>
@@ -13,7 +12,6 @@
           <tbody>
             @for (subject of subjectStore.subjects(); track subject.id) {
               <tr class="hover:bg-base-300">
-                <th>{{ subject.id }}</th>
                 <td>{{ subject.name }}</td>
                 <td>{{ subject.year }}</td>
                 <td>{{ subject.quarter }}</td>
