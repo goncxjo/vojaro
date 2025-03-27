@@ -12,7 +12,7 @@
           </thead>
           <tbody>
             @for (subject of subjectStore.subjects(); track subject.id) {
-              <tr>
+              <tr class="hover:bg-base-300">
                 <th>{{ subject.id }}</th>
                 <td>{{ subject.name }}</td>
                 <td>{{ subject.year }}</td>

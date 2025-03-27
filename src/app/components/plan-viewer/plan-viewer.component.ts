@@ -1,5 +1,4 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { GraphControllerService } from '../plan-graph-view/graph-controller.service';
 import { RouterOutlet } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { SubjectStore } from '../../core/stores/subject.store';
@@ -25,4 +24,19 @@ export class PlanViewerComponent implements OnInit {
   openModal() {
     this.modalService.open(ConfirmComponent, { title: 'Confirm', message: 'Are you sure you want to delete this subject?' });
   }
+
+  openFilterModal() { }
+  
+  openEditModal() { }
+  
+  openUpdateModal() { }
+  
+  openLinkModal() { }
+  
+  openElectiveModal() { }
+  
+  openReferencesModal() { }
+  
+  openWelcomeModal() { }
+  
 }
