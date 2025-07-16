@@ -36,7 +36,7 @@ export class StudentSubjectEditModalComponent {
     return this.formBuilder.group({
       id: '',
       name: [{ value: '' }],
-      userId: [{ value: this.userService.getUserId() }, Validators.required],
+      userId: [{ value: '' }, Validators.required],
       approved: [{ value: [] }],
       regularized: [{ value: [] }],
       inProgress: [{ value: [] }],
@@ -50,6 +50,7 @@ export class StudentSubjectEditModalComponent {
   ngAfterViewInit() {
     this.form.patchValue(this.entity);
     this.form.controls['name'].patchValue(this.subject.name)
+    this.form.controls['userId'].patchValue(this.userService.getUserId())
     
     if (this.entity.approved && this.entity.approved.includes(this.subject.id)) {
       this.form.controls['status'].setValue('approved')
@@ -121,7 +122,7 @@ export class StudentSubjectEditModalComponent {
       if (entity.id) {
         this.service.update(entity).then(onSuccess, onError);
       } else {
-        return;
+        this.service.create(entity).then(onSuccess, onError);
       }
     } catch (error) {
       this.toastr.error('Ha ocurrido un problema', 'Error');

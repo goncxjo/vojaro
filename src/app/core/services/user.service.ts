@@ -103,7 +103,7 @@ export class UserService {
   }
 
   getUserId() {
-    return this.auth.currentUser?.uid || '';
+    return this.userInfo().id || '';
   }
 
   isLoggedIn() {
